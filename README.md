@@ -1,0 +1,18 @@
+# EECS 498 AASE Materials
+
+Slides and handouts for EECS 498-016, Applied Agentic Software
+Engineering, University of Michigan, Fall 2026.
+
+## Layout
+
+- `lectures/` holds one folder per lecture (`L01`, `L02`, ...), each
+  with a `slides.pdf`.
+- `labs/` holds one folder per lab (`Lab01`, `Lab02`, ...), same shape.
+
+Decks are posted around the time each lecture or lab is delivered.
+If a week is missing, it has not happened yet.
+
+## Links
+
+- Course site: https://eecs498-aase.github.io
+- Questions: Ed, or eecs-aase-staff@umich.edu
