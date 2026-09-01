@@ -419,6 +419,18 @@ Not the networking protocol. KISS in this course = clarity beats verbosity.
 -->
 
 ---
+layout: section
+---
+
+# PollEv
+
+<!--
+Presenter cue only — switch to the browser tab holding the activity.
+Set it live, read the question and all four options aloud, give it ~60s,
+show results, then come back to the deck.
+-->
+
+---
 layout: two-col
 ---
 
