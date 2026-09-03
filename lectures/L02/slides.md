@@ -91,6 +91,27 @@ layout: default
 layout: default
 ---
 
+<div class="label">Byte-pair encoding, worked</div>
+
+# Where `getOrderById` goes
+
+```text
+1. start from characters
+   g e t O r d e r B y I d                    12 tokens
+
+2. merge the commonest adjacent pair. repeat, ~100K times
+   e+r -> er      g+et -> get      O+rder -> Order
+
+3. the merges that survived training are the vocabulary
+   get  Order  By  Id                          4 tokens
+```
+
+<div class="caption mt-4">Nobody chose those four. They are just the pieces that were common enough to earn a slot.</div>
+
+---
+layout: default
+---
+
 <div class="label">Two consequences</div>
 
 # What tokenization costs you
@@ -190,6 +211,28 @@ layout: default
 
 <!--
 Rose accent on the surprising one — quality degradation.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Why cost grows faster than context</div>
+
+# Every token attends to every other
+
+| Tokens in the window | Pairs scored | Relative work |
+|---|---:|---:|
+| 1K | 1,000,000 | 1× |
+| 2K | 4,000,000 | 4× |
+| 8K | 64,000,000 | 64× |
+| 32K | 1,024,000,000 | *1024×* |
+
+<div class="caption mt-6">Double the context, quadruple the work. The window is a budget, not a container.</div>
+
+<!--
+The number to land: 32× the text is not 32× the cost, it is 1000×.
+This is why "just paste the repo in" fails on a laptop.
 -->
 
 ---
