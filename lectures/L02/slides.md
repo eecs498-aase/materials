@@ -112,6 +112,45 @@ layout: default
 layout: default
 ---
 
+<div class="label">o200k_base · the GPT-4o and 5 encoding</div>
+
+# Real tokens, real IDs
+
+<div style="font-family:'IBM Plex Mono',monospace;font-size:1.05em;color:var(--c-ink-soft);background:var(--c-code-bg);border:1px solid var(--c-rule);border-radius:6px;padding:.5rem .8rem;margin-top:1.4rem;display:inline-block">const order = await getOrderById(orderId);</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem">
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">1671</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(46,91,255,.09);border:1px solid var(--c-rule);color:var(--c-ink)">const</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">2569</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:var(--c-bg-2);border:1px solid var(--c-rule);color:var(--c-ink)">·order</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">314</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(46,91,255,.09);border:1px solid var(--c-rule);color:var(--c-ink)">·=</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">4021</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:var(--c-bg-2);border:1px solid var(--c-rule);color:var(--c-ink)">·await</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">717</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(217,119,6,.16);border:1px solid rgba(217,119,6,.55);color:var(--c-ink)">·get</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">4861</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(217,119,6,.16);border:1px solid rgba(217,119,6,.55);color:var(--c-ink)">Order</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">1582</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(217,119,6,.16);border:1px solid rgba(217,119,6,.55);color:var(--c-ink)">By</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">906</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(217,119,6,.16);border:1px solid rgba(217,119,6,.55);color:var(--c-ink)">Id</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">33050</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(46,91,255,.09);border:1px solid var(--c-rule);color:var(--c-ink)">(order</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">906</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:var(--c-bg-2);border:1px solid var(--c-rule);color:var(--c-ink)">Id</div></div>
+<div style="display:flex;flex-direction:column;min-width:0"><div style="font-size:.58em;text-align:center;color:var(--c-ink-muted);font-family:'IBM Plex Mono',monospace;padding-bottom:.3rem">2245</div><div style="font-family:'IBM Plex Mono',monospace;font-size:1.02em;white-space:pre;padding:.4rem .55rem;border-radius:6px;background:rgba(46,91,255,.09);border:1px solid var(--c-rule);color:var(--c-ink)">);</div></div>
+</div>
+
+<div class="caption mt-8">11 tokens for 42 characters. The four amber ones are exactly what the last slide predicted, and <code>Id</code> is token 906 <em>both</em> times.</div>
+
+<!--
+This is the payoff for the previous slide: getOrderById really does come
+back as get / Order / By / Id, and here are the numbers.
+
+Two things to point at if there is time. The dot in the middle of a chip
+is a leading space, which is part of the token, so " order" and "order"
+are different tokens. And "(order" is one token: the tokenizer swallowed
+the paren with the word, which is why token counts are hard to guess.
+
+Caveat if asked: these IDs are o200k_base. qwen3.5 uses a different
+vocabulary, so the numbers differ. The idea does not.
+-->
+
+---
+layout: default
+---
+
 <div class="label">Two consequences</div>
 
 # What tokenization costs you
@@ -599,3 +638,34 @@ layout: default
 ---
 layout: end
 ---
+
+---
+layout: default
+---
+
+<div class="label">Go deeper · optional</div>
+
+# YouTube Deep Dives
+
+<div class="grid grid-cols-2 gap-6 mt-8 items-stretch">
+  <div class="card">
+    <ph-text-aa-bold class="text-3xl text-blue-600 mb-3" />
+    <div class="text-xs uppercase tracking-widest opacity-60 mb-1" style="font-family:'IBM Plex Mono',monospace">Tokenization</div>
+    <div class="font-semibold mb-2">Let's build the GPT Tokenizer</div>
+    <a href="https://www.youtube.com/watch?v=zduSFxRajkE" class="text-sm break-all">youtube.com/watch?v=zduSFxRajkE</a>
+  </div>
+  <div class="card">
+    <ph-eye-bold class="text-3xl text-blue-600 mb-3" />
+    <div class="text-xs uppercase tracking-widest opacity-60 mb-1" style="font-family:'IBM Plex Mono',monospace">Attention</div>
+    <div class="font-semibold mb-2">Attention in transformers, step-by-step</div>
+    <a href="https://www.youtube.com/watch?v=eMlx5fFNoYc&amp;t=269s" class="text-sm break-all">youtube.com/watch?v=eMlx5fFNoYc&amp;t=269s</a>
+  </div>
+</div>
+
+<div class="caption mt-6">Neither is required. Both go a level below today, and the attention link opens at the part that matters.</div>
+
+<!--
+Leave this up while the room files out. Not assessed, not required.
+The tokenizer video is long; tell them the first 30 minutes is the part
+that pays for itself.
+-->
