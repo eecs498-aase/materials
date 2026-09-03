@@ -658,11 +658,11 @@ layout: default
     <ph-eye-bold class="text-3xl text-blue-600 mb-3" />
     <div class="text-xs uppercase tracking-widest opacity-60 mb-1" style="font-family:'IBM Plex Mono',monospace">Attention</div>
     <div class="font-semibold mb-2">Attention in transformers, step-by-step</div>
-    <a href="https://www.youtube.com/watch?v=eMlx5fFNoYc&amp;t=269s" class="text-sm break-all">youtube.com/watch?v=eMlx5fFNoYc&amp;t=269s</a>
+    <a href="https://www.youtube.com/watch?v=eMlx5fFNoYc" class="text-sm break-all">youtube.com/watch?v=eMlx5fFNoYc</a>
   </div>
 </div>
 
-<div class="caption mt-6">Neither is required. Both go a level below today, and the attention link opens at the part that matters.</div>
+<div class="caption mt-6">Neither is required. Both go a level below today.</div>
 
 <!--
 Leave this up while the room files out. Not assessed, not required.
