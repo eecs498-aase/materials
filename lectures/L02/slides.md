@@ -217,6 +217,50 @@ Rose accent on the surprising one — quality degradation.
 layout: default
 ---
 
+<div class="label">One step of generation</div>
+
+# Weighing the whole window
+
+<svg viewBox="0 0 900 250" class="w-full mt-4" role="img" aria-label="One token being generated, with weighted links back to every token already in the window">
+<path d="M450 82 Q 276 145 102 176" fill="none" stroke="var(--c-primary)" stroke-width="1.9" opacity="0.22"/>
+<path d="M450 82 Q 334 145 218 176" fill="none" stroke="var(--c-primary)" stroke-width="5.2" opacity="0.59"/>
+<path d="M450 82 Q 392 145 334 176" fill="none" stroke="var(--c-primary)" stroke-width="1.5" opacity="0.17"/>
+<path d="M450 82 Q 450 145 450 176" fill="none" stroke="var(--c-primary)" stroke-width="2.1" opacity="0.24"/>
+<path d="M450 82 Q 508 145 566 176" fill="none" stroke="var(--c-primary)" stroke-width="1.6" opacity="0.19"/>
+<path d="M450 82 Q 566 145 682 176" fill="none" stroke="var(--c-primary)" stroke-width="5.8" opacity="0.64"/>
+<path d="M450 82 Q 624 145 798 176" fill="none" stroke="var(--c-primary)" stroke-width="4.5" opacity="0.51"/>
+<rect x="50" y="176" width="104" height="46" rx="7" fill="var(--c-bg-1)" stroke="var(--c-rule)"/>
+<text x="102" y="205" text-anchor="middle" fill="var(--c-ink)" style="font-family:'IBM Plex Mono',monospace;font-size:19px">import</text>
+<rect x="166" y="176" width="104" height="46" rx="7" fill="var(--c-bg-1)" stroke="var(--c-rule)"/>
+<text x="218" y="205" text-anchor="middle" fill="var(--c-ink)" style="font-family:'IBM Plex Mono',monospace;font-size:19px">httpx</text>
+<rect x="282" y="176" width="104" height="46" rx="7" fill="var(--c-bg-1)" stroke="var(--c-rule)"/>
+<text x="334" y="205" text-anchor="middle" fill="var(--c-ink)" style="font-family:'IBM Plex Mono',monospace;font-size:19px">…</text>
+<rect x="398" y="176" width="104" height="46" rx="7" fill="var(--c-bg-1)" stroke="var(--c-rule)"/>
+<text x="450" y="205" text-anchor="middle" fill="var(--c-ink)" style="font-family:'IBM Plex Mono',monospace;font-size:19px">resp</text>
+<rect x="514" y="176" width="104" height="46" rx="7" fill="var(--c-bg-1)" stroke="var(--c-rule)"/>
+<text x="566" y="205" text-anchor="middle" fill="var(--c-ink)" style="font-family:'IBM Plex Mono',monospace;font-size:19px">=</text>
+<rect x="630" y="176" width="104" height="46" rx="7" fill="var(--c-bg-1)" stroke="var(--c-rule)"/>
+<text x="682" y="205" text-anchor="middle" fill="var(--c-ink)" style="font-family:'IBM Plex Mono',monospace;font-size:19px">httpx</text>
+<rect x="746" y="176" width="104" height="46" rx="7" fill="var(--c-bg-1)" stroke="var(--c-rule)"/>
+<text x="798" y="205" text-anchor="middle" fill="var(--c-ink)" style="font-family:'IBM Plex Mono',monospace;font-size:19px">.</text>
+<rect x="392" y="32" width="116" height="50" rx="8" fill="var(--c-amber)"/>
+<text x="450" y="65" text-anchor="middle" fill="var(--c-bg-0)" style="font-family:'IBM Plex Mono',monospace;font-size:21px;font-weight:600">get</text>
+</svg>
+
+<div class="caption mt-4">Thicker line, more weight. It leans on <code>httpx</code> and the dot, but it scored <em>every</em> token to find that out.</div>
+
+<!--
+Walk it: the model is choosing what follows "httpx." and to do that it
+scores every token already in the window, not just the nearby ones.
+Thickness is attention weight. Then the setup for the next slide: this
+whole picture happens again for the token after "get", and again after
+that.
+-->
+
+---
+layout: default
+---
+
 <div class="label">Why cost grows faster than context</div>
 
 # Every token attends to every other
@@ -450,15 +494,17 @@ layout: default
   <div class="card">
     <ph-buildings-bold class="text-3xl text-amber-600 mb-3" />
     <div class="font-semibold mb-1">Frontier</div>
-    <div class="text-sm opacity-70 flex-1">Someone else's datacenter. Strong on both axes, and you cannot learn on it.</div>
+    <div class="text-sm opacity-70 flex-1">Someone else's datacenter. Strong on both axes. You will not run one in this course.</div>
   </div>
 </div>
 
-<div class="caption mt-6">A frontier model covers for you. A 4B <em>doesn't</em>. Two weeks from now you'll have run both.</div>
+<div class="caption mt-6">A frontier model covers for you. A 4B <em>doesn't</em>. Two weeks from now you'll have run 4b and 9b and felt the gap yourself.</div>
 
 <!--
 Don't assert this — promise the experiment. Everyone runs the same repo on
-both models over the next two weeks. That beats any benchmark I could show.
+4b and then 9b over the next two weeks. That beats any benchmark I could
+show. Be clear that frontier is the rung they are NOT on: it is here to
+name what they are giving up and why, not as something they get access to.
 -->
 
 ---
@@ -500,7 +546,7 @@ layout: default
 2. **Hallucination** — did it invent an API?
 3. **Capability or knowledge** — task too hard? too new?
 
-<div class="caption mt-6">Next lecture: this becomes the Big Three. You'll use it forever.</div>
+<div class="caption mt-6">Tokenization is not on the list. It sits underneath all three and is almost never what you can act on.</div>
 
 ---
 layout: statement
@@ -530,7 +576,7 @@ layout: default
 
 </div>
 
-<div class="caption mt-6">L03 stacks the Big Three (Context, Model, Prompt) on top of these four.</div>
+<div class="caption mt-6">Four mechanics. Every failure you hit this term is one of them wearing a costume.</div>
 
 ---
 layout: default
