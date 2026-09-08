@@ -25,6 +25,15 @@ dark-mode: true
 # .gitignore is written on purpose.
 gitignore: false
 
+# OFF, and this one is load-bearing. Aider lints after every edit and offers
+# to fix what it finds, defaulting to Yes. This demo's whole point is to leave
+# a broken program on screen and then run it, and auto-lint takes that away:
+# it spots the breakage first, spends another model turn "fixing" it, and what
+# the room sees is aider recovering rather than context failing. Seen live:
+# the model dropped analyze() in a whole-file rewrite, flake8 flagged F821,
+# and the fix pass invented `from data_types import analyze` to satisfy it.
+auto-lint: false
+
 # Architect mode shows the plan before anything is written. Approving the
 # plan out loud is worth the extra keystroke in front of a room.
 auto-accept-architect: false
