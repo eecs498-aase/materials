@@ -13,8 +13,10 @@ driving it are different skills, and only one of them is on the exam.
 ./reset
 ```
 
-That builds a disposable copy at `demo-scratch/L01-notes-cli`, sets up aider's
-config, makes it a git repo so `/undo` works, and runs the tests. Run it again
+That builds a disposable copy at `demo-scratch/L01-notes-cli` beside the root
+of your clone, sets up aider's config, makes it a git repo so `/undo` works,
+and runs the tests. It prints the full path when it finishes, so you never
+have to work it out. Run it again
 any time to start over. Do not run aider in this directory: the config files
 here are undotted on purpose (`aider.conf.yml`, not `.aider.conf.yml`) so that
 aider ignores them and this copy stays pristine.
@@ -22,7 +24,7 @@ aider ignores them and this copy stays pristine.
 Then:
 
 ```sh
-cd demo-scratch/L01-notes-cli
+cd ../../demo-scratch/L01-notes-cli
 aider notes.py test_notes.py
 ```
 

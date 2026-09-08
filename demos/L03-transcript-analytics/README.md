@@ -9,16 +9,17 @@ back to. Five Python files, no dependencies, no API keys.
 ./reset
 ```
 
-That builds a disposable copy at `demo-scratch/L03-transcript-analytics`, sets
-up aider's config, makes it a git repo so `/undo` works, and checks the program
-still runs. Run it again any time to start over. Do not run aider in this
+That builds a disposable copy at `demo-scratch/L03-transcript-analytics` beside
+the root of your clone, sets up aider's config, makes it a git repo so `/undo`
+works, and checks the program still runs. It prints the full path when it
+finishes, so you never have to work it out. Run it again any time to start over. Do not run aider in this
 directory: the config files here are undotted on purpose (`aider.conf.yml`, not
 `.aider.conf.yml`) so aider ignores them and this copy stays pristine.
 
 Then:
 
 ```sh
-cd demo-scratch/L03-transcript-analytics
+cd ../../demo-scratch/L03-transcript-analytics
 python3 src/main.py transcript.txt
 python3 src/main.py transcript.txt --top 5 --speakers
 ```
@@ -53,7 +54,7 @@ that looks finished.
 The lecture demo is five steps against `qwen3.5:9b`:
 
 ```sh
-./reset && cd demo-scratch/L03-transcript-analytics
+./reset && cd ../../demo-scratch/L03-transcript-analytics
 aider src/main.py
 ```
 
