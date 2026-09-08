@@ -1,0 +1,44 @@
+Retrieval service, weekly sync, 2026-03-12
+
+PRIYA: Okay, let us start. The retrieval service went to staging on Friday and the latency numbers are worse than the benchmark said they would be.
+DEV: How much worse?
+PRIYA: The benchmark said ninety milliseconds at the median. Staging is showing three hundred and forty.
+DEV: That is not a regression, that is a different program.
+SAM: It is the same program. The difference is the index. The benchmark ran against the small index, forty thousand documents. Staging has the real one, which is about two million.
+DEV: So the benchmark was never measuring the thing we cared about.
+SAM: Correct. I built it in week one when the real index did not exist yet, and nobody went back to change it.
+PRIYA: Nobody being all of us. Let us fix the benchmark first, because otherwise we cannot tell whether anything we do next helps.
+SAM: I can point the benchmark at a snapshot of the production index today. It is a config change and a lot of disk.
+PRIYA: Do it. Sam owns the benchmark fix.
+DEV: While that runs, can we talk about where the three hundred milliseconds is actually going? I do not want to optimize by guessing.
+SAM: I profiled it yesterday. Roughly two hundred and twenty milliseconds is the vector search, sixty is the reranker, and the rest is serialization.
+DEV: The reranker is sixty on its own? That is a small model.
+SAM: It is a small model that we call once per candidate instead of once per batch. Forty separate calls.
+DEV: That is a batching bug, not a model problem.
+SAM: Yes. And it is a two line change, I just did not want to touch it before we had a benchmark that told the truth.
+PRIYA: Good instinct. Batch the reranker after the benchmark lands.
+JORDAN: Can I ask about the vector search number? Two hundred and twenty milliseconds against two million documents does not sound outrageous to me.
+SAM: It is not outrageous. It is what an exact search costs at that size. The question is whether we need exact.
+JORDAN: We do not. The product spec says the top ten results, and nobody downstream is doing anything that depends on the ranking being provably optimal.
+DEV: Then approximate search is on the table and that is the whole three hundred milliseconds.
+SAM: It is most of it. Approximate gets us to maybe forty at the median, with a recall hit I would want to measure before promising anything.
+PRIYA: Measure it. What does measuring it look like?
+SAM: Run both, exact and approximate, over a thousand real queries, and count how often the top ten differ. If the answer is under two percent I would ship it without thinking hard.
+JORDAN: I have a thousand real queries. I pulled them out of the logs last month for the evaluation work.
+SAM: Send them to me and this is a Thursday.
+PRIYA: Jordan sends the queries, Sam runs the recall comparison. Thursday.
+DEV: One more thing on the serialization number. Sixty milliseconds of serialization for ten results is absurd.
+SAM: It is sixty milliseconds for the candidates, not the results. We serialize all forty candidates through the reranker boundary because the reranker is a separate process.
+DEV: Why is the reranker a separate process?
+SAM: Because it was a separate team when it was written.
+DEV: That is not a reason, that is a history.
+SAM: Agreed. Moving it in process is not hard. It is just not a Thursday.
+PRIYA: Then it is not this week. Write it down and we look at it after the approximate search question is settled, because if approximate search lands, sixty milliseconds of serialization is suddenly most of the budget.
+JORDAN: That is the part I want to flag. Every fix on this list changes what the next fix is worth. If we do them in the wrong order we will spend a week on something that stopped mattering.
+PRIYA: Which is why the benchmark is first and everything else waits on it. Sam, when does the benchmark tell the truth?
+SAM: End of day today if the snapshot copies cleanly. Tomorrow morning if it does not.
+PRIYA: Then we reconvene Thursday with a real benchmark, a batched reranker, and a recall number for approximate search. Anything else?
+DEV: The staging alert is still paging on the old latency threshold. It has fired eleven times since Friday and everyone has learned to ignore it.
+PRIYA: That is worse than no alert. Turn it off until the numbers mean something.
+DEV: I will turn it off this afternoon.
+PRIYA: Good. Thursday.

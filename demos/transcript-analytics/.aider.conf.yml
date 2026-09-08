@@ -1,0 +1,30 @@
+# aider -> local Ollama, for the L03 demo codebase.
+#
+# The demo starts on the 9B and drops to the 4B in the last step, so the 9B
+# is the default here. Everything else in this file exists to make a live
+# demo predictable: no surprise model swaps, no auto-approved edits.
+#
+# Override for one session:  aider --model ollama_chat/qwen3.5:4b
+# Model settings (context window, edit format) live in .aider.model.settings.yml
+# API base lives in .env (OLLAMA_API_BASE)
+
+model: ollama_chat/qwen3.5:9b
+
+# Same model for commit messages and chat summaries. Naming a different weak
+# model means Ollama holds two, and on a 16GB machine it swaps them in and out
+# on every commit, which reads as "the 9B is slow" when nothing is.
+weak-model: ollama_chat/qwen3.5:9b
+
+# Every aider edit is its own commit, so /undo works and so the demo can be
+# reset with `git reset --hard`.
+auto-commits: true
+
+dark-mode: true
+
+# OFF: aider rewrites .gitignore on startup otherwise, and this repo's
+# .gitignore is written on purpose.
+gitignore: false
+
+# Architect mode shows the plan before anything is written. Approving the
+# plan out loud is worth the extra keystroke in front of a room.
+auto-accept-architect: false

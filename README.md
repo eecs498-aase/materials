@@ -8,6 +8,9 @@ Engineering, University of Michigan, Fall 2026.
 - `lectures/` holds one folder per lecture (`L01`, `L02`, ...), each
   with a `slides.md`, a `slides.pdf`, and a `slides.pptx`.
 - `labs/` holds one folder per lab (`Lab00`, `Lab01`, ...), same shape.
+- `demos/` holds the codebases the live demos run on. Clone or copy one and
+  run the demo yourself; each has its own README. `transcript-analytics` is
+  the one L03, L04, and L05 use.
 
 The `slides.md` is the Slidev source the deck was built from. It is here
 so you can read, search, or reuse the content. It expects a theme that

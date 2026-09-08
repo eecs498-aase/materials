@@ -1,0 +1,21 @@
+# Without an entry here, litellm defaults Ollama models to a 2k context window
+# and aider silently truncates your files. Every model you use needs a block.
+#
+# edit_format: "whole" makes the model rewrite entire files. Reliable on small
+# models, expensive in tokens. Both models here use it so that the only thing
+# that changes when you switch models in the demo is the model.
+#
+# num_ctx is the real memory knob. These models advertise a 256K window;
+# asking for it would eat your RAM. 32K is plenty for five files.
+
+- name: ollama_chat/qwen3.5:9b
+  edit_format: whole
+  use_repo_map: true
+  extra_params:
+    num_ctx: 32768
+
+- name: ollama_chat/qwen3.5:4b
+  edit_format: whole
+  use_repo_map: true
+  extra_params:
+    num_ctx: 32768
