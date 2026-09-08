@@ -3,25 +3,30 @@
 The small codebase the L03 live demo runs on, and the one L04 and L05 come
 back to. Five Python files, no dependencies, no API keys.
 
-To get it, clone this repo (`--depth 1` skips the history, which is mostly
-compiled slide decks):
+## Get a working copy
 
 ```sh
-git clone --depth 1 https://github.com/eecs498-aase/materials.git
-cd materials/demos/transcript-analytics
+./reset
 ```
 
-If you have Python 3.10 or newer you can run it right now:
+That builds a disposable copy at `demo-scratch/L03-transcript-analytics`, sets
+up aider's config, makes it a git repo so `/undo` works, and checks the program
+still runs. Run it again any time to start over. Do not run aider in this
+directory: the config files here are undotted on purpose (`aider.conf.yml`, not
+`.aider.conf.yml`) so aider ignores them and this copy stays pristine.
+
+Then:
 
 ```sh
+cd demo-scratch/L03-transcript-analytics
 python3 src/main.py transcript.txt
 python3 src/main.py transcript.txt --top 5 --speakers
 ```
 
-`--summarize` is the only thing that needs a model:
+`--summarize` is the only thing that needs a model. `./reset` writes the `.env`
+that points at it:
 
 ```sh
-cp .env.example .env          # then edit if your Ollama is not on 11434
 python3 src/main.py transcript.txt --summarize
 ```
 
@@ -45,17 +50,12 @@ that looks finished.
 
 ## Trying the demo yourself
 
-The lecture demo is five steps against `qwen3.5:9b`. Copy it out of your
-clone first. Aider commits as it goes, and you want those commits in a
-throwaway repo you can delete, not on top of this one:
+The lecture demo is five steps against `qwen3.5:9b`:
 
 ```sh
-cp -R demos/transcript-analytics ~/l03-demo && cd ~/l03-demo
-git init -q && git add -A && git commit -qm "before"
+./reset && cd demo-scratch/L03-transcript-analytics
 aider src/main.py
 ```
-
-Delete `~/l03-demo` and copy it again for a clean run.
 
 Then, in aider:
 
@@ -80,12 +80,13 @@ Then, in aider:
    provider prefix is not optional: bare `/model qwen3.5:4b` does not match
    `.aider.model.settings.yml` and aider falls back to defaults.
 
-`git reset --hard <first commit>` puts it back so you can run it again.
+`./reset` from the demo directory puts it back so you can run it again.
 
 ## Configuration
 
-`.aider.conf.yml`, `.aider.model.settings.yml`, and
-`.aider.model.metadata.json` are the same three files you have in
-`aider-practice`, pointed at this project. The metadata file prices both
+`aider.conf.yml`, `aider.model.settings.yml`, and
+`aider.model.metadata.json` are the same three files you have in
+`aider-practice`, pointed at this project. `./reset` copies them into the
+working copy with their leading dots. The metadata file prices both
 local models at frontier rates on purpose, so `/tokens` shows you what the
 session would have cost if you were paying for it.

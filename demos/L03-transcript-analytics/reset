@@ -1,0 +1,103 @@
+#!/bin/sh
+# Rebuild the L03 demo working copy from the pristine sources in this directory.
+#
+# The working copy lives OUTSIDE this repo on purpose: aider auto-commits, so a
+# demo accumulates history that has no business in the repo it was copied from,
+# and a nested .git would confuse that repo besides. This directory is the
+# pristine copy under version control; the working copy is disposable. Run this
+# between the rehearsal and the live take, and any time a demo goes sideways
+# mid-lecture. It is safe to run as often as you like.
+#
+#   ./reset                     -> <repo root>/demo-scratch/L03-transcript-analytics
+#   ./reset --model 4b          pin both models to qwen3.5:4b
+#   DEMO_DIR=/tmp/x ./reset     somewhere else entirely
+#
+# Note the config files here are UNDOTTED (aider.conf.yml, not .aider.conf.yml).
+# That is what keeps this directory inert: aider ignores them, so nothing you
+# run in your clone accidentally picks up demo settings. This script dots them
+# on the way into the working copy.
+set -e
+
+name="L03-transcript-analytics"
+here="$(cd "$(dirname "$0")" && pwd)"
+model=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --model) model="${2:?--model needs a value}"; shift 2 ;;
+    -h|--help) sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) echo "unknown option: $1" >&2; exit 2 ;;
+  esac
+done
+
+case "$model" in
+  "") ;;
+  4b)    model="ollama_chat/qwen3.5:4b" ;;
+  9b)    model="ollama_chat/qwen3.5:9b" ;;
+  qwen*) model="ollama_chat/$model" ;;
+esac
+
+# Default: demo-scratch/ beside the root of whatever repo this demo was cloned
+# or copied into. Gitignored in every repo that carries a demo.
+if [ -n "${DEMO_DIR:-}" ]; then
+  dest="$DEMO_DIR"
+else
+  root="$(cd "$here" && git rev-parse --show-toplevel 2>/dev/null || echo "$HOME")"
+  dest="$root/demo-scratch/$name"
+fi
+
+case "$dest" in
+  "$HOME"|/|"") echo "refusing to wipe $dest" >&2; exit 1 ;;
+esac
+# Only ever delete a previous working copy of this demo, never an arbitrary path.
+if [ -e "$dest" ] && [ ! -f "$dest/src/main.py" ]; then
+  echo "$dest exists and is not a working copy of this demo; refusing" >&2
+  exit 1
+fi
+
+rm -rf "$dest"
+mkdir -p "$dest"
+cp -R "$here/src" "$dest/src"
+cp "$here/transcript.txt" "$dest/transcript.txt"
+cp "$here/README.md" "$dest/README.md"
+
+cp "$here/aider.conf.yml"           "$dest/.aider.conf.yml"
+cp "$here/aider.model.settings.yml" "$dest/.aider.model.settings.yml"
+cp "$here/aider.model.metadata.json" "$dest/.aider.model.metadata.json"
+cp "$here/env.example"              "$dest/.env"
+
+if [ -n "$model" ]; then
+  sed -e "s|^model: .*|model: $model|" -e "s|^weak-model: .*|weak-model: $model|" \
+    "$dest/.aider.conf.yml" > "$dest/.aider.conf.yml.new"
+  mv "$dest/.aider.conf.yml.new" "$dest/.aider.conf.yml"
+fi
+
+printf '__pycache__/\n*.pyc\n.aider*\n.env\n' > "$dest/.gitignore"
+
+cd "$dest"
+git init -q
+git add -A
+git -c user.name="EECS 498" -c user.email="aase@umich.edu" \
+  commit -qm "transcript-analytics, before the demo"
+
+# If git init ever failed, aider would walk up, find the parent repo, and start
+# auto-committing into it. Refuse to hand over a working copy like that.
+# Compare physical paths: git reports the resolved path, and on macOS a copy
+# under /var is really /private/var, which a literal comparison calls a
+# mismatch on a perfectly good repo.
+top="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+if [ "$top" != "$(pwd -P)" ]; then
+  echo "$dest is not its own git repo (git says: ${top:-none})" >&2
+  exit 1
+fi
+
+echo "reset $dest"
+if python3 src/main.py transcript.txt >/dev/null 2>&1; then
+  echo "smoke check: the program runs clean before any edit"
+else
+  echo "smoke check FAILED - fix before you present" >&2
+  exit 1
+fi
+echo
+echo "model: $(sed -n 's|^model: ||p' .aider.conf.yml)"
+echo "next:  cd $dest && aider src/main.py"

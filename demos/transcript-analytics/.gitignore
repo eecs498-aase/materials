@@ -1,8 +1,0 @@
-.env
-.aider*
-!.aider.conf.yml
-!.aider.model.settings.yml
-!.aider.model.metadata.json
-__pycache__/
-*.pyc
-.DS_Store

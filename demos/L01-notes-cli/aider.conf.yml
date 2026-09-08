@@ -1,0 +1,19 @@
+# Demo config, deliberately NOT aider-practice's.
+#
+# aider-practice starts students on the 4B because it punishes vague prompts,
+# which is the lesson. That is exactly the wrong property for a live demo: the
+# script promises three coordinated edits and passing tests in five minutes in
+# front of a hundred people. Run the demo on the 9B and rehearse on it.
+model: ollama_chat/qwen3.5:9b
+
+# One model in memory, not two. Otherwise Ollama swaps on every auto-commit and
+# the room watches a spinner.
+weak-model: ollama_chat/qwen3.5:9b
+
+dark-mode: true
+auto-commits: true
+gitignore: false
+
+# On for the demo. Students see the plan-then-apply hand-off in aider-practice
+# where the pause is the lesson; here a confirmation prompt is just dead air.
+auto-accept-architect: true

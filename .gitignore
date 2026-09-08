@@ -1,1 +1,5 @@
 .DS_Store
+
+# Working copies built by a demo's ./reset. Disposable, and each one is
+# its own git repo that aider commits into.
+/demo-scratch/

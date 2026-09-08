@@ -1,0 +1,44 @@
+# Demo-only model settings. The reset script prefers this over aider-practice's,
+# because the demo has one requirement the lessons do not: it has to finish on a
+# clock, in front of a room.
+#
+# qwen3.5 is a reasoning model. Left alone it spends its budget thinking before
+# it writes anything - measured on this project, 1200 tokens of reasoning and
+# zero characters of code. Ollama's native /api/chat honours `think: false`
+# (9s and a complete file, against 23s and nothing), and litellm's ollama_chat
+# provider talks to that endpoint, so extra_params should reach it.
+#
+# VERIFY THIS IN THE REHEARSAL. If prompts come back in ~10s it is working. If
+# they take 25s or more, litellm dropped the parameter: fall back to typing
+# ` /no_think` at the end of each prompt, which cut reasoning by 80% and let the
+# answer finish. DEMO.md has both.
+# edit_format stays `whole`, which is what this demo was delivered on.
+#
+# Prompt 1 is unreliable on the 9B and the edit format does not fix it.
+# Measured, ten runs each: `whole` actually fixed parse_args 3 times, `diff` 5.
+# That gap is noise at this sample size.
+#
+# It fails in more than one shape, so do not go looking for one signature.
+# Seen so far: a second parse_args left in the file below the corrected one,
+# where Python binds the second and nothing changes; and a parse_args whose
+# no-args branch returns something main() cannot unpack.
+#
+# The part worth knowing is that **the failure and the test suite are
+# independent**. Twenty experiment runs stayed green, several of them broken,
+# because no existing test calls parse_args with an empty list. Other runs go
+# fully red. So `pytest -q` is not the signal that prompt 1 worked. Run
+# `python3 notes.py` and read the diff. `bin/demo L01 --rehearse` does both.
+
+- name: ollama_chat/qwen3.5:9b
+  edit_format: whole
+  use_repo_map: false
+  extra_params:
+    think: false
+
+# The 4B is not what the demo runs on, but a student trying the same three
+# prompts on it needs an entry here or litellm truncates the context to 2k.
+- name: ollama_chat/qwen3.5:4b
+  edit_format: whole
+  use_repo_map: false
+  extra_params:
+    think: false
