@@ -1,8 +1,17 @@
 # transcript-analytics
 
 The small codebase the L03 live demo runs on, and the one L04 and L05 come
-back to. Five Python files, no dependencies, no API keys. If you have
-Python 3.10 or newer you can run it right now:
+back to. Five Python files, no dependencies, no API keys.
+
+To get it, clone this repo (`--depth 1` skips the history, which is mostly
+compiled slide decks):
+
+```sh
+git clone --depth 1 https://github.com/eecs498-aase/materials.git
+cd materials/demos/transcript-analytics
+```
+
+If you have Python 3.10 or newer you can run it right now:
 
 ```sh
 python3 src/main.py transcript.txt
@@ -36,14 +45,17 @@ that looks finished.
 
 ## Trying the demo yourself
 
-The lecture demo is five steps against `qwen3.5:9b`. Work in a scratch copy,
-not in a clone you care about, because aider commits as it goes:
+The lecture demo is five steps against `qwen3.5:9b`. Copy it out of your
+clone first. Aider commits as it goes, and you want those commits in a
+throwaway repo you can delete, not on top of this one:
 
 ```sh
-cp -R transcript-analytics ~/demo && cd ~/demo
+cp -R demos/transcript-analytics ~/l03-demo && cd ~/l03-demo
 git init -q && git add -A && git commit -qm "before"
 aider src/main.py
 ```
+
+Delete `~/l03-demo` and copy it again for a clean run.
 
 Then, in aider:
 
