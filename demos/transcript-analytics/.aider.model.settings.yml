@@ -7,15 +7,23 @@
 #
 # num_ctx is the real memory knob. These models advertise a 256K window;
 # asking for it would eat your RAM. 32K is plenty for five files.
+#
+# think: false is the difference between a demo that fits in ten minutes and
+# one that does not. qwen3.5 reasons at length before it answers, and aider
+# prints the whole trace. Measured on the demo's own two-file edit: 311
+# seconds with thinking, 89 without, same edit either way. Delete the line
+# when you want to watch a model think; keep it when you are on the clock.
 
 - name: ollama_chat/qwen3.5:9b
   edit_format: whole
   use_repo_map: true
   extra_params:
     num_ctx: 32768
+    think: false
 
 - name: ollama_chat/qwen3.5:4b
   edit_format: whole
   use_repo_map: true
   extra_params:
     num_ctx: 32768
+    think: false

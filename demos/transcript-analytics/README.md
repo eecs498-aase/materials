@@ -48,13 +48,17 @@ aider src/main.py
 Then, in aider:
 
 1. `Add a new CLI argument --output-format with choices text, json, markdown.`
-   Aider will offer to add `arg_parse.py`. **Say no** (`S` declines a whole
-   run of those offers). Watch the model work out that it needs a file it
-   cannot see, and stop. Nothing gets written. `git status` proves it.
-2. Insist: `Do it in src/main.py only. Do not touch any other file.` Now it
-   writes something, and the diff looks fine. Run the program:
-   `python3 src/main.py transcript.txt`. It is broken. The flag was never
-   defined, because the file that defines flags was never in context.
+   Watch it write a whole `arg_parse.py` it has never seen. Compare the
+   invented one to the real one: it hardcodes `default=10` where the real
+   file reads `DEFAULT_TOP_N`. Aider offers to add the file. **Say no** (`S`
+   declines a whole run of those offers), so that edit is discarded and only
+   the `main.py` edit lands.
+2. Run the program: `python3 src/main.py transcript.txt`. It is broken, and
+   the diff looked fine. The flag was never defined, because the file that
+   defines flags was never in context.
+   (If instead the model asked for the file and wrote nothing, say
+   `Do it in src/main.py only. Do not touch any other file.` and you land in
+   the same place.)
 3. `/undo`, then `/add src/arg_parse.py`, then the **same prompt as step 1**,
    word for word. Now it holds together and the program runs.
 4. `/tokens` after each step, then `/drop` and `/add src/` and `/tokens`

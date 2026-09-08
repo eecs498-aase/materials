@@ -401,11 +401,11 @@ layout: default
 
 <v-clicks>
 
-1. Aider with only `main.py`. Prompt: `--output-format` flag. It asks for the file it can't see.
-2. Insist on `main.py` only. Clean diff, broken program.
-3. `/add arg_parse.py`. Same prompt. Watch: coherent.
-4. `/tokens` after each. 1,746 → 1,998.
-5. `/drop`, `/add src/`. 3,962.
+1. Aider with only `main.py`. Prompt: `--output-format` flag.
+2. It invents an `arg_parse.py` it has never seen. Decline it.
+3. Run the program. Clean diff, `AttributeError`.
+4. `/add arg_parse.py`. Same prompt. Coherent, and it runs.
+5. `/tokens`: 1,746 → 1,998 → 3,962 for the whole `src/`.
 6. `/model ollama_chat/qwen3.5:4b`. Same prompt. Compare.
 
 </v-clicks>
