@@ -365,6 +365,48 @@ Minute 40. Students implement the endpoint client in Stage 1 and extend it for f
 layout: default
 ---
 
+# The application you are building
+
+A terminal assistant for **questions and approved edits to selected text files**.
+
+```text
+/files                 → list selected files
+/add greet.py          → include this file in model requests
+What does greet do?    → stream an answer about the selected code
+Change Hello to Hi.    → validate the reply and preview a diff
+```
+
+You run `aider` to build it. You implement `bin/assistant` to run it.
+
+<!--
+Open EXAMPLES.md from the student template. The transcripts describe expected behavior, not a captured staff run. This is a bounded application, not all of Aider. Students implement the context assembly, endpoint client and edit handling themselves. No application code or tests are supplied.
+-->
+
+---
+layout: default
+---
+
+# A proposal is not a file change
+
+Suppose the model proposes changing `Hello` to `Hi` in `greet.py`.
+
+| Point in the interaction | File contents | Git outcome |
+|---|---|---|
+| Diff shown, awaiting approval | Still `Hello` | No new commit |
+| User approves | Now `Hi` | One owned edit commit |
+| User declines instead | Still `Hello` | No new commit |
+| User undoes the approved edit | Back to `Hello` | Restore the parent HEAD |
+
+**One invalid block cancels the entire proposal, including valid blocks.**
+
+<!--
+Use the exact greeting files and replies in EXAMPLES.md. Undo assumes an owned current-session HEAD and a clean target; a human commit or dirty tree requires refusal. Ask students to state what they would assert in a test. The model emits text; their program is responsible for these observable outcomes. Keep the project introduction within its existing time block by using these concrete examples to explain the feature list.
+-->
+
+---
+layout: default
+---
+
 # All seven features remain
 
 | Feature | Required behavior |
@@ -644,7 +686,7 @@ layout: default
 | 43–45 | Commit the draft and record your next decision |
 
 <!--
-No application exists to run yet. bin/dev test checks the transport, not a completed feature. The whole initial system spec is finished after lab, before application implementation. Use peer review plus staff triage.
+No application exists to run yet. Students launch aider directly using .env and the supplied Aider configuration; they implement bin/assistant themselves. The whole initial system spec is finished after lab, before application implementation. Use peer review plus staff triage.
 -->
 
 ---
