@@ -53,16 +53,16 @@ Follow the current Analyze assignment for schemas and stop conditions. Students 
 layout: default
 ---
 
-# Replace transport, keep configuration
+# Extend your client, keep configuration
 
-Write your own client as the API lessons introduce function calling.
+Extend your client as the API lessons introduce function calling.
 
 Keep the configurable API base, model identifier, credentials, and limits.
 
 No hard-coded Ollama dependency.
 
 <!--
-Stage 1 supplied transport only. Preserve provider-independent YAML behavior and tests.
+Stage 1 included your own text-completion client. Preserve provider-independent YAML behavior and tests.
 -->
 
 ---

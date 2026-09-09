@@ -62,7 +62,7 @@ Check file contents and git state before and after rejection.
 Use fakes for routine tests and disposable repositories for edits.
 
 <!--
-Ask for a plausible defect each assertion would catch. Supplied adapter tests earn no student test credit.
+Ask for a plausible defect each assertion would catch.
 -->
 
 ---

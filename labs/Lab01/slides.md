@@ -351,14 +351,14 @@ layout: default
 
 # Your project starts with a design
 
-You receive a transport adapter and development tooling.
+You receive the assignment packet and development tooling.
 
 You design the application, write its specification, and use Aider to implement it in increments.
 
 **There is no supplied conversation loop or required module layout.**
 
 <!--
-Minute 40. The adapter protects the learning sequence: HTTP transport is implemented in Analyze. It does not supply a config loader or state model. Do not hand out a module diagram as the answer.
+Minute 40. Students implement the endpoint client in Stage 1 and extend it for function calling in Analyze. No application code or tests are supplied. Do not hand out a module diagram as the answer.
 -->
 
 ---
@@ -396,10 +396,10 @@ timeout_seconds: 60
 temperature: 0.2
 ```
 
-You implement loading and validation. The adapter handles transport.
+You implement configuration, the endpoint client, and validation.
 
 <!--
-The schema is a shared external contract. Students choose its internal representation. base_url can include any path prefix; the adapter adds /chat/completions only. Aider has a separate YAML config. No Ollama-specific dependency belongs in the application.
+The schema is a shared external contract. Students choose its internal representation. base_url can include any path prefix; the client appends /chat/completions only. Aider has a separate YAML config. No Ollama-specific dependency belongs in the application.
 -->
 
 ---
@@ -488,7 +488,7 @@ layout: default
 A correct failing test can earn test credit while exposing an unfinished feature.
 
 <!--
-The rubric contains each feature suballocation. Only one F4 outcome point depends on live-model success; honest unsuccessful evidence can earn live-reporting points. Supplied transport tests earn no application-test credit.
+The rubric contains each feature suballocation. Only one F4 outcome point depends on live-model success; honest unsuccessful evidence can earn live-reporting points. Students author all tests, including client protocol checks.
 -->
 
 ---
