@@ -86,6 +86,16 @@ context, model, or prompt, which is L03.
 `aider.conf.yml` pins the 9B for both the main and the weak model, so Ollama
 holds one model instead of swapping on every auto-commit.
 
+It also sets `think: false`. qwen3.5 is a reasoning model and, left alone,
+spends its budget thinking before writing any code: measured on this project,
+1200 tokens of reasoning and zero characters of output, 23 seconds against 9.
+If your prompts take 25 seconds or more, the parameter did not reach Ollama;
+add ` /no_think` to the end of each prompt instead.
+
+`aider.model.metadata.json` prices these free local models at frontier rates
+on purpose, so `/tokens` answers "what would this session have cost if I were
+paying for it."
+
 ## The thing to watch for on prompt 1
 
 Prompt 1 works about half the time on the 9B. Ten runs, three fixes, and
@@ -106,34 +116,3 @@ So a green suite after prompt 1 tells you nothing about whether prompt 1
 worked. Run `python3 notes.py` — the thing the prompt was about — and read
 the diff before you accept it. Noticing that is the actual skill here, and it
 is the reason you are given the codebase rather than a video.
-
-## Configuration
-
-`aider.conf.yml` pins the 9B for both the main and the weak model, so Ollama
-holds one model instead of swapping on every auto-commit.
-
-## The thing to watch for on prompt 1
-
-Prompt 1 works about half the time on the 9B. Ten runs, three fixes; the
-edit format barely moves it. When it fails it always fails the same way: the
-model writes a corrected `parse_args()` and leaves the original one in the
-file below it. Python binds the second definition, so the program still
-crashes on no arguments and the diff looked fine.
-
-Here is the part that should bother you. **The tests were green in all twenty
-runs**, the broken ones included. Four tests that never call `parse_args` with
-an empty list cannot see this bug. A green suite told you nothing.
-
-So when you run this yourself: read the diff before you accept it, and if the
-program still crashes afterwards, count the `def parse_args` lines. Catching
-that is the actual skill the demo is about.
-
-It also sets `think: false`. qwen3.5 is a reasoning model
-and, left alone, spends its budget thinking before writing any code: measured
-on this project, 1200 tokens of reasoning and zero characters of output, 23
-seconds against 9. If your prompts take 25 seconds or more, the parameter did
-not reach Ollama; add ` /no_think` to the end of each prompt instead.
-
-`aider.model.metadata.json` prices these free local models at frontier rates
-on purpose, so `/tokens` answers "what would this session have cost if I were
-paying for it."

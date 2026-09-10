@@ -207,7 +207,7 @@ layout: default
   <div class="card">
     <ph-chalkboard-teacher-bold class="text-3xl text-blue-600 mb-3" />
     <div class="font-semibold mb-1">Lectures</div>
-    <div class="text-sm opacity-70 flex-1">Tue + Thu, 3:00–4:30, LCSIB 1355</div>
+    <div class="text-sm opacity-70 flex-1">Tue + Thu, 3:00–4:30, LCSIB 2365</div>
   </div>
   <div class="card">
     <ph-wrench-bold class="text-3xl text-blue-600 mb-3" />
