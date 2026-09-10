@@ -1,0 +1,68 @@
+# aider -> local Ollama, for the L04 demo codebase.
+#
+# Same project as L03, one lecture later, run a different way: L03 typed one
+# sentence at a time, L04 pastes a five-section spec and lets Architect Mode
+# do the whole thing in one pass.
+#
+# Override for one session:  aider --model ollama_chat/qwen3.5:4b
+# Model settings (context window, edit format) live in .aider.model.settings.yml
+# API base lives in .env (OLLAMA_API_BASE)
+
+model: ollama_chat/qwen3.5:9b
+
+# The readonly half of the spec's Beginning context. `(readonly)` in a spec is
+# not decoration: these are the files the model may read and may not edit, and
+# `read:` is aider's word for exactly that.
+#
+# Loading them up front is also what keeps the demo alive, and rehearsal is
+# the only reason that is known. A model that names a file it cannot see makes
+# aider stop and ask "Add file to the chat?", whose default is Yes. Answering
+# Yes in Architect Mode re-runs the architect with the new file, and the
+# second answer is conversational filler ("you can proceed as described")
+# because the model believes it already answered. The editor then receives the
+# filler instead of the plan and invents its own much smaller change. Measured
+# on 2026-09-09: four files planned, two files written, neither CLI flag
+# defined, and no error anywhere to say so.
+read:
+  - src/data_types.py
+  - src/constants.py
+  - src/llm.py
+  - pyproject.toml
+  - transcript.txt
+
+# Architect Mode, which is the lecture. The architect reads the spec and
+# writes a plan in prose; the editor turns that plan into files. Two calls,
+# one job each, and a 9B is noticeably better at one job than at two.
+edit-format: architect
+
+# Two seats, one model. Naming a second model here would be a fair experiment
+# (9B architect, 4B editor) and a bad default on a 16GB laptop: Ollama would
+# hold both and swap them on every turn, which reads as "architect mode is
+# slow" when nothing is.
+editor-model: ollama_chat/qwen3.5:9b
+
+# THE line in this file. False means the plan stops on screen and waits for
+# you to accept it, which is the cheapest place in the whole workflow to
+# catch a model that misread the spec, because nothing is on disk yet.
+# Flipping this to true turns the demo into a wall of scrolling diffs.
+auto-accept-architect: false
+
+# Same model for commit messages and chat summaries, for the same
+# swap-thrashing reason as above.
+weak-model: ollama_chat/qwen3.5:9b
+
+# Every aider edit is its own commit, so /undo works and so the demo can be
+# reset with `git reset --hard`.
+auto-commits: true
+
+dark-mode: true
+
+# OFF: aider rewrites .gitignore on startup otherwise, and this repo's
+# .gitignore is written on purpose.
+gitignore: false
+
+# OFF. The spec asks for seven new functions across two new files, so a lint
+# pass has plenty to complain about and it offers to spend another model turn
+# on each finding at the default Yes. In a ten-minute slot that is the
+# difference between showing the spec land and watching aider tidy up.
+auto-lint: false

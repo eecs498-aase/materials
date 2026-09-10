@@ -1,0 +1,11 @@
+# Force the non-interactive backend for anything matplotlib does in this
+# directory. matplotlib reads a matplotlibrc from the current working
+# directory before it reads any other config, so this wins.
+#
+# This is a live-demo safety net, not a style preference. The model writes
+# chart.py during the demo, and on macOS the default backend is `macosx`:
+# a plt.show() the model added on its own opens a window that steals focus
+# and blocks the process until somebody closes it. With Agg, plt.show()
+# prints a warning and returns, savefig() still writes the PNG, and the
+# demo keeps moving.
+backend: Agg

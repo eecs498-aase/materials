@@ -1,0 +1,29 @@
+[project]
+name = "transcript-analytics"
+version = "0.2.0"
+description = "Count words and speakers in a meeting transcript."
+requires-python = ">=3.11"
+
+# The spec's Implementation Notes say "matplotlib and pyyaml are already
+# dependencies." That sentence is only true because of these two lines, and
+# the demo turns on it: a model told to use a library that is not installed
+# writes an import that fails the moment you run the program. Declare the
+# dependency, sync it before class, then the note is a fact rather than a hope.
+dependencies = [
+  "matplotlib>=3.8",
+  "pyyaml>=6.0",
+]
+
+[project.scripts]
+main = "main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# src/ holds plain modules, not a package: main.py imports `from arg_parse
+# import parse_args`. `sources = ["src"]` strips the prefix on the way into
+# the wheel so those imports keep working and `uv run main` finds `main:main`.
+[tool.hatch.build.targets.wheel]
+sources = ["src"]
+packages = ["src"]

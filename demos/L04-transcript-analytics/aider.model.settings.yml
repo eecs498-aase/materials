@@ -1,0 +1,36 @@
+# Without an entry here, litellm defaults Ollama models to a 2k context window
+# and aider silently truncates your files. Every model you use needs a block.
+#
+# edit_format: "whole" makes the model rewrite entire files. Reliable on small
+# models, expensive in tokens. editor_edit_format is the format the EDITOR
+# seat uses in Architect Mode; "editor-whole" is the same whole-file output
+# with the chatty preamble suppressed, because the architect already did the
+# explaining. Both are aider's defaults for these models; they are written out
+# because a demo should not depend on a default that can move.
+#
+# num_ctx is the real memory knob. These models advertise a 256K window;
+# asking for it would eat your RAM. This demo pastes a spec and rewrites four
+# files in one turn, so it needs more room than L03 did: 32K holds the source
+# files and the spec but not always the architect's plan on top of them.
+#
+# think: false is the difference between a demo that fits in ten minutes and
+# one that does not. qwen3.5 reasons at length before it answers, and aider
+# prints the whole trace. Architect Mode already costs two calls; paying the
+# reasoning tax twice does not fit the slot. Delete the line when you want to
+# watch a model think; keep it when you are on the clock.
+
+- name: ollama_chat/qwen3.5:9b
+  edit_format: whole
+  editor_edit_format: editor-whole
+  use_repo_map: true
+  extra_params:
+    num_ctx: 40960
+    think: false
+
+- name: ollama_chat/qwen3.5:4b
+  edit_format: whole
+  editor_edit_format: editor-whole
+  use_repo_map: true
+  extra_params:
+    num_ctx: 40960
+    think: false

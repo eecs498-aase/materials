@@ -1,0 +1,153 @@
+#!/bin/sh
+# Rebuild the L04 demo working copy from the pristine sources in this directory.
+#
+# The working copy lives OUTSIDE this repo on purpose: aider auto-commits, so a
+# demo accumulates history that has no business in the repo it was copied from,
+# and a nested .git would confuse that repo besides. This directory is the
+# pristine copy under version control; the working copy is disposable. Run this
+# between the rehearsal and the live take, and any time a demo goes sideways
+# mid-lecture. It is safe to run as often as you like.
+#
+#   ./reset                     -> <repo root>/demo-scratch/L04-transcript-analytics
+#   ./reset --model 4b          pin both seats to qwen3.5:4b
+#   DEMO_DIR=/tmp/x ./reset     somewhere else entirely
+#
+# Note the config files here are UNDOTTED (aider.conf.yml, not .aider.conf.yml).
+# That is what keeps this directory inert: aider ignores them, so nothing you
+# run in your clone accidentally picks up demo settings. This script dots them
+# on the way into the working copy.
+set -e
+
+name="L04-transcript-analytics"
+here="$(cd "$(dirname "$0")" && pwd)"
+model=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --model) model="${2:?--model needs a value}"; shift 2 ;;
+    -h|--help) sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) echo "unknown option: $1" >&2; exit 2 ;;
+  esac
+done
+
+case "$model" in
+  "") ;;
+  4b)    model="ollama_chat/qwen3.5:4b" ;;
+  9b)    model="ollama_chat/qwen3.5:9b" ;;
+  qwen*) model="ollama_chat/$model" ;;
+esac
+
+# Default: demo-scratch/ beside the root of whatever repo this demo was cloned
+# or copied into. Gitignored in every repo that carries a demo.
+if [ -n "${DEMO_DIR:-}" ]; then
+  dest="$DEMO_DIR"
+else
+  root="$(cd "$here" && git rev-parse --show-toplevel 2>/dev/null || echo "$HOME")"
+  dest="$root/demo-scratch/$name"
+fi
+
+case "$dest" in
+  "$HOME"|/|"") echo "refusing to wipe $dest" >&2; exit 1 ;;
+esac
+# Only ever delete a previous working copy of this demo, never an arbitrary path.
+if [ -e "$dest" ] && [ ! -f "$dest/src/main.py" ]; then
+  echo "$dest exists and is not a working copy of this demo; refusing" >&2
+  exit 1
+fi
+
+rm -rf "$dest"
+mkdir -p "$dest"
+cp -R "$here/src" "$dest/src"
+cp "$here/transcript.txt"  "$dest/transcript.txt"
+cp "$here/README.md"       "$dest/README.md"
+cp "$here/spec.md"         "$dest/spec.md"
+cp "$here/pyproject.toml"  "$dest/pyproject.toml"
+cp "$here/matplotlibrc"    "$dest/matplotlibrc"
+
+cp "$here/aider.conf.yml"            "$dest/.aider.conf.yml"
+cp "$here/aider.model.settings.yml"  "$dest/.aider.model.settings.yml"
+cp "$here/aider.model.metadata.json" "$dest/.aider.model.metadata.json"
+cp "$here/env.example"               "$dest/.env"
+
+# --model pins both seats. In Architect Mode there are three model settings
+# and leaving one behind is how you end up rehearsing a pairing you did not
+# mean to run.
+if [ -n "$model" ]; then
+  sed -e "s|^model: .*|model: $model|" \
+      -e "s|^weak-model: .*|weak-model: $model|" \
+      -e "s|^editor-model: .*|editor-model: $model|" \
+    "$dest/.aider.conf.yml" > "$dest/.aider.conf.yml.new"
+  mv "$dest/.aider.conf.yml.new" "$dest/.aider.conf.yml"
+fi
+
+printf '__pycache__/\n*.pyc\n.aider*\n.env\n.venv/\nuv.lock\n*.png\n' > "$dest/.gitignore"
+
+cd "$dest"
+
+# The environment, before git, so the lockfile and the venv are never part of
+# the demo's first commit. `uv sync` is what makes the spec's "matplotlib and
+# pyyaml are already dependencies" line true; without it the model writes a
+# correct import of a library that is not installed and step 6 dies in front
+# of the room. It needs the network exactly once per machine, after which it
+# is served from uv's cache in well under a second.
+env_ok=0
+if command -v uv >/dev/null 2>&1; then
+  if uv sync --quiet >/dev/null 2>&1; then
+    env_ok=1
+  fi
+fi
+
+git init -q
+git add -A
+git -c user.name="EECS 498" -c user.email="aase@umich.edu" \
+  commit -qm "transcript-analytics, before the spec"
+
+# If git init ever failed, aider would walk up, find the parent repo, and start
+# auto-committing into it. Refuse to hand over a working copy like that.
+# Compare physical paths: git reports the resolved path, and on macOS a copy
+# under /var is really /private/var, which a literal comparison calls a
+# mismatch on a perfectly good repo.
+top="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+if [ "$top" != "$(pwd -P)" ]; then
+  echo "$dest is not its own git repo (git says: ${top:-none})" >&2
+  exit 1
+fi
+
+echo "reset $dest"
+
+if [ "$env_ok" -ne 1 ]; then
+  echo "uv sync FAILED (or uv is not on PATH)." >&2
+  echo "The spec tells the model matplotlib and pyyaml are available; without" >&2
+  echo "the venv they are not, and the chart half of the demo dies live." >&2
+  echo "Fix: install uv, then run 'uv sync' in $dest once with a network." >&2
+  exit 1
+fi
+
+# Two smoke checks, because two different things can be broken. The first is
+# the same one L03 runs: does the program still work before anyone edits it.
+if uv run --quiet main transcript.txt >/dev/null 2>&1; then
+  echo "smoke check: 'uv run main transcript.txt' runs clean before any edit"
+else
+  echo "smoke check FAILED - fix before you present" >&2
+  exit 1
+fi
+
+# The second is the one that only matters at 1:08. matplotlib builds a font
+# cache on its first import on a fresh machine and it takes several seconds;
+# doing that inside the demo looks exactly like the model hanging. Import it
+# here, where nobody is watching, and confirm the working directory's
+# matplotlibrc took so that a plt.show() the model invented cannot open a
+# window and block the process.
+backend="$(uv run --quiet python -c \
+  'import matplotlib; print(matplotlib.get_backend())' 2>/dev/null || true)"
+case "$backend" in
+  Agg|agg) echo "smoke check: matplotlib imports, backend is Agg, font cache warm" ;;
+  "")      echo "smoke check FAILED - matplotlib does not import" >&2; exit 1 ;;
+  *)       echo "smoke check FAILED - backend is $backend, not Agg; matplotlibrc did not take" >&2
+           exit 1 ;;
+esac
+
+echo
+echo "model:  $(sed -n 's|^model: ||p' .aider.conf.yml)  (architect and editor seats)"
+echo "spec:   $dest/spec.md"
+echo "next:   cd $dest && aider src/main.py src/arg_parse.py"
