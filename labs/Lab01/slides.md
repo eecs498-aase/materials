@@ -28,15 +28,14 @@ layout: default
 
 <div class="label">Lab01</div>
 
-# The second half is office hours {.assert}
+# Schedule
 
-| | |
-|---|---|
-| First | Aider as the worked example: what the model sees, how a reply becomes a file change, how to read a failure |
-| Then | The hackathon 1 briefing, and what you own for the build |
-| Rest | Office hours, in this room. Your work, your questions, staff circulating |
-
-<div class="caption">Nothing is collected at the end of this lab.</div>
+1. One request, followed through Aider
+2. Reading failures as evidence
+3. Hackathon 1 briefing
+4. The build: scope, ownership, rubric
+5. Where agentic tools go next
+6. Office hours
 
 <!--
 Put this up while the room settles and leave it up. The agenda is part of the
@@ -44,7 +43,8 @@ first block, not an extra segment in front of it.
 
 Say out loud that the second half is genuinely office hours: they work, you
 circulate, and nobody hands anything in today. Students who have been told all
-term that labs end in a checkoff will not believe it unless you say it.
+term that labs end in a checkoff will not believe it unless you say it. The
+slide no longer says so, so this is on you to say.
 
 Do not preview the build past the word itself. The reveal is still yours to
 make in the third section.
@@ -54,9 +54,173 @@ make in the third section.
 layout: default
 ---
 
+<div class="label">What it is</div>
+
+# Aider at a glance
+
+Aider is a program you run in a terminal, inside a git repository.
+
+<div class="grid grid-cols-3 gap-5 mt-6">
+  <div class="card">
+    <div class="font-semibold mb-1">It reads</div>
+    <div class="text-sm opacity-70">Only the files you choose, plus a summary of the rest.</div>
+  </div>
+  <div class="card">
+    <div class="font-semibold mb-1">It asks</div>
+    <div class="text-sm opacity-70">Sends text to a model over one HTTP API. Gets text back.</div>
+  </div>
+  <div class="card">
+    <div class="font-semibold mb-1">It writes</div>
+    <div class="text-sm opacity-70">Edits the files, then commits, one commit per edit set.</div>
+  </div>
+</div>
+
+<div class="caption">Not an editor plugin, not a web chat, not a service. A local process with your repository open.</div>
+
+<!--
+Two weeks of practice lessons have given them the muscle memory and none of the
+model. This is the slide that names the thing.
+
+The three cards are the six steps in summary, so do not elaborate here. The
+point to land is the last one: it is a program on their machine, which is why
+they can read its behavior, and why they are about to write one.
+-->
+
+---
+layout: default
+---
+
+<div class="label">What it needs</div>
+
+# Models and endpoints
+
+| | |
+|---|---|
+| Model | `qwen3.5:4b` or `qwen3.5:9b`. The 9B is recommended |
+| Endpoint | Anything serving the OpenAI-compatible Chat Completions API |
+| Hosting | Your machine or CAEN. Ollama is one option, not a requirement |
+
+```yaml
+model: openai/qwen3.5:9b
+```
+
+The `openai/` prefix selects the *protocol*, not the vendor.
+
+<div class="caption">Changing where a model is served does not change which models you may use.</div>
+
+<!--
+The prefix confuses people every term. It tells Aider which wire format to
+speak. Nothing about that line sends anything to OpenAI.
+
+Say the policy sentence plainly: any compatible endpoint is fine, the permitted
+models are fixed, and the two decisions are unrelated. The full policy is
+MODEL-POLICY.md and the rubric has disclosure points for getting it right.
+
+Course baseline is Aider 0.86.2. If a student reports behavior that contradicts
+this deck, ask their version before doubting the deck.
+-->
+
+---
+layout: default
+---
+
+<div class="label">What it needs</div>
+
+# The three config files
+
+| File | Holds |
+|---|---|
+| `.env` | `OPENAI_API_BASE`, `OPENAI_API_KEY`. Where the endpoint is |
+| `.aider.conf.yml` | Model, edit format, auto-commit. How Aider behaves |
+| `.aider.model.settings.yml` | Per-model settings, including edit format and repo map |
+
+```yaml
+- name: openai/qwen3.5:9b
+  edit_format: diff
+- name: openai/qwen3.5:4b
+  edit_format: whole
+```
+
+<div class="caption">The 4B rewrites whole files. The 9B sends diffs. Same request, different reply shape.</div>
+
+<!--
+This is the slide that explains why their practice lessons looked different
+from today's trace: whole-file mode on the 4B, diff mode on the 9B. Ask who ran
+which. The ones on the 4B have never seen a diff block.
+
+Per-model settings beat the general config, which is the part people get wrong
+when they switch models and nothing changes.
+
+Never commit .env. It is gitignored in the starter and the rubric treats a
+committed credential as an integrity matter, not a style nit.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Running it</div>
+
+# Starting a session
+
+```text
+$ cd ~/taskr
+$ aider
+Aider v0.86.2
+Model: openai/qwen3.5:9b with diff edit format
+Git repo: .git with 24 files
+Repo-map: using 1024 tokens
+>
+```
+
+Four things the banner tells you, and all four are worth a glance: version, model, edit format, and that it found your repository.
+
+<!--
+Make them read the banner. Most setup problems announce themselves here: wrong
+model because .env overrode the config, no git repo because they are one
+directory too high, repo map off when they expected it on.
+
+The banner text shifts between releases. Treat the shape as the lesson, not the
+exact lines, and tell them to check their own.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Running it</div>
+
+# Aider's command set
+
+| Command | Does what | Touches files |
+|---|---|---|
+| `/add` | Put a file in the context, editable | no |
+| `/read-only` | Put a file in the context, citable only | no |
+| `/drop` | Take a file back out | no |
+| `/tokens` | Break the budget down by source | no |
+| `/ask` | Question about the code, no edits proposed | no |
+| `/code` | Ask for an edit, the default mode | **yes** |
+| `/diff` | Show what the last exchange changed | no |
+| `/undo` | Revert Aider's last commit | **yes** |
+
+<div class="caption">Plain text with no command is <code>/code</code>, so the default mode is the one that writes.</div>
+
+<!--
+The two in the right-hand column are the whole safety story at this rung: one
+command writes, one takes it back, and everything else is arranging context.
+They will rebuild exactly that distinction in their own approval layer.
+
+/help lists the full set and it is longer than this. Run it live if anyone
+asks, rather than reciting from the slide; the set moves between versions.
+-->
+
+---
+layout: default
+---
+
 <div class="label">The running example</div>
 
-# One request touches three files {.assert}
+# One request, three files
 
 ```text
 Add a --priority flag to taskr's add command.
@@ -102,7 +266,7 @@ layout: default
 
 <div class="label">Who does what</div>
 
-# Only Aider touches your files {.assert}
+# Aider, the model, and your repo
 
 <div class="mt-2">
 <svg viewBox="0 0 900 330" style="width:100%;max-height:330px" role="img"
@@ -163,7 +327,7 @@ layout: default
 
 <div class="label">Step 1 · assemble</div>
 
-# Aider builds the request from parts you chose {.assert}
+# What goes into the request
 
 - The instructions that define the edit format
 - The files you added, in full
@@ -188,7 +352,7 @@ layout: default
 
 <div class="label">Step 1 · selection</div>
 
-# The /add command decides what the model reads {.assert}
+# File selection with /add
 
 ```text
 /add taskr/cli.py taskr/task.py taskr/store.py
@@ -213,7 +377,7 @@ layout: default
 
 <div class="label">Step 1 · repository map</div>
 
-# The repo map carries signatures without bodies {.assert}
+# The repo map
 
 ```text
 taskr/store.py
@@ -240,7 +404,7 @@ layout: default
 
 <div class="label">Step 1 · budget</div>
 
-# Everything you add spends the same budget {.assert}
+# One shared token budget
 
 <div class="mt-2">
 <svg viewBox="0 0 960 300" style="width:100%;max-height:300px" role="img"
@@ -298,7 +462,7 @@ layout: default
 
 <div class="label">Step 2 · the reply</div>
 
-# The model answers with edit-shaped text {.assert}
+# Edit-shaped replies
 
 ```text
 taskr/cli.py
@@ -326,7 +490,7 @@ layout: default
 
 <div class="label">Step 3 · parse</div>
 
-# Aider parses the reply before it trusts it {.assert}
+# The parse step
 
 <div class="grid grid-cols-2 gap-6 mt-6">
   <div class="card">
@@ -359,7 +523,7 @@ layout: default
 
 <div class="label">Step 4 · apply</div>
 
-# An edit lands only on an exact match {.assert}
+# Exact-match application
 
 <div class="grid grid-cols-2 gap-6 mt-4">
   <div class="card">
@@ -401,7 +565,7 @@ layout: default
 
 <div class="label">Step 5 · repair</div>
 
-# A failed edit becomes the next prompt {.assert}
+# The repair loop
 
 <div class="mt-2">
 <svg viewBox="0 0 900 278" style="width:100%;max-height:290px" role="img"
@@ -446,7 +610,7 @@ layout: default
 
 <div class="label">Step 6 · commit</div>
 
-# Every accepted edit becomes one commit {.assert}
+# One commit per edit set
 
 ```text
 * 8f2a1c3  aider: add --priority to the add command
@@ -474,7 +638,7 @@ layout: default
 
 <div class="label">Check · 3 minutes</div>
 
-# The six steps account for the whole feature {.assert}
+# The six steps, recapped
 
 For `--priority`, answer with the person next to you:
 
@@ -508,7 +672,7 @@ layout: default
 
 <div class="label">Diagnosis</div>
 
-# Each failure has its own symptom {.assert}
+# Three failure symptoms
 
 | What you see | What to check first |
 |---|---|
@@ -531,7 +695,7 @@ layout: default
 
 <div class="label">Diagnosis</div>
 
-# Aider improves results without a better model {.assert}
+# Better results, same model
 
 <div class="grid grid-cols-2 gap-6 mt-6">
   <div class="card">
@@ -558,7 +722,7 @@ layout: default
 
 <div class="label">Practice · 6 minutes</div>
 
-# The priority value disappears on restart {.assert}
+# A feature that half works
 
 ```text
 $ taskr add "ship lab" --priority high
@@ -584,9 +748,9 @@ is not diagnosis, and switching models is not diagnosis.
 layout: default
 ---
 
-<div class="label">September 24</div>
+<div class="label">Thursday September 24</div>
 
-# Hackathon 1 runs in the browser workspace {.assert}
+# Hackathon 1
 
 - Two hours, during the session, on your own project
 - The feature prompt is revealed in the room
@@ -595,12 +759,17 @@ layout: default
 
 **Bring a runnable increment. There is no separate hackathon project to prepare.**
 
+<div class="caption">The build itself is due the next day, <strong>Friday September 25, 11:59 PM</strong>.</div>
+
 <!--
 Three minutes including logistics. Room, time and the model in the workspace are
 announced by staff. Do not invent any of them here.
 
 Say the accommodations line out loud: conflicts and accommodations go to staff
-now, not the week of. Build is due the next day, September 25.
+now, not the week of.
+
+The caption is the only place in the deck a student sees the build deadline, now
+that the after-lab slide is gone. Do not skip past it.
 -->
 
 ---
@@ -622,7 +791,7 @@ layout: default
 
 <div class="label">Stage 1 · the packet</div>
 
-# The packet gives you specs and no code {.assert}
+# What the packet contains
 
 <div class="grid grid-cols-2 gap-6 mt-6">
   <div class="card">
@@ -652,7 +821,7 @@ layout: default
 
 <div class="label">The application</div>
 
-# Your assistant reads files and proposes edits {.assert}
+# The assistant's behavior
 
 ```text
 /files                 → list selected files
@@ -679,7 +848,7 @@ layout: default
 
 <div class="label">The safety rule</div>
 
-# Nothing changes on disk until you approve it {.assert}
+# The approval step
 
 | Point in the interaction | `greet.py` | Git |
 |---|---|---|
@@ -705,7 +874,7 @@ layout: default
 
 <div class="label">Scope</div>
 
-# Seven features define the build {.assert}
+# The seven features
 
 | Feature | Required behavior |
 |---|---|
@@ -728,7 +897,7 @@ layout: default
 
 <div class="label">Configuration</div>
 
-# One YAML file selects the endpoint and model {.assert}
+# The assistant's config schema
 
 ```yaml
 base_url: https://api.example.edu/v1
@@ -743,7 +912,12 @@ The schema is fixed. How you load, represent and validate it is yours.
 
 <!--
 base_url can carry any path prefix. Their client appends /chat/completions and
-nothing else. Aider's own YAML config is a separate file and unrelated.
+nothing else.
+
+Say explicitly that this is not the .aider.conf.yml from the first ten minutes.
+Two YAML files, two owners: that one configures the tool they use, this one is
+a schema their own program has to implement. The deck now teaches both, so the
+collision is live.
 
 No Ollama-specific dependency belongs anywhere in the application. Provider
 independence is a requirement, not a preference.
@@ -755,7 +929,7 @@ layout: default
 
 <div class="label">Ownership</div>
 
-# You own the architecture {.assert}
+# Architecture ownership
 
 | We specify | You design |
 |---|---|
@@ -778,7 +952,7 @@ layout: default
 
 <div class="label">Specifications</div>
 
-# Specs come in two sizes {.assert}
+# Two sizes of spec
 
 <div class="grid grid-cols-2 gap-6 mt-6">
   <div class="card">
@@ -807,7 +981,7 @@ layout: default
 
 <div class="label">Diagrams</div>
 
-# Three diagrams answer three questions {.assert}
+# The three diagrams
 
 | Diagram | The question it answers |
 |---|---|
@@ -829,71 +1003,35 @@ layout: default
 
 <div class="label">Build rubric</div>
 
-# Specification and diagrams carry 40 points {.assert}
+# Rubric: the three buckets
 
-| Criterion | Points |
-|---|---:|
-| Requirements and acceptance criteria | 10 |
-| Architecture and interface design | 10 |
-| Aider implementation specs | 10 |
-| Diagrams: components 4, sequence 3, lifecycle 3 | 10 |
+One hundred points inside the build grade, in three groups.
 
-<div class="caption">Completeness and usefulness are graded. Document length is not.</div>
+| Group | Points | What earns them |
+|---|---:|---|
+| Specification and diagrams | 40 | Requirements and acceptance criteria, architecture and interfaces, Aider implementation specs, three diagrams |
+| Behavior and verification | 40 | The seven features scored one at a time, behavioral tests, safety and recovery tests, integration evidence |
+| Evidence and reconciliation | 20 | Spec-first history, deliberate Aider use, diagnosis and reconciliation, operating instructions, model disclosure |
+
+<div class="caption">The per-criterion split is in <code>RUBRIC.md</code>, and that file is what you are graded against.</div>
 
 <!--
 These are points inside the build grade, not percentages of the course grade.
 The build is 4.5% of the course and is due September 25.
 
-Design keeps its credit when the implementation falls short, as long as the
-design's claims and the final status are honest.
--->
+Do not read the table out. Send them to RUBRIC.md, which carries the
+per-criterion breakdown this slide summarizes, and spend the time on the four
+things worth saying out loud instead:
 
----
-layout: default
----
-
-<div class="label">Build rubric</div>
-
-# Behavior and verification carry 40 points {.assert}
-
-| Criterion | Points |
-|---|---:|
-| Required functionality, scored feature by feature | 20 |
-| Behavioral tests | 8 |
-| Safety and recovery tests | 7 |
-| Fake integration 3, live evidence 2 | 5 |
-
-<div class="caption">A correct failing test can earn test credit while exposing an unfinished feature.</div>
-
-<!--
-The per-feature split is in RUBRIC.md. Only one F4 point depends on the live
-model actually succeeding, and honest evidence of an unsuccessful run still
-earns the reporting points.
-
-They write every test, including the client protocol checks.
--->
-
----
-layout: default
----
-
-<div class="label">Build rubric</div>
-
-# Evidence and reconciliation carry 20 points {.assert}
-
-| Criterion | Points |
-|---|---:|
-| Spec-first history | 5 |
-| Deliberate Aider use | 5 |
-| Diagnosis and design reconciliation | 5 |
-| Operating instructions | 3 |
-| Model disclosure and evidence index | 2 |
-
-<div class="caption">Evidence means a pointer someone can follow. Volume of logs is not evidence.</div>
-
-<!--
-No points for suffering, and no repeated deductions for one missing feature
-across otherwise sound artifacts.
+- Completeness and usefulness are graded. Document length is not.
+- A correct failing test can earn test credit while exposing an unfinished
+  feature. Only one point in the whole rubric depends on the live model
+  actually succeeding, and honest evidence of a failed run still earns the
+  reporting points.
+- Design keeps its credit when the implementation falls short, as long as the
+  design's claims and the final status are honest. No repeated deductions for
+  one missing feature across otherwise sound artifacts.
+- Evidence means a pointer someone can follow. Volume of logs is not evidence.
 
 Policy violations go through academic integrity procedures, not the rubric.
 -->
@@ -904,7 +1042,7 @@ layout: default
 
 <div class="label">Model rule</div>
 
-# The model rule covers your specification too {.assert}
+# Model rules for specifications
 
 - Drafting, critique, diagrams, code and tests all fall under it
 - The 9B is recommended, the 4B is permitted
@@ -928,7 +1066,7 @@ layout: default
 
 <div class="label">Through December</div>
 
-# One repository carries you to December {.assert}
+# One repository to December
 
 <div class="mt-4">
 <svg viewBox="0 0 900 150" style="width:100%;max-height:180px" role="img"
@@ -981,7 +1119,7 @@ layout: default
 
 <div class="label">Future tool · Claude Code</div>
 
-# Claude Code lets the model pick the next step {.assert}
+# Claude Code on the same request
 
 | Aider | A general agentic CLI |
 |---|---|
@@ -1001,36 +1139,9 @@ Source: https://code.claude.com/docs/en/overview
 layout: default
 ---
 
-<div class="label">Future tool · the same request</div>
-
-# An agentic CLI runs the whole request itself {.assert}
-
-```text
-grep -rn "add_argument" taskr/   → finds cli.py
-read taskr/store.py              → finds the save path
-edit cli.py, task.py, store.py
-pytest -q                        → 1 failed
-edit store.py
-pytest -q                        → passed
-```
-
-**Each result is evidence for the next decision. Who stops a bad one?**
-
-<!--
-Label this a hypothetical trace. You have not run it and it is not a product
-demonstration.
-
-The model can only choose from what the harness exposes and what permissions
-allow. That sentence is the whole design problem, and they build it in Analyze.
--->
-
----
-layout: default
----
-
 <div class="label">Future tool · instructions</div>
 
-# Written instructions still need a harness {.assert}
+# Harness versus instructions
 
 - Project instructions give persistent guidance
 - Skills package instructions for a particular task
@@ -1050,62 +1161,9 @@ for a session that has not happened yet.
 layout: default
 ---
 
-<div class="label">Future tool · OpenClaw</div>
-
-# A gateway gives one agent many ways in {.assert}
-
-<div class="mt-2">
-<svg viewBox="0 0 900 290" style="width:100%;max-height:300px" role="img"
-     aria-label="Three clients feed into a gateway that handles connections and routing. The gateway connects down to an agent runtime with tools and to connected nodes.">
-  <defs>
-    <marker id="gw" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="var(--c-primary)" /></marker>
-  </defs>
-  <g stroke="var(--c-rule-strong)" fill="var(--c-bg-1)">
-    <rect x="90" y="14" width="200" height="48" rx="8" />
-    <rect x="350" y="14" width="200" height="48" rx="8" />
-    <rect x="610" y="14" width="200" height="48" rx="8" />
-  </g>
-  <g style="font:500 14px var(--font-mono)" fill="var(--c-ink)" text-anchor="middle">
-    <text x="190" y="44">chat channel</text>
-    <text x="450" y="44">web client</text>
-    <text x="710" y="44">another service</text>
-  </g>
-  <rect x="60" y="118" width="780" height="58" rx="10" fill="var(--c-highlight)" stroke="var(--c-amber)" stroke-width="2.5" />
-  <text x="450" y="153" text-anchor="middle" style="font:600 16px var(--font-mono)" fill="var(--c-amber)">gateway: connections and routing</text>
-  <g stroke="var(--c-rule-strong)" fill="var(--c-bg-1)">
-    <rect x="110" y="214" width="300" height="58" rx="8" />
-    <rect x="490" y="214" width="300" height="58" rx="8" />
-  </g>
-  <g style="font:500 14px var(--font-mono)" fill="var(--c-ink)" text-anchor="middle">
-    <text x="260" y="249">agent runtime and tools</text>
-    <text x="640" y="249">connected nodes</text>
-  </g>
-  <g stroke="var(--c-primary)" stroke-width="2" fill="none">
-    <path d="M190,62 V114" marker-end="url(#gw)" />
-    <path d="M450,62 V114" marker-end="url(#gw)" />
-    <path d="M710,62 V114" marker-end="url(#gw)" />
-    <path d="M260,176 V210" marker-end="url(#gw)" />
-    <path d="M640,176 V210" marker-end="url(#gw)" />
-  </g>
-</svg>
-</div>
-
-<!--
-Your terminal is one entry point. A gateway is what makes it several.
-
-Keep the client connections separate from the agent runtime in their heads. This
-is not several agents working on one task. OpenClaw is a comparison, not a
-library anyone here has to adopt.
-Source: https://docs.openclaw.ai/concepts/architecture
--->
-
----
-layout: default
----
-
 <div class="label">Design for it now</div>
 
-# Your design names where new capability enters {.assert}
+# Boundaries for later capability
 
 - Where could a model-selected tool join your control flow?
 - Could you swap the endpoint client without touching state management?
@@ -1132,93 +1190,6 @@ back through it themselves.
 
 This is the point where you say plainly that nothing is due at the end of
 today. Most of them will still expect a checkoff.
--->
-
----
-layout: default
----
-
-<div class="label">Office hours</div>
-
-# Spend this time on whatever is in your way {.assert}
-
-Staff are in the room. Good things to use them for:
-
-1. Your repository access or tooling not running
-2. A requirement in the packet you read two ways
-3. The boundary of your first increment
-4. A design decision you want argued with
-
-<div class="caption">Nothing here is collected. Start wherever your build is actually stuck.</div>
-
-<!--
-No application exists to run yet. They launch aider directly with .env and the
-supplied configuration, and they write bin/assistant themselves.
-
-If someone lacks repository access, fix it immediately and let them read the
-packet while you do. Do not hand them an unrelated clone as a substitute.
-That one is worth hunting for rather than waiting to be asked about.
-
-The list is a menu, not an order of work. A student who spends the whole time
-reading SPEC.md has used it correctly.
--->
-
----
-layout: default
----
-
-<div class="label">Worth doing</div>
-
-# A partner finds what you stopped seeing {.assert}
-
-If you want a second pair of eyes before you leave, trade these three:
-
-1. What has to be true when this increment is done?
-2. Which decision would the model still have to guess?
-3. What test would catch a plausible mistake here?
-
-<div class="caption">Nothing from this lab is collected. Bring anything ambiguous in the packet to staff instead.</div>
-
-<!--
-Fifty students at five minutes each is 250 staff-minutes, so there is no full
-design review queue today and do not promise one.
-
-Peer review is about contracts and verification. It is not code sharing. A
-blocking question gets a concrete follow-up through Ed or office hours.
-
-What you are looking for as you circulate: an observable outcome, named state
-ownership, explicit error behavior, and one meaningful test. Accept different
-architectures. Do not require a particular file, class or module count.
--->
-
----
-layout: default
----
-
-<div class="label">The build · due Fri Sep 25</div>
-
-# Finish the design before you write code {.assert}
-
-1. Complete the system design and the three diagrams
-2. Review them in a fresh permitted-model session
-3. Commit the design and the first increment spec
-
-Then build, test and revise one increment at a time.
-
-<div class="caption">This is the build talking, not this lab. Submission packet, deadlines and exact scoring all live in your repository.</div>
-
-<!--
-Say the distinction out loud. Nothing on this slide is due because of today;
-it is the order of work for a project that has been due Sep 25 all along, and
-a room that has just been told the lab collects nothing can hear this list as
-a lab assignment if you let it.
-
-Read the packet list once: design, diagrams, specs, code and tests,
-configuration example, DEVELOPMENT.md, operating README, evidence, AI_LOG.md,
-reflection, and the preserved sessions.
-
-Lab02 is supported implementation and verification time. September 25 does not
-move.
 -->
 
 ---
