@@ -30,12 +30,10 @@ layout: default
 
 # Schedule
 
-1. One request, followed through Aider
-2. Reading failures as evidence
-3. Hackathon 1 briefing
-4. The build: scope, ownership, rubric
-5. Where agentic tools go next
-6. Office hours
+1. Aider deep dive
+2. Hackathon 1
+3. The next assignment
+4. Office hours
 
 <!--
 Put this up while the room settles and leave it up. The agenda is part of the
@@ -54,164 +52,83 @@ make in the third section.
 layout: default
 ---
 
-<div class="label">What it is</div>
+<div class="label">The program in the middle</div>
 
-# Aider at a glance
+# The harness
 
-Aider is a program you run in a terminal, inside a git repository.
+Aider is a *harness*: a program that stands between you and a model.
 
-<div class="grid grid-cols-3 gap-5 mt-6">
-  <div class="card">
-    <div class="font-semibold mb-1">It reads</div>
-    <div class="text-sm opacity-70">Only the files you choose, plus a summary of the rest.</div>
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-1">It asks</div>
-    <div class="text-sm opacity-70">Sends text to a model over one HTTP API. Gets text back.</div>
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-1">It writes</div>
-    <div class="text-sm opacity-70">Edits the files, then commits, one commit per edit set.</div>
-  </div>
-</div>
+| The harness | The model |
+|---|---|
+| Picks the text the model sees | Reads it |
+| Decides what a reply may do | Writes a reply |
+| Edits files, then commits | Nothing |
 
-<div class="caption">Not an editor plugin, not a web chat, not a service. A local process with your repository open.</div>
+<div class="caption">Take one apart now, build one later.</div>
 
 <!--
-Two weeks of practice lessons have given them the muscle memory and none of the
-model. This is the slide that names the thing.
+This is the slide the deck was missing. Sixteen practice lessons gave them the
+muscle memory and none of the model, and the word "harness" is the one they
+need, because it is the thing they build in Stage 1 and extend in Analyze.
 
-The three cards are the six steps in summary, so do not elaborate here. The
-point to land is the last one: it is a program on their machine, which is why
-they can read its behavior, and why they are about to write one.
+Say the right-hand column out loud. The model's entire contribution is one
+block of text. Every effect on their machine is the left column acting on it.
+
+If anyone asks about models, endpoints or config: MODEL-POLICY.md, and it is
+not today's subject. qwen3.5:9b recommended, 4B permitted, any compatible
+endpoint.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">What it needs</div>
+<div class="label">Limits</div>
 
-# Models and endpoints
+# What the model never touches
+
+- Your disk
+- Your shell
+- Your last session
+
+**Text in, text out. The harness does the rest.**
+
+<!--
+Three negatives, and each one is a design decision somebody made rather than a
+limitation of the model.
+
+The third is the one that surprises people: there is no memory between
+sessions. Continuity is the harness resending the history, which is why
+history spends their token budget later in the deck.
+
+The 4B and the 9B are asked for different reply shapes, whole files against
+diffs. That is why a classmate's session looks different from theirs, and why
+the trace in the next ten minutes may not match what they ran in practice.
+Worth saying here, not worth a slide.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The interface</div>
+
+# What writes, and what does not
 
 | | |
 |---|---|
-| Model | `qwen3.5:4b` or `qwen3.5:9b`. The 9B is recommended |
-| Endpoint | Anything serving the OpenAI-compatible Chat Completions API |
-| Hosting | Your machine or CAEN. Ollama is one option, not a requirement |
+| Arranges context | `/add` `/read-only` `/drop` `/tokens` `/ask` `/diff` |
+| Changes your files | `/code` `/undo` |
 
-```yaml
-model: openai/qwen3.5:9b
-```
-
-The `openai/` prefix selects the *protocol*, not the vendor.
-
-<div class="caption">Changing where a model is served does not change which models you may use.</div>
+<div class="caption">Bare text means <code>/code</code>. The default writes.</div>
 
 <!--
-The prefix confuses people every term. It tells Aider which wire format to
-speak. Nothing about that line sends anything to OpenAI.
+Two commands in the whole set touch the repository, and one of those is the
+undo. That asymmetry is the approval layer they are about to build, visible in
+a tool they already use.
 
-Say the policy sentence plainly: any compatible endpoint is fine, the permitted
-models are fixed, and the two decisions are unrelated. The full policy is
-MODEL-POLICY.md and the rubric has disclosure points for getting it right.
-
-Course baseline is Aider 0.86.2. If a student reports behavior that contradicts
-this deck, ask their version before doubting the deck.
--->
-
----
-layout: default
----
-
-<div class="label">What it needs</div>
-
-# The three config files
-
-| File | Holds |
-|---|---|
-| `.env` | `OPENAI_API_BASE`, `OPENAI_API_KEY`. Where the endpoint is |
-| `.aider.conf.yml` | Model, edit format, auto-commit. How Aider behaves |
-| `.aider.model.settings.yml` | Per-model settings, including edit format and repo map |
-
-```yaml
-- name: openai/qwen3.5:9b
-  edit_format: diff
-- name: openai/qwen3.5:4b
-  edit_format: whole
-```
-
-<div class="caption">The 4B rewrites whole files. The 9B sends diffs. Same request, different reply shape.</div>
-
-<!--
-This is the slide that explains why their practice lessons looked different
-from today's trace: whole-file mode on the 4B, diff mode on the 9B. Ask who ran
-which. The ones on the 4B have never seen a diff block.
-
-Per-model settings beat the general config, which is the part people get wrong
-when they switch models and nothing changes.
-
-Never commit .env. It is gitignored in the starter and the rubric treats a
-committed credential as an integrity matter, not a style nit.
--->
-
----
-layout: default
----
-
-<div class="label">Running it</div>
-
-# Starting a session
-
-```text
-$ cd ~/taskr
-$ aider
-Aider v0.86.2
-Model: openai/qwen3.5:9b with diff edit format
-Git repo: .git with 24 files
-Repo-map: using 1024 tokens
->
-```
-
-Four things the banner tells you, and all four are worth a glance: version, model, edit format, and that it found your repository.
-
-<!--
-Make them read the banner. Most setup problems announce themselves here: wrong
-model because .env overrode the config, no git repo because they are one
-directory too high, repo map off when they expected it on.
-
-The banner text shifts between releases. Treat the shape as the lesson, not the
-exact lines, and tell them to check their own.
--->
-
----
-layout: default
----
-
-<div class="label">Running it</div>
-
-# Aider's command set
-
-| Command | Does what | Touches files |
-|---|---|---|
-| `/add` | Put a file in the context, editable | no |
-| `/read-only` | Put a file in the context, citable only | no |
-| `/drop` | Take a file back out | no |
-| `/tokens` | Break the budget down by source | no |
-| `/ask` | Question about the code, no edits proposed | no |
-| `/code` | Ask for an edit, the default mode | **yes** |
-| `/diff` | Show what the last exchange changed | no |
-| `/undo` | Revert Aider's last commit | **yes** |
-
-<div class="caption">Plain text with no command is <code>/code</code>, so the default mode is the one that writes.</div>
-
-<!--
-The two in the right-hand column are the whole safety story at this rung: one
-command writes, one takes it back, and everything else is arranging context.
-They will rebuild exactly that distinction in their own approval layer.
-
-/help lists the full set and it is longer than this. Run it live if anyone
-asks, rather than reciting from the slide; the set moves between versions.
+/help lists more than this and the set moves between versions. Run it live if
+asked rather than reciting.
 -->
 
 ---
@@ -229,15 +146,15 @@ Add a --priority flag to taskr's add command.
 <div class="grid grid-cols-3 gap-5 mt-6">
   <div class="card">
     <div class="font-semibold mb-1">taskr/cli.py</div>
-    <div class="text-sm opacity-70">Accepts the flag and its default.</div>
+    <div class="text-sm opacity-70">Parses the flag.</div>
   </div>
   <div class="card">
     <div class="font-semibold mb-1">taskr/task.py</div>
-    <div class="text-sm opacity-70">Carries the value on a task.</div>
+    <div class="text-sm opacity-70">Holds the value.</div>
   </div>
   <div class="card">
     <div class="font-semibold mb-1">taskr/store.py</div>
-    <div class="text-sm opacity-70">Writes it down and reads it back.</div>
+    <div class="text-sm opacity-70">Saves and loads it.</div>
   </div>
 </div>
 
@@ -266,7 +183,7 @@ layout: default
 
 <div class="label">Who does what</div>
 
-# Aider, the model, and your repo
+# Aider, the model, and the repo
 
 <div class="mt-2">
 <svg viewBox="0 0 900 330" style="width:100%;max-height:330px" role="img"
@@ -311,7 +228,7 @@ layout: default
 </svg>
 </div>
 
-<div class="caption">No line runs from the model to your repository. You pick the task and judge the result.</div>
+<div class="caption">The model touches no file.</div>
 
 <!--
 Ask the room to find the arrow that writes a file. There is not one leaving the
@@ -329,13 +246,12 @@ layout: default
 
 # What goes into the request
 
-- The instructions that define the edit format
-- The files you added, in full
-- A repository map, when it is enabled
-- The chat history from this session
-- Your new message
+| | |
+|---|---|
+| Fixed each turn | Instructions, added files, repo map |
+| Grows each turn | Session history, your message |
 
-**Context is a selection. A file on disk that you never added is not in it.**
+**Context is a selection. A file you never added is not in it.**
 
 <!--
 Do not claim a fixed seven-part ordering. What actually goes into the prompt
@@ -362,7 +278,7 @@ layout: default
 
 Added files can be rewritten. Read-only files can only be cited.
 
-Naming a path in a sentence does not load it. Only these commands do.
+**Only these commands load a file.**
 
 <!--
 Walk through why these three files and not the whole package. This is one
@@ -387,15 +303,17 @@ taskr/task.py
   Task: id, title, tags
 ```
 
-Aider builds a graph of definitions and references, then ranks the useful parts into a token budget.
-
-A signature tells you where to look. It does not tell the model how the function works.
+Signatures, ranked into a budget. No function bodies.
 
 <!--
 The excerpt is illustrative. Do not promise the map contains every file, and do
 not use its silence as proof that a dependency is absent. When a student says
 "the model should have known," check whether they added the file or only let the
 map mention it. Source: https://aider.chat/docs/repomap.html
+
+Cut from the slide and worth saying: a signature tells you where to look, it
+does not tell the model how the function works. Students read a map line as
+evidence the model understands the function.
 -->
 
 ---
@@ -447,7 +365,7 @@ layout: default
 </svg>
 </div>
 
-<div class="caption">History and the repo map spend the same budget as the file you actually care about.</div>
+<div class="caption">One budget: history, map, and files.</div>
 
 <!--
 Ask what they would drop first and what has to survive. Their Stage 1 contract
@@ -474,7 +392,7 @@ add.add_argument("--priority", default="normal")
 >>>>>>> REPLACE
 ```
 
-This block adds a flag to the CLI. Nothing stores the value and nothing validates it.
+**Adds the flag. Stores nothing. Validates nothing.**
 
 <!--
 Deliberately small and deliberately incomplete. Ask what is missing before you
@@ -498,18 +416,18 @@ layout: default
       <ph-brackets-angle-bold class="text-2xl text-blue-600 shrink-0" />
       <div class="font-semibold">Parsing asks: is this a block?</div>
     </div>
-    <div class="text-sm opacity-70">A missing divider is a syntax error. Report it and keep running.</div>
+    <div class="text-sm opacity-70">A missing divider is a syntax error.</div>
   </div>
   <div class="card">
     <div class="flex items-center gap-3 mb-2">
       <ph-target-bold class="text-2xl text-amber-600 shrink-0" />
       <div class="font-semibold">Validation asks: does it apply?</div>
     </div>
-    <div class="text-sm opacity-70">An unknown path, or zero exact matches, fails later and for a different reason.</div>
+    <div class="text-sm opacity-70">Unknown path, or zero exact matches.</div>
   </div>
 </div>
 
-<div class="caption">Two questions, two error messages. A student who merges them writes one useless message for both.</div>
+<div class="caption">Two questions. Two error messages.</div>
 
 <!--
 Their design may split these across two functions or keep them in one. We grade
@@ -544,11 +462,9 @@ add.add_argument( "title" )
   </div>
 </div>
 
-<div class="caption">Two extra spaces. Zero matches. The block is well formed and cannot be applied.</div>
+<div class="caption">Two extra spaces. Zero matches.</div>
 
-Aider can fall back to looser matching, and it can keep the blocks that did apply.
-
-**Your Stage 1 contract does neither. Exact matches only, and all blocks or none.**
+**Your contract: exact matches only, all blocks or none.**
 
 <!--
 Two spaces are enough to break a match. Show the difference before you name it.
@@ -557,6 +473,10 @@ Partial application is not untestable, it is testable against a different
 contract. Do not tell them one policy is the only defensible one. The stricter
 rule is here because it makes the state after a failure trivial to state and
 to assert.
+
+Cut from the slide: Aider itself can fall back to looser matching and can keep
+the blocks that did apply. Their Stage 1 contract does neither, and that is the
+contrast worth drawing out loud.
 -->
 
 ---
@@ -593,7 +513,7 @@ layout: default
 </svg>
 </div>
 
-<div class="caption">Aider chooses the next action here from a fixed set. It is a repair cycle, not a tool the model picked.</div>
+<div class="caption">A fixed cycle, not the model's choice.</div>
 
 <!--
 Say clearly that Aider has real automation. It runs commands, it can run your
@@ -618,9 +538,7 @@ layout: default
 * 0c7d5e1  initial taskr
 ```
 
-Undo means resetting to the parent of a commit your own session created.
-
-**Git reverses file changes. It does not reverse an email that has already been sent.**
+**Git reverses files. It does not reverse a sent email.**
 
 <!--
 Keep two kinds of commit apart: the ones Aider makes while they build, and the
@@ -630,6 +548,9 @@ commit on top, or a dirty tree, means their tool has to refuse.
 
 Running shell commands arrives in the Analyze phase and brings consequences git
 cannot undo.
+
+Undo means resetting to the parent of a commit their own session created. It
+will not touch a commit someone else made, which is the guard in "guarded undo".
 -->
 
 ---
@@ -640,12 +561,12 @@ layout: default
 
 # The six steps, recapped
 
-For `--priority`, answer with the person next to you:
+With the person next to you:
 
-1. What entered the context, and what did not?
+1. What entered the context?
 2. Which program read the reply?
-3. What could look correct and still be wrong?
-4. What evidence would show the feature works?
+3. What could look correct and be wrong?
+4. What evidence proves it works?
 
 <!--
 Pairs for two minutes, then take two answers. You are listening for the missing
@@ -674,14 +595,14 @@ layout: default
 
 # Three failure symptoms
 
-| What you see | What to check first |
+| Symptom | Check first |
 |---|---|
-| It calls a function that does not exist | The file defining it was never added |
-| The block looks right and will not apply | The file changed after the model saw it |
-| Tests pass, the feature is still broken | The tests never covered the missing part |
-| The request times out | The endpoint URL, the served model, the input size |
+| Calls a function that does not exist | The file was never added |
+| Block looks right, will not apply | The file changed since |
+| Tests pass, feature still broken | The tests missed the gap |
+| The request times out | Endpoint, model, input size |
 
-<div class="caption">More than one cause can produce the same symptom. Name the evidence that separates them.</div>
+<div class="caption">One symptom, several causes. Find the evidence.</div>
 
 <!--
 Push back on "the model is too weak" every time it comes up today. Ask what
@@ -700,15 +621,15 @@ layout: default
 <div class="grid grid-cols-2 gap-6 mt-6">
   <div class="card">
     <div class="font-semibold mb-2">A chat window</div>
-    <div class="text-sm opacity-70">You paste code in. It answers with code. You copy the answer back and hope you pasted the right version.</div>
+    <div class="text-sm opacity-70">You paste in. You paste back. You hope.</div>
   </div>
   <div class="card">
     <div class="font-semibold mb-2">Aider, same model</div>
-    <div class="text-sm opacity-70">It reads the files you selected, answers in a fixed edit format, applies the result and commits it.</div>
+    <div class="text-sm opacity-70">Reads what you selected, applies a fixed format, commits.</div>
   </div>
 </div>
 
-<div class="caption">The model still has limits. You can measure them once the harness stops being the variable.</div>
+<div class="caption">Fix the harness, then judge the model.</div>
 
 <!--
 Do not let this become "the model does not matter" or "every failure is
@@ -734,7 +655,7 @@ $ taskr list        # new process, same database
 #4  ship lab   priority: normal
 ```
 
-What do you inspect first? Write the acceptance criterion that was missing, and the test that would have caught it.
+**What do you inspect first?**
 
 <!--
 Four minutes in pairs, two for answers. A persistence round trip is the answer
@@ -742,6 +663,10 @@ you are hoping for: write it, restart, read it back.
 
 Watch for the two reflexes you want to break. Adding every file in the package
 is not diagnosis, and switching models is not diagnosis.
+
+The exercise, which is no longer written on the slide: write the acceptance
+criterion that was missing, and the test that would have caught it. Say it
+twice; it is the whole point of the six minutes.
 -->
 
 ---
@@ -752,14 +677,14 @@ layout: default
 
 # Hackathon 1
 
-- Two hours, during the session, on your own project
-- The feature prompt is revealed in the room
-- You submit before you leave
-- Graded on its own, separately from the build
+- Two hours, your own project
+- Prompt revealed in the room
+- Submit before you leave
+- Graded separately from the build
 
-**Bring a runnable increment. There is no separate hackathon project to prepare.**
+**Bring a runnable increment.**
 
-<div class="caption">The build itself is due the next day, <strong>Friday September 25, 11:59 PM</strong>.</div>
+<div class="caption">Build due <strong>Friday September 25, 11:59 PM</strong>.</div>
 
 <!--
 Three minutes including logistics. Room, time and the model in the workspace are
@@ -796,23 +721,33 @@ layout: default
 <div class="grid grid-cols-2 gap-6 mt-6">
   <div class="card">
     <div class="font-semibold mb-2">In the packet</div>
-    <div class="text-sm opacity-70">SPEC.md, RUBRIC.md, ACCEPTANCE.md, EXAMPLES.md, DESIGN-GUIDE.md, WORKFLOW.md, and the Aider configuration you build with.</div>
+```text
+SPEC  ACCEPTANCE  RUBRIC  CHECKLIST
+GLOSSARY  EXAMPLES  DESIGN-GUIDE
+WORKFLOW  + the Aider config
+```
   </div>
   <div class="card">
     <div class="font-semibold mb-2">Not in the packet</div>
-    <div class="text-sm opacity-70">Application code. Tests. A module layout. A conversation loop. A diagram of the answer.</div>
+    <div class="text-sm opacity-70">Application code. Tests. A layout. A diagram.</div>
   </div>
 </div>
 
-<div class="caption">You run <code>aider</code> to build it. You write <code>bin/assistant</code> to run what you built.</div>
+<div class="caption"><code>CHECKLIST.md</code> lists what you hand in.</div>
 
 <!--
-This is the slide that answers the question every student is holding. No
-starter application, no supplied session module, no TOML to edit, no two
-prescribed specs.
+This is the slide that answers the question every student is holding: no
+starter application and no supplied session module.
+
+Point at CHECKLIST.md by name and say it is the submission list, so nobody
+reconstructs one from these slides. GLOSSARY.md is where a word has a Stage 1
+meaning that differs from its everyday one, and that meaning is the graded one.
 
 They implement the endpoint client in Stage 1 and extend it for function
 calling in Analyze.
+
+Say the division out loud, since the slide no longer carries it: they run
+`aider` to build the thing, and they write `bin/assistant` as the thing.
 -->
 
 ---
@@ -830,7 +765,7 @@ What does greet do?    → stream an answer about the selected code
 Change Hello to Hi.    → validate the reply and preview a diff
 ```
 
-A terminal assistant over selected text files. Not all of Aider.
+**A terminal assistant over selected files. Not all of Aider.**
 
 <!--
 Open EXAMPLES.md from the template and walk the four transcripts: a question, an
@@ -850,14 +785,14 @@ layout: default
 
 # The approval step
 
-| Point in the interaction | `greet.py` | Git |
+| State | `greet.py` | Git |
 |---|---|---|
-| Diff shown, waiting | Still `Hello` | No new commit |
-| You approve | Now `Hi` | One owned edit commit |
-| You decline | Still `Hello` | No new commit |
-| You undo the approved edit | Back to `Hello` | Reset to the parent commit |
+| Diff shown, waiting | `Hello` | No commit |
+| Approved | `Hi` | One commit |
+| Declined | `Hello` | No commit |
+| Undone | `Hello` | Reset to parent |
 
-**One invalid block cancels the whole proposal, including the blocks that were fine.**
+**One invalid block cancels the whole proposal.**
 
 <!--
 Use the exact greeting files and replies from EXAMPLES.md so the table matches
@@ -884,11 +819,14 @@ layout: default
 | F4 | An edit-format prompt you have tested |
 | F5 | Parsing with useful errors |
 | F6 | Exact edits, complete preview, explicit approval |
-| F7 | One commit per accepted edit set, guarded undo |
+| F7 | One commit per edit set, guarded undo |
 
 <!--
-Configuration and lifecycle run across all seven. They are not a hidden eighth
-feature and there is no scope cut this term. Every edge case is in SPEC.md.
+Configuration and lifecycle are not a hidden eighth feature, and there is no
+scope cut this term. Where they score, from RUBRIC.md: configuration sits
+inside F1's four points and is not a gate, so unfinished configuration does not
+zero the rest of F1. The lifecycle commands score separately, under Operating
+instructions in the evidence group. Every edge case is in SPEC.md.
 -->
 
 ---
@@ -908,7 +846,7 @@ timeout_seconds: 60
 temperature: 0.2
 ```
 
-The schema is fixed. How you load, represent and validate it is yours.
+**Schema fixed. Loading and validation are yours.**
 
 <!--
 base_url can carry any path prefix. Their client appends /chat/completions and
@@ -938,7 +876,7 @@ layout: default
 | Acceptance scenarios and the rubric | Tests, fixtures, increment boundaries |
 | Where the course is going | Where later capabilities enter |
 
-<div class="caption">Different architectures can earn full marks. Designing for a future you cannot describe cannot.</div>
+<div class="caption">Different architectures can earn full marks.</div>
 
 <!--
 The last line is the one to say out loud. A plugin framework in week 3, written
@@ -957,15 +895,15 @@ layout: default
 <div class="grid grid-cols-2 gap-6 mt-6">
   <div class="card">
     <div class="font-semibold mb-2">System spec, written once</div>
-    <div class="text-sm opacity-70">Behavior, architecture, interfaces, failure handling, verification, and why you chose it.</div>
+    <div class="text-sm opacity-70">Behavior, architecture, interfaces, failures.</div>
   </div>
   <div class="card">
     <div class="font-semibold mb-2">Increment spec, one per change</div>
-    <div class="text-sm opacity-70">Scoped context, ordered tasks, and a result you can check when it is done.</div>
+    <div class="text-sm opacity-70">Scoped context, ordered tasks, a checkable result.</div>
   </div>
 </div>
 
-<div class="caption">Commit the design before the application code. Revise it when evidence changes a decision.</div>
+<div class="caption">Commit the design before the code.</div>
 
 <!--
 A system spec is not one giant context dump. Requirements map to planned tests,
@@ -983,13 +921,13 @@ layout: default
 
 # The three diagrams
 
-| Diagram | The question it answers |
+| Diagram | Answers |
 |---|---|
-| Components and data flow | Who owns state, and what crosses each boundary? |
-| Request sequence | Who does what during one proposed edit? |
-| Edit lifecycle | When can an edit be approved, rejected or undone? |
+| Components and data flow | Who owns state? |
+| Request sequence | Who does what in one edit? |
+| Edit lifecycle | When can an edit be undone? |
 
-<div class="caption">Mermaid is enough. Keep the first versions in git and update the final ones to match what you built.</div>
+<div class="caption">Mermaid is enough. Commit the first versions.</div>
 
 <!--
 Their diagrams describe their system. Copying the Aider picture from earlier
@@ -1005,15 +943,13 @@ layout: default
 
 # Rubric: the three buckets
 
-One hundred points inside the build grade, in three groups.
+| Group | Points |
+|---|---:|
+| Specification and diagrams | 40 |
+| Behavior and verification | 40 |
+| Evidence and reconciliation | 20 |
 
-| Group | Points | What earns them |
-|---|---:|---|
-| Specification and diagrams | 40 | Requirements and acceptance criteria, architecture and interfaces, Aider implementation specs, three diagrams |
-| Behavior and verification | 40 | The seven features scored one at a time, behavioral tests, safety and recovery tests, integration evidence |
-| Evidence and reconciliation | 20 | Spec-first history, deliberate Aider use, diagnosis and reconciliation, operating instructions, model disclosure |
-
-<div class="caption">The per-criterion split is in <code>RUBRIC.md</code>, and that file is what you are graded against.</div>
+<div class="caption"><code>RUBRIC.md</code> carries the split, and grades you.</div>
 
 <!--
 These are points inside the build grade, not percentages of the course grade.
@@ -1044,12 +980,12 @@ layout: default
 
 # Model rules for specifications
 
-- Drafting, critique, diagrams, code and tests all fall under it
-- The 9B is recommended, the 4B is permitted
-- Secondary models get recorded the same way
-- Any compatible hosting service is allowed
+- Drafting, critique, diagrams, code, tests
+- 9B recommended, 4B permitted
+- Secondary models recorded too
+- Any compatible host allowed
 
-**A different provider does not authorize a different model.**
+**A different provider is not a different model.**
 
 <!--
 Exact model IDs and the observed-session exception are in the assignment packet.
@@ -1090,7 +1026,7 @@ layout: default
 </svg>
 </div>
 
-Start with one small result you can check. Refactor when you need to, and keep the phase snapshots.
+**One small checkable result first. Keep the phase snapshots.**
 
 <!--
 Close the project block here. Build due September 25, hackathon September 24.
@@ -1121,12 +1057,12 @@ layout: default
 
 # Claude Code on the same request
 
-| Aider | A general agentic CLI |
+| Aider | An agentic CLI |
 |---|---|
-| You frame a bounded edit task | You hand over a broader task |
-| Selected files and a repo map | Tools that discover and read files |
+| You frame a bounded task | You hand over a broad one |
+| You select the files | It discovers them |
 | A fixed repair cycle | The model picks the next tool |
-| You check between tasks | Permissions and stop rules bound it |
+| You check between tasks | Permissions bound it |
 
 <!--
 Do not turn the left column into a weakness. Aider automates plenty. What
@@ -1143,10 +1079,10 @@ layout: default
 
 # Harness versus instructions
 
-- Project instructions give persistent guidance
-- Skills package instructions for a particular task
-- Hooks attach checks to events
-- Tool integrations expose actions and results
+- Project instructions: persistent guidance
+- Skills: instructions for one task
+- Hooks: checks attached to events
+- Integrations: actions and results
 
 **Prose asks. Code and permissions enforce.**
 
@@ -1165,11 +1101,11 @@ layout: default
 
 # Boundaries for later capability
 
-- Where could a model-selected tool join your control flow?
-- Could you swap the endpoint client without touching state management?
-- Could a web interface reuse the same application behavior?
+- Where could a model-chosen tool enter?
+- Could you swap the endpoint client?
+- Could a web interface reuse this?
 
-<div class="caption">Answer with a boundary, not an implementation. You are allowed to change your answer in November.</div>
+<div class="caption">Answer with a boundary, not an implementation.</div>
 
 <!--
 End the comparison here, at minute 65. Nothing after this slide is yours to
