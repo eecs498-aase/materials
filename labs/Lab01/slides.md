@@ -26,25 +26,28 @@ Finish instruction at minute 65 and protect the work block.
 layout: default
 ---
 
-<div class="label">Lab01 · 110 minutes</div>
+<div class="label">Lab01</div>
 
-# Aider is today's worked example {.assert}
+# The second half is office hours {.assert}
 
-| Minutes | Work |
+| | |
 |---|---|
-| 0–27 | One request, followed through Aider |
-| 27–37 | Reading failures as evidence |
-| 37–40 | Hackathon 1 briefing |
-| 40–55 | The build: scope, ownership, rubric |
-| 55–65 | Where agentic tools go next |
-| 65–110 | Draft your own design |
+| First | Aider as the worked example: what the model sees, how a reply becomes a file change, how to read a failure |
+| Then | The hackathon 1 briefing, and what you own for the build |
+| Rest | Office hours, in this room. Your work, your questions, staff circulating |
 
-<div class="caption">The last 45 minutes are yours. Nobody is expected to finish a system spec today.</div>
+<div class="caption">Nothing is collected at the end of this lab.</div>
 
 <!--
 Put this up while the room settles and leave it up. The agenda is part of the
-first block, not an extra segment in front of it. Say out loud that the work
-block is real working time and that you will stop talking at minute 65.
+first block, not an extra segment in front of it.
+
+Say out loud that the second half is genuinely office hours: they work, you
+circulate, and nobody hands anything in today. Students who have been told all
+term that labs end in a checkoff will not believe it unless you say it.
+
+Do not preview the build past the word itself. The reveal is still yours to
+make in the third section.
 -->
 
 ---
@@ -1119,30 +1122,34 @@ talk through.
 layout: section
 ---
 
-# Work block
+# Office hours
 
-## 45 minutes, starting now
+## The rest of the session is yours
 
 <!--
 Stop talking. Staff circulate from here. Leave the deck up so students can page
 back through it themselves.
+
+This is the point where you say plainly that nothing is due at the end of
+today. Most of them will still expect a checkoff.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">45 minutes</div>
+<div class="label">Office hours</div>
 
-# The work block ends with a committed increment {.assert}
+# Spend this time on whatever is in your way {.assert}
 
-| Minutes | Your result |
-|---|---|
-| 0–8 | Read the packet, confirm your tooling runs |
-| 8–23 | Interpret the requirements, sketch responsibilities |
-| 23–35 | Write one increment with a checkable result |
-| 35–43 | Trade a focused review, bring blockers to staff |
-| 43–45 | Commit the draft and write down your next decision |
+Staff are in the room. Good things to use them for:
+
+1. Your repository access or tooling not running
+2. A requirement in the packet you read two ways
+3. The boundary of your first increment
+4. A design decision you want argued with
+
+<div class="caption">Nothing here is collected. Start wherever your build is actually stuck.</div>
 
 <!--
 No application exists to run yet. They launch aider directly with .env and the
@@ -1150,21 +1157,27 @@ supplied configuration, and they write bin/assistant themselves.
 
 If someone lacks repository access, fix it immediately and let them read the
 packet while you do. Do not hand them an unrelated clone as a substitute.
+That one is worth hunting for rather than waiting to be asked about.
+
+The list is a menu, not an order of work. A student who spends the whole time
+reading SPEC.md has used it correctly.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Review · 8 minutes</div>
+<div class="label">Worth doing</div>
 
-# Ask your partner three questions {.assert}
+# A partner finds what you stopped seeing {.assert}
+
+If you want a second pair of eyes before you leave, trade these three:
 
 1. What has to be true when this increment is done?
 2. Which decision would the model still have to guess?
 3. What test would catch a plausible mistake here?
 
-Write down the question you were asked and how you answered it. Bring anything ambiguous in the assignment to staff.
+<div class="caption">Optional, and not recorded anywhere. Bring anything ambiguous in the packet to staff instead.</div>
 
 <!--
 Fifty students at five minutes each is 250 staff-minutes, so there is no full
@@ -1182,7 +1195,7 @@ architectures. Do not require a particular file, class or module count.
 layout: default
 ---
 
-<div class="label">After lab</div>
+<div class="label">The build · due Fri Sep 25</div>
 
 # Finish the design before you write code {.assert}
 
@@ -1192,9 +1205,14 @@ layout: default
 
 Then build, test and revise one increment at a time.
 
-<div class="caption">Submission packet, deadlines and exact scoring all live in your repository.</div>
+<div class="caption">This is the build talking, not this lab. Submission packet, deadlines and exact scoring all live in your repository.</div>
 
 <!--
+Say the distinction out loud. Nothing on this slide is due because of today;
+it is the order of work for a project that has been due Sep 25 all along, and
+a room that has just been told the lab collects nothing can hear this list as
+a lab assignment if you let it.
+
 Read the packet list once: design, diagrams, specs, code and tests,
 configuration example, DEVELOPMENT.md, operating README, evidence, AI_LOG.md,
 reflection, and the preserved sessions.
