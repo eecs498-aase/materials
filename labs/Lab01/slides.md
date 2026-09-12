@@ -852,10 +852,11 @@ temperature: 0.2
 base_url can carry any path prefix. Their client appends /chat/completions and
 nothing else.
 
-Say explicitly that this is not the .aider.conf.yml from the first ten minutes.
-Two YAML files, two owners: that one configures the tool they use, this one is
-a schema their own program has to implement. The deck now teaches both, so the
-collision is live.
+Say explicitly that this YAML is not the .aider.conf.yml they already have in
+aider-practice. Two files, two owners: that one configures the tool they use,
+this one is a schema their own program has to implement. The deck no longer
+walks through Aider's own config, so name the distinction out loud rather than
+assuming the contrast landed earlier in the hour.
 
 No Ollama-specific dependency belongs anywhere in the application. Provider
 independence is a requirement, not a preference.
