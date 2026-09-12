@@ -1177,7 +1177,7 @@ If you want a second pair of eyes before you leave, trade these three:
 2. Which decision would the model still have to guess?
 3. What test would catch a plausible mistake here?
 
-<div class="caption">Optional, and not recorded anywhere. Bring anything ambiguous in the packet to staff instead.</div>
+<div class="caption">Nothing from this lab is collected. Bring anything ambiguous in the packet to staff instead.</div>
 
 <!--
 Fifty students at five minutes each is 250 staff-minutes, so there is no full
