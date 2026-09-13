@@ -135,12 +135,17 @@ asked rather than reciting.
 layout: section
 ---
 
-# One turn
+# Context
 
-## Selected files to applied edit
+## What the harness sends, and what comes back
 
 <!--
-Four steps. Say up front that only step 2 belongs to the model.
+This block is now about context rather than a walkthrough of a whole turn
+(instructor cuts 2026-09-13). Most of it is the repo map, because that is the
+part nobody has met before and the part that quietly spends their budget.
+
+Say up front that only the reply belongs to the model. Everything else in this
+block is the harness deciding what the model gets to see.
 -->
 
 ---
@@ -208,7 +213,7 @@ will draw their own version of this in a week.
 layout: default
 ---
 
-<div class="label">Step 1 · assemble</div>
+<div class="label">The request</div>
 
 # What goes into the request
 
@@ -225,39 +230,18 @@ depends on the coder, the model and the settings, and it changes between
 releases. The list above is the shape, not the wire format.
 
 Ask what the model would need in order to change three files consistently, when
-nothing has told it which three. That question sets up the next two slides.
+nothing has told it which three. That question sets up the repo map.
+
+The /add slide was cut on 2026-09-13 because they have been doing this for two
+weeks. Two things it carried, worth saying if anyone asks rather than putting
+back on the glass: added files can be rewritten while read-only files can only
+be cited, and adding the whole package is not a selection strategy, it is a way
+to spend the budget.
 -->
 
 ---
-layout: default
----
 
-<div class="label">Step 1 · selection</div>
-
-# File selection with /add
-
-```text
-/add <file> ...
-/read-only <file> ...
-/tokens
-```
-
-Added files can be rewritten. Read-only files can only be cited.
-
-**Only these commands load a file.**
-
-<!--
-Walk through choosing the few files a change touches rather than the whole
-package. Adding everything is not a selection strategy, it is a way to spend
-the budget. Read-only context still costs budget. /tokens tells you what you
-are spending, and nothing about whether the edit will be correct.
--->
-
----
-layout: default
----
-
-<div class="label">Step 1 · repository map</div>
+<div class="label">Repository map</div>
 
 # The repo map
 
@@ -292,7 +276,7 @@ what you would have typed /add for.
 layout: default
 ---
 
-<div class="label">Step 1 · ranking</div>
+<div class="label">Ranking</div>
 
 # Where the repo map comes from
 
@@ -355,7 +339,7 @@ the model. 867 lines of aider to guess what you would have typed /add for.
 layout: default
 ---
 
-<div class="label">Step 1 · cost</div>
+<div class="label">Cost</div>
 
 # What the map costs
 
@@ -409,7 +393,7 @@ It is out of scope for the build. Say so here, so nobody spends week 4 on it.
 layout: default
 ---
 
-<div class="label">Step 1 · budget</div>
+<div class="label">Budget</div>
 
 # One shared token budget
 
@@ -467,7 +451,7 @@ refusal is a design decision they have to write down and test.
 layout: default
 ---
 
-<div class="label">Step 2 · the reply</div>
+<div class="label">The reply</div>
 
 # Edit-shaped replies
 
@@ -495,83 +479,6 @@ Nothing has changed on disk yet. This is a proposal in a chat reply.
 layout: default
 ---
 
-<div class="label">Step 3 · parse</div>
-
-# The parse step
-
-<div class="grid grid-cols-2 gap-6 mt-6">
-  <div class="card">
-    <div class="flex items-center gap-3 mb-2">
-      <ph-brackets-angle-bold class="text-2xl text-blue-600 shrink-0" />
-      <div class="font-semibold">Parsing asks: is this a block?</div>
-    </div>
-    <div class="text-sm opacity-70">A missing divider is a syntax error.</div>
-  </div>
-  <div class="card">
-    <div class="flex items-center gap-3 mb-2">
-      <ph-target-bold class="text-2xl text-amber-600 shrink-0" />
-      <div class="font-semibold">Validation asks: does it apply?</div>
-    </div>
-    <div class="text-sm opacity-70">Unknown path, or zero exact matches.</div>
-  </div>
-</div>
-
-<div class="caption">Two questions. Two error messages.</div>
-
-<!--
-Their design may split these across two functions or keep them in one. We grade
-the error behavior, not the signature. What we do want is that a malformed block
-and an unapplicable block are distinguishable to the person reading the output.
--->
-
----
-layout: default
----
-
-<div class="label">Step 4 · apply</div>
-
-# Exact-match application
-
-<div class="grid grid-cols-2 gap-6 mt-4">
-  <div class="card">
-    <div class="font-semibold mb-2">On disk</div>
-
-```text
-total = price * quantity
-```
-
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-2">In the SEARCH block</div>
-
-```text
-total = price  *  quantity
-```
-
-  </div>
-</div>
-
-<div class="caption">Two extra spaces. Zero matches.</div>
-
-**Your contract: exact matches only, all blocks or none.**
-
-<!--
-Two spaces are enough to break a match. Show the difference before you name it.
-
-Partial application is not untestable, it is testable against a different
-contract. Do not tell them one policy is the only defensible one. The stricter
-rule is here because it makes the state after a failure trivial to state and
-to assert.
-
-Cut from the slide: Aider itself can fall back to looser matching and can keep
-the blocks that did apply. Their Stage 1 contract does neither, and that is the
-contrast worth drawing out loud.
--->
-
----
-layout: default
----
-
 <div class="label">Thursday September 24</div>
 
 # Hackathon 1
@@ -581,9 +488,8 @@ layout: default
 - Submit before you leave
 - Graded separately from the build
 
-**Bring a runnable increment.**
 
-<div class="caption">Build due <strong>Friday September 25, 11:59 PM</strong>.</div>
+<div class="caption">Build due <strong>Tuesday September 29, 11:59 PM</strong>.</div>
 
 <!--
 Three minutes including logistics. Room, time and the model in the workspace are
@@ -646,167 +552,176 @@ work is the part that decides how long it takes.
 layout: default
 ---
 
-<div class="label">Stage 1 · the parts</div>
+<div class="label">Stage 1 · how it runs</div>
 
-# The parts of the build
+# Specification before implementation
 
-| Part | What it does |
+You write the requirements before you write the code, and the commit history
+has to show it.
+
+| | |
 |---|---|
-| Endpoint client | Talks to the model |
-| Context policy | Decides what gets sent |
-| Edit parser | Reads the reply |
-| Approval gate | Writes, then commits |
+| System design | Once, before implementation |
+| Increment specs | One per change, before it |
 
-<div class="caption">Seven features in the packet.</div>
+<div class="caption">No specification is supplied.</div>
 
 <!--
-Four ideas, seven graded features. The mapping is in SPEC.md and they do not
-need it now.
+This is the whole shape of Stage 1 and the thing most of them will get wrong by
+starting with code. Nobody hands them a specification: they write their own
+requirements, their own acceptance criteria, and their own increments.
 
-The approval gate is the one to dwell on, because it is the safety rule and it
-is where the git behavior lives: one commit per accepted edit set, and an undo
-that refuses to touch a commit their session did not make.
+The history is evidence, not bureaucracy. A design committed after the code it
+describes earns nothing, and they cannot reconstruct it at the end.
 
-Configuration is theirs to implement against a fixed schema. It is scored
-inside the first feature rather than as a row of its own, and it is not a gate.
+Increment specs are what an Aider session can actually execute: scoped context,
+ordered tasks, a checkable result.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Stage 1 · the packet</div>
+<div class="label">What you write</div>
 
-# Where the requirements live
+# The design artifacts
 
-The packet in the project repository is the specification.
-
-- `SPEC.md` for what it must do
-- `RUBRIC.md` for how it is scored
-- `CHECKLIST.md` for what you hand in
-
-<div class="caption">Due Friday September 25, 11:59 PM.</div>
-
-<!--
-Do not read the packet out. Point at it, say the three files above, and move on.
-
-GLOSSARY.md settles the vocabulary arguments, and the acceptance scenarios are
-the ones to read before starting rather than after finishing.
-
-Say plainly that nothing is collected at the end of today.
--->
-
----
-layout: default
----
-
-<div class="label">Ownership</div>
-
-# Architecture ownership
-
-| We specify | You design |
+| Artifact | Covers |
 |---|---|
-| Observable behavior and safety rules | Responsibilities and who owns state |
-| The API and configuration contract | Internal interfaces and error flow |
-| Acceptance scenarios and the rubric | Tests, fixtures, increment boundaries |
-| Where the course is going | Where later capabilities enter |
-
-<div class="caption">Different architectures can earn full marks.</div>
+| Your requirements | Config, run contract, seven features |
+| Increment specs | Ordered, testable, context scoped |
+| Three diagrams | Components, sequence, edit lifecycle |
 
 <!--
-The last line is the one to say out loud. A plugin framework in week 3, written
-for a capability they have not been given yet, is a cost with no evidence behind
-it. Future compatibility needs a reason.
+Their requirements have to cover the configuration and execution contracts as
+well as the seven features, with observable outcomes, edge cases and exclusions,
+and each one has to trace to an acceptance criterion of their own.
+
+The diagrams describe their system, not Aider. Copying this morning's picture
+earns nothing. Mermaid is enough, labels have to be legible and accurate, and
+there is no length requirement anywhere in this section.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Specifications</div>
+<div class="label">Grading · 40 points</div>
 
-# Two sizes of spec
+# Specification and diagrams
 
-<div class="grid grid-cols-2 gap-6 mt-6">
-  <div class="card">
-    <div class="font-semibold mb-2">System spec, written once</div>
-    <div class="text-sm opacity-70">Behavior, architecture, interfaces, failures.</div>
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-2">Increment spec, one per change</div>
-    <div class="text-sm opacity-70">Scoped context, ordered tasks, a checkable result.</div>
-  </div>
-</div>
-
-<div class="caption">Commit the design before the code.</div>
-
-<!--
-A system spec is not one giant context dump. Requirements map to planned tests,
-and those test files do not have to exist yet.
-
-Experiments are allowed. Label them, and reconcile them with the design before
-you build on top of them.
--->
-
----
-layout: default
----
-
-<div class="label">Diagrams</div>
-
-# The three diagrams
-
-| Diagram | Answers |
-|---|---|
-| Components and data flow | Who owns state? |
-| Request sequence | Who does what in one edit? |
-| Edit lifecycle | When can an edit be undone? |
-
-<div class="caption">Mermaid is enough. Commit the first versions.</div>
-
-<!--
-Their diagrams describe their system. Copying the Aider picture from earlier
-today earns nothing. Label anything not yet implemented, and tie component names
-to real code once the code exists.
--->
-
----
-layout: default
----
-
-<div class="label">Build rubric</div>
-
-# Rubric: the three buckets
-
-| Group | Points |
+| Criterion | Points |
 |---|---:|
-| Specification and diagrams | 40 |
-| Behavior and verification | 40 |
-| Evidence and reconciliation | 20 |
-
-<div class="caption"><code>RUBRIC.md</code> carries the split, and grades you.</div>
+| Requirements and acceptance criteria | 10 |
+| Architecture and interface design | 10 |
+| Increment specs | 10 |
+| The three diagrams | 4 / 3 / 3 |
 
 <!--
-These are points inside the build grade, not percentages of the course grade.
-The build is 4.5% of the course and is due September 25.
+Do not read the table out. The one thing worth saying: a part they designed and
+did not implement keeps its design credit as long as it is labelled.
 
-Do not read the table out. Send them to RUBRIC.md, which carries the
-per-criterion breakdown this slide summarizes, and spend the time on the four
-things worth saying out loud instead:
-
-- Completeness and usefulness are graded. Document length is not.
-- A correct failing test can earn test credit while exposing an unfinished
-  feature. Only one point in the whole rubric depends on the live model
-  actually succeeding, and honest evidence of a failed run still earns the
-  reporting points.
-- Design keeps its credit when the implementation falls short, as long as the
-  design's claims and the final status are honest. No repeated deductions for
-  one missing feature across otherwise sound artifacts.
-- Evidence means a pointer someone can follow. Volume of logs is not evidence.
-
-Policy violations go through academic integrity procedures, not the rubric.
+Architecture credit includes explaining where tool execution, a replacement
+endpoint client and a non-terminal interface would fit, without building them.
 -->
 
+---
+layout: default
+---
+
+<div class="label">What is demonstrated</div>
+
+# What staff will run
+
+| | |
+|---|---|
+| It runs | Against a configured endpoint |
+| It is tested | Fakes, not a live model |
+| It is safe | Nothing writes without approval |
+
+<!--
+Staff read the repository snapshot at the deadline, run their tests, and work
+through ACCEPTANCE.md. There is no hidden suite and no requirement that is not
+in SPEC.md.
+
+Routine tests use fakes. Live checks are documented separately and opt in, and
+honest reporting of a failed live attempt still earns its evidence points.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Grading · 40 points</div>
+
+# Demonstrated behavior and verification
+
+| Criterion | Points |
+|---|---:|
+| The seven features | 20 |
+| Behavioral tests | 8 |
+| Safety and recovery tests | 7 |
+| Integration and reproducibility | 5 |
+
+<!--
+Half credit exists for behavior that partly works, so an unfinished feature is
+not a zero.
+
+Test count and coverage earn nothing by themselves. A test earns credit when it
+asserts an outcome and isolates the filesystem. Weakening an assertion to turn
+the suite green is scored as what it is.
+
+Configuration sits inside F1's four points and is not a gate.
+-->
+
+---
+layout: default
+---
+
+<div class="label">What you keep</div>
+
+# The evidence trail
+
+| | |
+|---|---|
+| Commits | Specs before the code they describe |
+| Sessions | Which context, which model, what happened |
+| Reconciliation | Where the design changed, and why |
+
+<!--
+This is the section students lose points on by leaving it to the last evening,
+because it cannot be reconstructed afterwards.
+
+A design that worked does not need an invented failure. Say what the evidence
+was. Differences between the initial and final design are worth credit when they
+are explained.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Grading · 20 points</div>
+
+# Development evidence and reconciliation
+
+| Criterion | Points |
+|---|---:|
+| Spec-first history | 5 |
+| Deliberate Aider use | 5 |
+| Diagnosis and reconciliation | 5 |
+| Operating instructions | 3 |
+| Model disclosure and index | 2 |
+
+<div class="caption"><code>RUBRIC.md</code> carries every row.</div>
+
+<!--
+100 points in total across the three sections. These are build points, not
+course-grade percentages: the build is 4.5% of the course.
+
+Send them to RUBRIC.md rather than reading rows aloud. It names the requirement
+IDs each row scores.
+-->
 ---
 layout: default
 ---
