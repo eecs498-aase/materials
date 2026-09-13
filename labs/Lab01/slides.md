@@ -629,29 +629,6 @@ endpoint client and a non-terminal interface would fit, without building them.
 layout: default
 ---
 
-<div class="label">What is demonstrated</div>
-
-# What staff will run
-
-| | |
-|---|---|
-| It runs | Against a configured endpoint |
-| It is tested | Fakes, not a live model |
-| It is safe | Nothing writes without approval |
-
-<!--
-Staff read the repository snapshot at the deadline, run their tests, and work
-through ACCEPTANCE.md. There is no hidden suite and no requirement that is not
-in SPEC.md.
-
-Routine tests use fakes. Live checks are documented separately and opt in, and
-honest reporting of a failed live attempt still earns its evidence points.
--->
-
----
-layout: default
----
-
 <div class="label">Grading · 40 points</div>
 
 # Demonstrated behavior and verification
@@ -672,6 +649,12 @@ asserts an outcome and isolates the filesystem. Weakening an assertion to turn
 the suite green is scored as what it is.
 
 Configuration sits inside F1's four points and is not a gate.
+
+Staff read the repository snapshot at the deadline, run their own tests, and
+work through ACCEPTANCE.md. There is no hidden suite and no requirement that is
+not in SPEC.md. Routine tests use fakes rather than a live model; live checks
+are documented separately and opt in, and an honestly reported failed live
+attempt still earns its evidence points.
 -->
 
 ---
