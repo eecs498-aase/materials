@@ -629,14 +629,14 @@ layout: default
 
 <div class="label">The week</div>
 
-# The build is due in ten days {.assert}
+# The build is due in two weeks {.assert}
 
 | When | What |
 |---|---|
 | Thu Sep 17 | L06 closes Apply |
 | Mon 21 / Tue 22 | Lab02, supported build time |
 | Thu Sep 24, evening | Hackathon 1, on your own project |
-| Fri Sep 25, 11:59 PM | The build is due |
+| Tue Sep 29, 11:59 PM | The build is due |
 
 <!--
 Read it once and move. Everything here is also in their repository and on the
