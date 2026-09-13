@@ -137,10 +137,10 @@ layout: section
 
 # One turn
 
-## Selected files to commit
+## Selected files to applied edit
 
 <!--
-Six steps. Say up front that only step 2 belongs to the model.
+Four steps. Say up front that only step 2 belongs to the model.
 -->
 
 ---
@@ -262,24 +262,147 @@ layout: default
 # The repo map
 
 ```text
-package/store.py
-  ClassName.method(arg, arg) -> ReturnType
+package/store.py:
+⋮
+│class Store:
+│    def add(self, title, tags=()) -> Task:
+│    def remove(self, task_id: int) -> bool:
+⋮
+│    def search(self, text, tag=None) -> list[Task]:
+⋮
 
-package/model.py
-  ClassName: field, field
+package/models.py:
+│@dataclass
+│class Task:
+⋮
 ```
 
-Signatures, ranked into a budget. No function bodies.
+<div class="caption mt-4">Signatures only. <code>⋮</code> is what was cut.</div>
+
+**Files you never added.**
 
 <!--
-The excerpt is illustrative. Do not promise the map contains every file, and do
-not use its silence as proof that a dependency is absent. When a student says
-"the model should have known," check whether they added the file or only let the
-map mention it. Source: https://aider.chat/docs/repomap.html
+Point at the vertical bars: that is aider quoting source lines. Point at the
+dots: that is everything it decided not to spend tokens on.
+Ask what this is for. The answer is on the next slide: it is aider guessing
+what you would have typed /add for.
+-->
 
-Cut from the slide and worth saying: a signature tells you where to look, it
-does not tell the model how the function works. Students read a map line as
-evidence the model understands the function.
+---
+layout: default
+---
+
+<div class="label">Step 1 · ranking</div>
+
+# Where the repo map comes from
+
+<div class="mt-2">
+<svg viewBox="0 0 880 250" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="rg" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7A8099"/>
+    </marker>
+  </defs>
+
+  <text x="30" y="26" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#7A8099">1. parse every file for what it defines and what it uses</text>
+  <rect x="132" y="43" width="116" height="34" rx="17" fill="#F1EFE5" stroke="#DEDCD0"/>
+  <text x="190" y="65" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">cli.py</text>
+  <rect x="132" y="183" width="116" height="34" rx="17" fill="#F1EFE5" stroke="#DEDCD0"/>
+  <text x="190" y="205" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">store.py</text>
+  <rect x="292" y="113" width="116" height="34" rx="17" fill="#F1EFE5" stroke="#DEDCD0"/>
+  <text x="350" y="135" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">models.py</text>
+  <g stroke="#7A8099" stroke-width="1.3" fill="none" marker-end="url(#rg)">
+    <path d="M190,77 L190,181"/>
+    <path d="M240,72 L296,118"/>
+    <path d="M240,188 L296,142"/>
+  </g>
+  <text x="200" y="133" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">calls</text>
+  <text x="258" y="84" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">uses</text>
+  <text x="258" y="186" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">uses</text>
+  <text x="30" y="238" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">models.py is used by both, so it wins</text>
+
+  <text x="520" y="26" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#7A8099">2. rank by what points at them</text>
+  <text x="520" y="67" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">models.py</text>
+  <rect x="632" y="53" width="150" height="16" rx="2" fill="#2E5BFF"/>
+  <text x="790" y="67" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">0.44</text>
+  <text x="520" y="111" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">store.py</text>
+  <rect x="632" y="97" width="112" height="16" rx="2" fill="#2E5BFF"/>
+  <text x="790" y="111" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">0.33</text>
+  <text x="520" y="155" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">cli.py</text>
+  <rect x="632" y="141" width="78" height="16" rx="2" fill="#E8E6DA"/>
+  <text x="790" y="155" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">0.23</text>
+
+  <line x1="512" y1="168" x2="840" y2="168" stroke="#D97706" stroke-width="1.3" stroke-dasharray="4 3"/>
+  <text x="520" y="186" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#D97706">budget ends here</text>
+  <text x="520" y="238" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">cli.py is left out entirely</text>
+</svg>
+</div>
+
+<div class="caption mt-2">PageRank, rendered until the budget ends.</div>
+
+<!--
+Off the slide and worth saying: the ranking is tilted toward files you just
+mentioned, and aider renders down the list until the tokens run out.
+
+Say the ranking rule plainly: a file that lots of other files depend on scores
+high, because it is probably the one you need to know about.
+The dashed line is the point. It is not "here is your repo," it is "here is as
+much of your repo as fits," and whatever falls under the line is invisible to
+the model. 867 lines of aider to guess what you would have typed /add for.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Step 1 · cost</div>
+
+# What the map costs
+
+<div class="mt-2">
+<svg viewBox="0 0 880 230" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+  <text x="30" y="22" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#7A8099">repo map on</text>
+  <rect x="30" y="32" width="60" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+  <text x="60.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">system</text>
+  <rect x="90" y="32" width="92" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+  <text x="136.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">examples</text>
+  <rect x="182" y="32" width="232" height="46" fill="#FFE9C7" stroke="#D97706"/>
+  <text x="298.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">repo map</text>
+  <rect x="414" y="32" width="286" height="46" fill="#2E5BFF" stroke="#2E5BFF"/>
+  <text x="557.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#FBFAF5">your files</text>
+  <rect x="700" y="32" width="72" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+  <text x="736.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">turn</text>
+  <rect x="772" y="32" width="48" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+
+  <text x="30" y="118" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#7A8099">repo map off</text>
+  <rect x="30" y="128" width="60" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+  <text x="60.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">system</text>
+  <rect x="90" y="128" width="92" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+  <text x="136.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">examples</text>
+  <rect x="182" y="128" width="518" height="46" fill="#2E5BFF" stroke="#2E5BFF"/>
+  <text x="441.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#FBFAF5">your files</text>
+  <rect x="700" y="128" width="72" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+  <text x="736.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">turn</text>
+  <rect x="772" y="128" width="48" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
+
+  <line x1="30" y1="196" x2="820" y2="196" stroke="#DEDCD0" stroke-width="1"/>
+  <text x="30" y="216" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">0</text>
+  <text x="820" y="216" text-anchor="end" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">the whole context window</text>
+</svg>
+</div>
+
+<div class="caption mt-2">Same window either way.</div>
+
+**On a small model the map can outweigh the files.**
+
+<!--
+Off the slide: on a small model the map often costs more than the files it was
+guessing about.
+
+This is why aider-practice turns it down. On a 4B with a small window the map
+can eat a third of the budget to describe files the model then cannot see the
+insides of anyway.
+It is out of scope for the build. Say so here, so nobody spends week 4 on it.
 -->
 
 ---
@@ -449,192 +572,6 @@ contrast worth drawing out loud.
 layout: default
 ---
 
-<div class="label">Step 5 · repair</div>
-
-# The repair loop
-
-<div class="mt-2">
-<svg viewBox="0 0 900 278" style="width:100%;max-height:290px" role="img"
-     aria-label="A proposed edit is matched against the file. On a match it is applied. On no match the failure is reported back and becomes a new proposed edit. Lint and test output can be fed back the same way.">
-  <defs>
-    <marker id="lp-b" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="var(--c-primary)" /></marker>
-    <marker id="lp-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="var(--c-amber)" /></marker>
-  </defs>
-  <rect x="60" y="34" width="230" height="68" rx="8" fill="var(--c-bg-1)" stroke="var(--c-primary)" stroke-width="1.5" />
-  <rect x="350" y="34" width="230" height="68" rx="8" fill="var(--c-bg-1)" stroke="var(--c-primary)" stroke-width="1.5" />
-  <rect x="640" y="34" width="210" height="68" rx="8" fill="var(--c-bg-1)" stroke="var(--c-primary)" stroke-width="1.5" />
-  <g style="font:500 15px var(--font-mono)" fill="var(--c-ink)" text-anchor="middle">
-    <text x="175" y="73">proposed edit</text>
-    <text x="465" y="73">match the file</text>
-    <text x="745" y="73">applied</text>
-  </g>
-  <g stroke="var(--c-primary)" stroke-width="2" fill="none">
-    <path d="M290,68 H344" marker-end="url(#lp-b)" />
-    <path d="M580,68 H634" marker-end="url(#lp-b)" />
-  </g>
-  <path d="M465,102 V168 H175 V108" stroke="var(--c-amber)" stroke-width="2" fill="none" marker-end="url(#lp-a)" />
-  <text x="320" y="158" text-anchor="middle" style="font:500 13px var(--font-sans)" fill="var(--c-amber)">no match, send the failure back</text>
-  <path d="M745,102 V236 H120 V108" stroke="var(--c-amber)" stroke-width="2" stroke-dasharray="6 4" fill="none" marker-end="url(#lp-a)" />
-  <text x="440" y="226" text-anchor="middle" style="font:500 13px var(--font-sans)" fill="var(--c-amber)">lint or test output, when you configure it</text>
-</svg>
-</div>
-
-<div class="caption">A fixed cycle, not the model's choice.</div>
-
-<!--
-Say clearly that Aider has real automation. It runs commands, it can run your
-tests, and it can loop on their output. Never say it cannot.
-
-The distinction that matters is who picks the next action. Here the harness has
-a fixed repair cycle. In the tools we look at after the break, the model picks.
-Source: https://aider.chat/docs/usage/lint-test.html
--->
-
----
-layout: default
----
-
-<div class="label">Step 6 · commit</div>
-
-# One commit per edit set
-
-```text
-* 8f2a1c3  aider: second edit set applied
-* 41b9e07  aider: first edit set applied
-* 0c7d5e1  initial commit
-```
-
-**Git reverses files. It does not reverse a sent email.**
-
-<!--
-Keep two kinds of commit apart: the ones Aider makes while they build, and the
-ones their assistant will make in a target repo. In Stage 1 the target is
-disposable and clean, so an owned HEAD commit can be undone safely. A human
-commit on top, or a dirty tree, means their tool has to refuse.
-
-Running shell commands arrives in the Analyze phase and brings consequences git
-cannot undo.
-
-Undo means resetting to the parent of a commit their own session created. It
-will not touch a commit someone else made, which is the guard in "guarded undo".
--->
-
----
-layout: default
----
-
-<div class="label">Check · 3 minutes</div>
-
-# The six steps, recapped
-
-With the person next to you:
-
-1. What entered the context?
-2. Which program read the reply?
-3. What could look correct and be wrong?
-4. What evidence proves it works?
-
-<!--
-Pairs for two minutes, then take two answers. You are listening for a write
-that never happened and the test that would have caught it. Do not reward
-naming a source file inside aider.
--->
-
----
-layout: section
----
-
-# Diagnosis
-
-## Read the failure before you re-prompt
-
-<!--
-Ten minutes. The habit to build: a symptom is evidence about which of the three
-levers is wrong, and re-running the same prompt tests nothing.
--->
-
----
-layout: default
----
-
-<div class="label">Diagnosis</div>
-
-# Three failure symptoms
-
-| Symptom | Check first |
-|---|---|
-| Calls a function that does not exist | The file was never added |
-| Block looks right, will not apply | The file changed since |
-| Tests pass, feature still broken | The tests missed the gap |
-| The request times out | Endpoint, model, input size |
-
-<div class="caption">One symptom, several causes. Find the evidence.</div>
-
-<!--
-Push back on "the model is too weak" every time it comes up today. Ask what
-observation would distinguish a weak model from a missing file, and make them
-answer before they change models.
--->
-
----
-layout: default
----
-
-<div class="label">Diagnosis</div>
-
-# Better results, same model
-
-<div class="grid grid-cols-2 gap-6 mt-6">
-  <div class="card">
-    <div class="font-semibold mb-2">A chat window</div>
-    <div class="text-sm opacity-70">You paste in. You paste back. You hope.</div>
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-2">Aider, same model</div>
-    <div class="text-sm opacity-70">Reads what you selected, applies a fixed format, commits.</div>
-  </div>
-</div>
-
-<div class="caption">Fix the harness, then judge the model.</div>
-
-<!--
-Do not let this become "the model does not matter" or "every failure is
-context." Both halves are real. The point is that the harness is the half they
-are about to build, and it is the half they control.
--->
-
----
-layout: default
----
-
-<div class="label">Practice · 6 minutes</div>
-
-# A feature that half works
-
-- Accepted when you set it
-- Correct in the same process
-- Default again after a restart
-
-**What do you inspect first?**
-
-<!--
-Four minutes in pairs, two for answers. A persistence round trip is the answer
-you are hoping for: write it, restart, read it back. The symptom is stated
-without a worked case on purpose, so ask the room to name a change this could
-happen to before you ask where to look.
-
-Watch for the two reflexes you want to break. Adding every file in the package
-is not diagnosis, and switching models is not diagnosis.
-
-The exercise, which is no longer written on the slide: write the acceptance
-criterion that was missing, and the test that would have caught it. Say it
-twice; it is the whole point of the six minutes.
--->
-
----
-layout: default
----
-
 <div class="label">Thursday September 24</div>
 
 # Hackathon 1
@@ -663,13 +600,75 @@ that the after-lab slide is gone. Do not skip past it.
 layout: section
 ---
 
-# The build
+# The pair-programmer
 
-## Design first, then implement in increments
+## What Stage 1 asks for
 
 <!--
-Minute 40. Fifteen minutes. Everything here is also written down in their
-packet, so do not read the rubric aloud line by line.
+Minutes 40 to 58. This is the reveal. They have spent two weeks driving a
+harness and the last half hour taking one apart; now they build one.
+
+Lead with what the thing is, not with the paperwork. The packet carries the
+requirements and they can read it.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Stage 1 · the project</div>
+
+# A harness from scratch
+
+Everything in the last half hour, written by you.
+
+| | |
+|---|---|
+| It holds | A set of files you chose |
+| It asks | A model endpoint you configure |
+| It writes | Only after you approve |
+
+<div class="caption">Aider without Aider. Same job, your code.</div>
+
+<!--
+Say the one-sentence version out loud: a terminal pair-programmer over files
+you select, talking to an endpoint you configure, that never edits without
+asking. Everything else in the packet is detail under that sentence.
+
+It is not a clone of Aider and it does not need to be. No repo map, no lint
+loop, no architect mode. What it must have is the spine they just watched.
+
+If somebody asks how big it is: smaller than they fear, and the specification
+work is the part that decides how long it takes.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Stage 1 · the parts</div>
+
+# The parts of the build
+
+| Part | What it does |
+|---|---|
+| Endpoint client | Talks to the model |
+| Context policy | Decides what gets sent |
+| Edit parser | Reads the reply |
+| Approval gate | Writes, then commits |
+
+<div class="caption">Seven features in the packet.</div>
+
+<!--
+Four ideas, seven graded features. The mapping is in SPEC.md and they do not
+need it now.
+
+The approval gate is the one to dwell on, because it is the safety rule and it
+is where the git behavior lives: one commit per accepted edit set, and an undo
+that refuses to touch a commit their session did not make.
+
+Configuration is theirs to implement against a fixed schema. It is scored
+inside the first feature rather than as a row of its own, and it is not a gate.
 -->
 
 ---
@@ -678,150 +677,23 @@ layout: default
 
 <div class="label">Stage 1 · the packet</div>
 
-# What the packet contains
+# Where the requirements live
 
-<div class="grid grid-cols-2 gap-6 mt-6">
-  <div class="card">
-    <div class="font-semibold mb-2">In the packet</div>
-```text
-SPEC  ACCEPTANCE  RUBRIC  CHECKLIST
-GLOSSARY  EXAMPLES  DESIGN-GUIDE
-WORKFLOW  + the Aider config
-```
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-2">Not in the packet</div>
-    <div class="text-sm opacity-70">Application code. Tests. A layout. A diagram.</div>
-  </div>
-</div>
+The packet in the project repository is the specification.
 
-<div class="caption"><code>CHECKLIST.md</code> lists what you hand in.</div>
+- `SPEC.md` for what it must do
+- `RUBRIC.md` for how it is scored
+- `CHECKLIST.md` for what you hand in
+
+<div class="caption">Due Friday September 25, 11:59 PM.</div>
 
 <!--
-This is the slide that answers the question every student is holding: no
-starter application and no supplied session module.
+Do not read the packet out. Point at it, say the three files above, and move on.
 
-Point at CHECKLIST.md by name and say it is the submission list, so nobody
-reconstructs one from these slides. GLOSSARY.md is where a word has a Stage 1
-meaning that differs from its everyday one, and that meaning is the graded one.
+GLOSSARY.md settles the vocabulary arguments, and the acceptance scenarios are
+the ones to read before starting rather than after finishing.
 
-They implement the endpoint client in Stage 1 and extend it for function
-calling in Analyze.
-
-Say the division out loud, since the slide no longer carries it: they run
-`aider` to build the thing, and they write `bin/assistant` as the thing.
--->
-
----
-layout: default
----
-
-<div class="label">The application</div>
-
-# The assistant's behavior
-
-```text
-/files                 → list selected files
-/add greet.py          → include this file in model requests
-What does greet do?    → stream an answer about the selected code
-Change Hello to Hi.    → validate the reply and preview a diff
-```
-
-**A terminal assistant over selected files. Not all of Aider.**
-
-<!--
-Open EXAMPLES.md from the template and walk the four transcripts: a question, an
-approved edit, a cancellation, an undo. Say that these are the expected
-behavior, not a recording of a staff implementation.
-
-Ask what happens to the files and to HEAD at each point. That question starts
-their acceptance criteria, which is a better use of this block than a tour of
-the feature list.
--->
-
----
-layout: default
----
-
-<div class="label">The safety rule</div>
-
-# The approval step
-
-| State | `greet.py` | Git |
-|---|---|---|
-| Diff shown, waiting | `Hello` | No commit |
-| Approved | `Hi` | One commit |
-| Declined | `Hello` | No commit |
-| Undone | `Hello` | Reset to parent |
-
-**One invalid block cancels the whole proposal.**
-
-<!--
-Use the exact greeting files and replies from EXAMPLES.md so the table matches
-what they will read tonight.
-
-Undo assumes an owned, current-session HEAD and a clean target. A human commit
-on top, or uncommitted changes, means refuse. Ask them what they would assert in
-a test for each row.
--->
-
----
-layout: default
----
-
-<div class="label">Scope</div>
-
-# The seven features
-
-| Feature | Required behavior |
-|---|---|
-| F1 | Conversation, budget handling, streamed replies |
-| F2 | Add, drop, list and clear context |
-| F3 | Current file contents, rendered consistently |
-| F4 | An edit-format prompt you have tested |
-| F5 | Parsing with useful errors |
-| F6 | Exact edits, complete preview, explicit approval |
-| F7 | One commit per edit set, guarded undo |
-
-<!--
-Configuration and lifecycle are not a hidden eighth feature, and there is no
-scope cut this term. Where they score, from RUBRIC.md: configuration sits
-inside F1's four points and is not a gate, so unfinished configuration does not
-zero the rest of F1. The lifecycle commands score separately, under Operating
-instructions in the evidence group. Every edge case is in SPEC.md.
--->
-
----
-layout: default
----
-
-<div class="label">Configuration</div>
-
-# The assistant's config schema
-
-```yaml
-base_url: https://api.example.edu/v1
-model: course-model-id
-api_key_env: ASSISTANT_API_KEY
-context_budget: 8000
-timeout_seconds: 60
-temperature: 0.2
-```
-
-**Schema fixed. Loading and validation are yours.**
-
-<!--
-base_url can carry any path prefix. Their client appends /chat/completions and
-nothing else.
-
-Say explicitly that this YAML is not the .aider.conf.yml they already have in
-aider-practice. Two files, two owners: that one configures the tool they use,
-this one is a schema their own program has to implement. The deck no longer
-walks through Aider's own config, so name the distinction out loud rather than
-assuming the contrast landed earlier in the hour.
-
-No Ollama-specific dependency belongs anywhere in the application. Provider
-independence is a requirement, not a preference.
+Say plainly that nothing is collected at the end of today.
 -->
 
 ---
@@ -960,6 +832,21 @@ quantization you know about.
 -->
 
 ---
+layout: section
+---
+
+# What comes next
+
+## One repository, grown until December
+
+<!--
+Minutes 58 to 65. Short. The point is the arc, not a tour of tools.
+
+Nothing here is a Stage 1 dependency and no subscription is needed for this
+course.
+-->
+
+---
 layout: default
 ---
 
@@ -989,42 +876,33 @@ layout: default
 </svg>
 </div>
 
-**One small checkable result first. Keep the phase snapshots.**
+**Nothing is thrown away. Each phase grows the last.**
 
 <!--
-Close the project block here. Build due September 25, hackathon September 24.
+Walk the timeline left to right and say what changes at each dot: first the
+human is in the loop, then the model picks the tools, then it keeps state and
+survives contact with real work.
+
+Build advice that used to sit on this slide and still belongs in the room: one
+small checkable result first, and keep the phase snapshots.
 
 Do not estimate the workload out loud. Do say that a runnable slice early is
 what keeps the December integration from being a surprise.
 -->
 
 ---
-layout: section
----
-
-# What comes next
-
-## The same request, in a different kind of tool
-
-<!--
-Minutes 55 to 65. This is a mechanism comparison, not a product tour and not a
-recommendation. Nothing here is a Stage 1 dependency and no subscription is
-needed for this course.
--->
-
----
 layout: default
 ---
 
-<div class="label">Future tool · Claude Code</div>
+<div class="label">Where this is going</div>
 
-# Claude Code on the same request
+# What an agentic CLI adds
 
 | Aider | An agentic CLI |
 |---|---|
 | You frame a bounded task | You hand over a broad one |
 | You select the files | It discovers them |
-| A fixed repair cycle | The model picks the next tool |
+| A fixed sequence of steps | The model picks the next tool |
 | You check between tasks | Permissions bound it |
 
 <!--
@@ -1038,41 +916,27 @@ Source: https://code.claude.com/docs/en/overview
 layout: default
 ---
 
-<div class="label">Future tool · instructions</div>
+<div class="label">By December</div>
 
-# Harness versus instructions
+# The harness by December
 
-- Project instructions: persistent guidance
-- Skills: instructions for one task
-- Hooks: checks attached to events
-- Integrations: actions and results
+You will have built the kind of tool this lab took apart: a coding agent in the
+shape of Claude Code or OpenClaw, running against a model you configure, grown
+from the pair-programmer you start on Monday.
 
-**Prose asks. Code and permissions enforce.**
-
-<!--
-Stay at mechanism level and do not promise a week for each branded feature.
-
-Their DEVELOPMENT.md is the first version of this habit: instructions written
-for a session that has not happened yet.
--->
-
----
-layout: default
----
-
-<div class="label">Design for it now</div>
-
-# Boundaries for later capability
-
-- Where could a model-chosen tool enter?
-- Could you swap the endpoint client?
-- Could a web interface reuse this?
-
-<div class="caption">Answer with a boundary, not an implementation.</div>
+**Today you drive one. In December you will have written one.**
 
 <!--
-End the comparison here, at minute 65. Nothing after this slide is yours to
-talk through.
+This is the last thing they hear before office hours, so land it and stop.
+
+Name the two tools as a shape, not as a target to clone and not as something
+they need an account for. What makes it that shape is the list they will build:
+tools the model chooses, an approval layer, state that survives a run, more
+than one way in.
+
+The design habit to start now: when a decision could close off one of those,
+leave a boundary rather than an implementation. That is the useful half of the
+slide this replaced.
 -->
 
 ---
