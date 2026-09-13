@@ -157,7 +157,7 @@ undo are all consequences of it.
 layout: default
 ---
 
-<div class="label">Authorship</div>
+<div class="label">Who the model thinks is talking</div>
 
 # Aider's first-person messages
 
@@ -171,7 +171,7 @@ layout: default
 "I didn't see any properly formatted edits in your reply?!"
 ```
 
-<div class="caption">Aider's own strings, sent to the model as you.</div>
+**Aider wrote all four. The model reads them as yours.**
 
 <!--
 Read the last one out loud. Aider wrote their irritation, interrobang included,
@@ -204,7 +204,7 @@ layout: default
 | Aider | The format reminder, glued to your message |
 | You | The sentence you actually typed |
 
-<div class="caption">One author. Two voices.</div>
+**Your own tool will write in your user's name too.**
 
 <!--
 Row two is the one that lands. Aider writes replies for the model, "Ok, any
@@ -347,6 +347,8 @@ layout: default
 
 <div class="caption">A harness is a policy for spending it.</div>
 
+**Yours needs a policy too, and the packet does not supply one.**
+
 <!--
 This is the idea the repo map slides are evidence for, so put it up before them
 rather than after.
@@ -461,60 +463,6 @@ the model. 867 lines of aider to guess what you would have typed /add for.
 layout: default
 ---
 
-<div class="label">Cost</div>
-
-# What the map costs
-
-<div class="mt-2">
-<svg viewBox="0 0 880 230" style="width:100%" xmlns="http://www.w3.org/2000/svg">
-  <text x="30" y="22" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#7A8099">repo map on</text>
-  <rect x="30" y="32" width="60" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-  <text x="60.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">system</text>
-  <rect x="90" y="32" width="92" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-  <text x="136.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">examples</text>
-  <rect x="182" y="32" width="232" height="46" fill="#FFE9C7" stroke="#D97706"/>
-  <text x="298.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">repo map</text>
-  <rect x="414" y="32" width="286" height="46" fill="#2E5BFF" stroke="#2E5BFF"/>
-  <text x="557.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#FBFAF5">your files</text>
-  <rect x="700" y="32" width="72" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-  <text x="736.0" y="60" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">turn</text>
-  <rect x="772" y="32" width="48" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-
-  <text x="30" y="118" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#7A8099">repo map off</text>
-  <rect x="30" y="128" width="60" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-  <text x="60.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">system</text>
-  <rect x="90" y="128" width="92" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-  <text x="136.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">examples</text>
-  <rect x="182" y="128" width="518" height="46" fill="#2E5BFF" stroke="#2E5BFF"/>
-  <text x="441.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#FBFAF5">your files</text>
-  <rect x="700" y="128" width="72" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-  <text x="736.0" y="156" text-anchor="middle" style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1B2547">turn</text>
-  <rect x="772" y="128" width="48" height="46" fill="#DEDCD0" stroke="#CFCCBE"/>
-
-  <line x1="30" y1="196" x2="820" y2="196" stroke="#DEDCD0" stroke-width="1"/>
-  <text x="30" y="216" text-anchor="start" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">0</text>
-  <text x="820" y="216" text-anchor="end" style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#7A8099">the whole context window</text>
-</svg>
-</div>
-
-<div class="caption mt-2">Same window either way.</div>
-
-**On a small model the map can outweigh the files.**
-
-<!--
-Off the slide: on a small model the map often costs more than the files it was
-guessing about.
-
-This is why aider-practice turns it down. On a 4B with a small window the map
-can eat a third of the budget to describe files the model then cannot see the
-insides of anyway.
-It is out of scope for the build. Say so here, so nobody spends week 4 on it.
--->
-
----
-layout: default
----
-
 <div class="label">Budget</div>
 
 # One shared token budget
@@ -560,9 +508,25 @@ layout: default
 </svg>
 </div>
 
-<div class="caption">One budget: history, map, and files.</div>
+<div class="caption">One budget. Your message is what stops fitting.</div>
+
+**On a small model the map can outweigh the files it describes.**
 
 <!--
+This slide now carries what the separate map-cost slide used to say, because two
+diagrams of the same budget read as two unrelated facts (instructor note
+2026-09-13).
+
+Walk the two bars. Nothing about the early turn is wrong; the later turn is the
+same prompt after the history has grown, and the thing that stops fitting is
+their own message. Everything above it was spent before they typed.
+
+The bold line is the map's part in that. It is charged to the same budget as the
+files it was guessing about, which on a 4B can be a third of the window spent
+describing files the model then cannot see inside. That is why aider-practice
+turns it down, and it is why the map is out of scope for the build. Say so, so
+nobody spends week 4 on it.
+
 Ask what they would drop first and what has to survive. Their Stage 1 contract
 keeps the system instructions, the current request and the added file contents,
 and refuses an oversized required input instead of silently trimming it. That
@@ -573,16 +537,19 @@ refusal is a design decision they have to write down and test.
 layout: section
 ---
 
-# What a turn costs
+# What every turn re-sends
 
-## Why the same text is sent again and again
+## The model remembers nothing, so all of it goes again
 
 <!--
-This block is new and it is the one they will not have met anywhere. It pays off
-the budget slide: having decided what to send, the harness now has to send it
-every single turn, because the model remembers nothing.
+Reworked 2026-09-13: the old version of this section had four slides and two of
+them showed the same seven-part list in different groupings, which is what made
+it read as confusing. It is three slides now and they argue in a line: here is
+the order, here is why the order was chosen, here is what ruins it.
 
-Keep it on the mechanism. Nobody needs Aider's flag names.
+The one sentence to open with, because everything here follows from it: the
+model keeps nothing between turns. Turn twelve sends everything turn one sent,
+plus more. Every design decision in this section exists because of that.
 -->
 
 ---
@@ -591,68 +558,71 @@ layout: default
 
 <div class="label">Assembly order</div>
 
-# The prefix
+# The order of the prefix
 
-| | |
-|---|---:|
-| System prompt | 1 |
-| Examples | 2 |
-| Read-only files | 3 |
-| Repo map | 4 |
-| Session history | 5 |
-| Added files | 6 |
-| Your message | 7 |
+| How often it changes | Which parts |
+|---|---|
+| Rarely | System prompt, examples |
+| When you ask | Read-only files, repo map |
+| Every turn | History, added files, your message |
 
-<div class="caption">Rebuilt in this order, from scratch, every turn.</div>
+<div class="caption">Sent in that order, top row first.</div>
+
+**Sorted by how often it changes, not by how it reads.**
 
 <!--
-Seven parts, one order, and the order is not arbitrary. Walk down it once.
+Three groups rather than a numbered list of seven, because the grouping is the
+point and the exact ordinal of each part is not.
 
-The thing to land: none of this is stored anywhere on the model's side. Turn
-twelve sends all seven parts again, and turn twelve costs more than turn one for
-exactly that reason.
+Do not explain why yet. Put it up, say that the order is deliberate and looks
+strange, and let the next slide pay it off. If someone guesses the reason before
+you get there, that is the best outcome available.
 
-Their build assembles this same thing. The packet asks them to say what is in it
-and in what order, which is a design decision rather than an implementation
-detail.
+Their build assembles this same thing, and the packet asks them to say what goes
+in it and in what order. This slide is the argument that the answer is a design
+decision rather than a detail.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">The optimisation</div>
+<div class="label">Why that order</div>
 
 # Reusing a prefix
 
-A server that has already processed a prefix does not process it again.
-
 | | |
 |---|---|
-| Unchanged prefix | Reused |
-| First changed token | Everything after it is recomputed |
+| Opening unchanged | The server skips re-reading it |
+| One token different | Everything after it is redone |
 
-<div class="caption">Reuse is a prefix property, not a memory.</div>
+<div class="caption">Not memory. The same text, recognised again.</div>
+
+**So the cheapest thing to change is the last thing in the prompt.**
 
 <!--
-This is the single most useful idea in the block and it holds everywhere, on
-ollama and on a hosted API alike. The server keeps the computed state for a
-prefix it has seen. Send the same opening again and it picks up where it left
-off. Change one token near the front and every token after it is recomputed.
+Now the previous slide makes sense. Work the two rows and then point back.
 
-Say plainly that this is not memory. Nothing is remembered between sessions.
-It is an optimisation on repeated text, and it is the only reason a design that
-re-sends everything every turn is affordable at all.
+This is not the model remembering. Nothing is remembered between sessions. It is
+the serving layer recognising text it has already processed and picking up where
+it left off, and it holds on the course endpoint as much as on a hosted API. The
+plumbing differs, a hosted API marks the points explicitly and a local server
+reuses the longest opening it recognises, and the rule is identical either way.
 
-Hosted APIs expose it as an explicit marker; a local server does it
-automatically over the longest prefix it recognises. Same rule either way.
+Then land the bold line against the order slide: the parts that change every
+turn were put at the end so that changing them costs the least. That is a real
+design principle and it is worth more to them than the mechanism itself.
+
+If they want dollar figures, quote the provider's current pricing page rather
+than a number from memory. What they will feel on their own machine is the
+wait before the first token, not money.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Cache invalidation</div>
+<div class="label">What ruins it</div>
 
 # What goes cold
 
@@ -660,57 +630,28 @@ layout: default
 - Adding or dropping a file
 - Naming a file in your message
 
-**The first changed token invalidates the rest.**
+**All three change the front, so the whole prefix is redone.**
 
 <!--
-All three verified against the source, and the third is the one nobody guesses.
+Three things, all verified in the source, and the third is the one nobody
+guesses.
 
-Ask mode is not a smaller version of code mode. It is a different system prompt
-with the worked examples removed, and it sits at the very front, so flipping
-between ask and code throws away the whole prefix and not just part of it.
-Asking a quick question mid task is not free.
+Ask mode is not a smaller code mode. It is a different system prompt with the
+worked examples removed, and it sits at the very front, so flipping between ask
+and code throws the whole prefix away rather than part of it. A quick question
+mid task is not free.
 
-Adding a file changes the repo map as well as the file block, because files in
-the chat come out of the map.
+Adding a file changes the file block and the repo map, because files in the chat
+come out of the map.
 
 The third: by default the map is rebuilt from the filenames and identifiers
-found in the message just typed. Mention a file in passing, the map changes, and
-everything after it recomputes. Aider knows this, which is why turning caching
-on quietly switches the map to a stabler refresh mode.
+found in the message just typed. Mention a file in passing and the map moves.
+Aider knows, which is why turning caching on quietly switches the map to a
+stabler refresh mode.
 
 The habit worth giving them: settle the file set before starting, and keep a
 question in its own session.
 -->
-
----
-layout: default
----
-
-<div class="label">A decision worth copying</div>
-
-# The volatility ordering
-
-| | |
-|---|---|
-| Rarely changes | System prompt, examples |
-| Changes on request | Read-only files, repo map |
-| Changes on every edit | Added file contents |
-
-<div class="caption">So an edited file is the cheapest thing to re-send.</div>
-
-<!--
-Now the assembly order makes sense. It is sorted by how often each part changes,
-stable first and volatile last, so the part that changes most often invalidates
-the least behind it.
-
-Edit a file and only the tail of the prefix recomputes. Put the file contents at
-the front instead and every edit would throw away the whole thing.
-
-This is a genuinely good piece of design and it generalises. When their build
-decides what order to assemble a prompt in, the answer is not the order that
-reads nicely, it is stable content first.
--->
-
 ---
 layout: default
 ---
@@ -754,6 +695,8 @@ layout: default
 | Prose | The replacement text |
 
 <div class="caption">Search blocks, tool-call JSON, tagged output. One problem.</div>
+
+**Your parser is what turns a reply into an edit, or refuses to.**
 
 <!--
 Step back from the format for a moment. Whatever the model is asked to produce,
@@ -816,7 +759,7 @@ Each added file is read from disk and sent whole, every turn.
 | Never kept | The previous copy |
 | Also sent | A line saying it committed |
 
-<div class="caption">Edits made in your own editor arrive the same silent way.</div>
+**The model is never told what changed, only what is true now.**
 
 <!--
 The obvious question once they understand the prefix: after an edit lands, does
@@ -876,6 +819,8 @@ layout: default
 
 <div class="caption">Its best evidence says the change was made.</div>
 
+**This is the reason your undo has to be owned and current-session.**
+
 <!--
 Aider can send the model a note when an edit is undone, but only for a handful
 of models, and the course configuration is not one of them. So on qwen the undo
@@ -929,7 +874,9 @@ layout: default
 - Your repository already cloned
 - A Python reference pack, offline
 
-<div class="caption">About 690,000 tokens of documentation. Your budget is 8,000.</div>
+<div class="caption">690,000 tokens of documentation. Your budget is 8,000.</div>
+
+**Bring a build that runs. Choosing what to load is the exercise.**
 
 <!--
 Nobody installs anything and nobody needs the network. The workspace opens with
@@ -947,36 +894,16 @@ the context budget with a grade attached.
 
 Announce the room, the start time and the makeup path from the current staff
 announcement. Do not invent any of them here.
--->
 
----
-layout: default
----
+**The weight slide was cut on 2026-09-13 and the number is yours to say or not.**
+For the record: hackathon 1 is 10 of the 20 Apply parts, so half the Apply grade
+against a quarter for the build and a quarter for the practice lessons. It is
+not on the glass any more.
 
-<div class="label">Hackathon 1</div>
-
-# Weight in the Apply grade
-
-| Share of the Apply grade | |
-|---|---|
-| Hackathon 1 | A half |
-| The pair-programmer build | A quarter |
-| The practice lessons | A quarter |
-
-**Bring a runnable increment.**
-
-<!--
-Say this number plainly, because the deck has never carried it and it changes
-how they should prepare. One evening is worth twice the three-week build.
-
-That is not a reason to spend less time on the build. It is the reason the build
-has to be in a state they can add a feature to on demand: the hackathon prompt
-asks for one feature on their own code, revealed in the room, and a student
-whose repository does not run cannot start.
-
-The bottom line is the whole preparation instruction. Keep something runnable
-from now until the twenty-fourth. Anyone whose build is mid-refactor that
-evening has a much worse two hours than anyone whose build is small and working.
+The bold line is the preparation instruction and it is the one thing here that
+changes what they do tonight. The prompt asks for one feature on their own code,
+revealed in the room, so a repository that does not run cannot be started on.
+Anyone mid-refactor that evening has a much worse two hours.
 -->
 
 ---
@@ -1219,16 +1146,19 @@ layout: section
 
 # Why this tool
 
-## What it shows you that a better one hides
+## Five minutes, on the tool you have been driving
 
 <!--
-The end of the taught half, and the answer to a question some of them have been
-holding for two weeks: why are we using this rather than the tool everyone talks
-about.
+Reworked into a discussion 2026-09-13. It was two dense tables at the end of a
+long taught half and it read as a summary nobody asked for.
 
-Do not oversell Aider and do not apologise for it. The honest answer is that it
-makes every decision visible, and that is worth more to somebody about to build
-one than a smoother experience would be.
+It is now a short argument followed by real questions. The tables are the
+material for the discussion, not the point of the section. Put one up, give them
+the line, and then get out of the way.
+
+The question some of them have been holding for two weeks is why this course
+teaches on Aider rather than the tool everyone talks about. Answer it here, once,
+and answer it honestly rather than defending the choice.
 -->
 
 ---
@@ -1246,18 +1176,19 @@ layout: default
 | One loop you can follow | It cannot plan ahead |
 | Nothing is written unasked | It forgets between sessions |
 
+**Every row is one decision, read from both sides.**
+
 <!--
-Work down the rows and resist making the left column win. Each line is the same
-decision read from two sides, which is what a design trade-off actually is.
+Read down it and resist making the left column win. Each line is a single design
+choice seen twice, which is what a trade-off actually is, and the right column is
+not a list of bugs.
 
-The right column is not a list of bugs. Every entry is a deliberate choice with
-a reason behind it, and their build will make each of those choices again in
-three weeks, mostly the same way, because the packet asks for the strict version
-on purpose.
+Do not spend long here. The rows are the raw material for the questions two
+slides on, and the discussion is worth more than your commentary.
 
-The one row worth expanding: forgetting between sessions is not a limitation of
-the model, it is what every one of these tools does. Continuity is the harness
-re-sending, which is the first thing they learned today.
+The row to expand if you expand one: forgetting between sessions is not a
+limitation of the model. Every tool of this kind does it. Continuity is the
+harness re-sending, which is the first thing they learned today.
 -->
 
 ---
@@ -1274,25 +1205,55 @@ layout: default
 | A heuristic guesses | Aider, with the repo map |
 | The model asks for it | The tools you meet next |
 
-<div class="caption">More powerful tools are this shape with more machinery.</div>
+**You are about to build the first two rows yourselves.**
 
 <!--
-The ladder, and the reason this lab is worth two hours. All three rungs solve
-the same problem, which is getting the right text in front of the model, and
-they differ in who does the choosing.
+The ladder, and the real answer to why this lab is worth two hours. All three
+rungs solve one problem, getting the right text in front of the model, and they
+differ only in who does the choosing.
 
-Aider stands on the first two with the seams showing. A more automated tool
-makes the same decisions without displaying them, which is exactly why it is a
-worse thing to learn on and a better thing to use. Learn it where the joins are
-visible, recognise it where they are hidden.
+Aider stands on the first two with the joins showing. A more automated tool makes
+the same decisions without displaying them, which is exactly what makes it a
+worse thing to learn on and a better thing to use.
 
 Stop at context. Who picks the next action is tomorrow's lecture and it has a
-live demo for it, so do not pre-empt it here.
+live demo for it, so do not pre-empt it.
 
-Then land the promise: everything on this slide is machinery, not magic, and by
-December they will have written the third row themselves.
+Then the bold line, which is the promise: none of this is magic, it is machinery,
+and they start writing it this week.
 -->
 
+---
+layout: default
+---
+
+<div class="label">Discussion</div>
+
+# Three questions
+
+1. Which line of the ledger would you refuse to accept in your own tool?
+2. What would your pair-programmer need before it could choose its own context?
+3. When your tool cannot do what was asked, what should it say, and to whom?
+
+<!--
+Leave this up and let them talk. Five minutes, and it is fine if only two of the
+three get air.
+
+One is the honest one: somebody will say they would never ship a tool that
+forgets everything, and that is a real design position with a real cost, which is
+the whole point of the ledger.
+
+Two is the bridge to tomorrow's lecture and to Analyze, so take an answer and
+leave it open rather than resolving it.
+
+Three is the one that makes them better engineers this week. It comes straight
+off the error-message slide: the audience for a failure might be the user, the
+model, or the log, and choosing wrong is why so many of their sessions will
+stall. Their failure-path tests are worth eight points.
+
+If the room is flat, ask three directly at one person's build rather than at the
+room.
+-->
 ---
 layout: section
 ---
