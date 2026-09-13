@@ -606,9 +606,9 @@ there is no length requirement anywhere in this section.
 layout: default
 ---
 
-<div class="label">Grading · 40 points</div>
+<div class="label">Grading · 50 points</div>
 
-# Specification and diagrams
+# Specification and design
 
 | Criterion | Points |
 |---|---:|
@@ -616,6 +616,8 @@ layout: default
 | Architecture and interface design | 10 |
 | Increment specs | 10 |
 | The three diagrams | 4 / 3 / 3 |
+| Specs before code | 5 |
+| What changed and why | 5 |
 
 <!--
 Do not read the table out. The one thing worth saying: a part they designed and
@@ -623,24 +625,36 @@ did not implement keeps its design credit as long as it is labelled.
 
 Architecture credit includes explaining where tool execution, a replacement
 endpoint client and a non-terminal interface would fit, without building them.
+
+The last two rows are read from git history rather than from a document. Specs
+before code is scored on commit order, and what changed and why is the
+reconciliation between the design they started with and the system they
+finished. A design that worked does not need an invented failure.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Grading · 40 points</div>
+<div class="label">Grading · 50 points</div>
 
-# Demonstrated behavior and verification
+# Implementation and tests
 
 | Criterion | Points |
 |---|---:|
-| The seven features | 20 |
-| Behavioral tests | 8 |
-| Safety and recovery tests | 7 |
-| Integration and reproducibility | 5 |
+| Functional correctness | 25 |
+| Custom test cases | 9 |
+| Failure-path tests | 8 |
+| End-to-end runs and live evidence | 5 |
+| Operating instructions | 3 |
+
+<div class="caption"><code>RUBRIC.md</code> carries every row.</div>
 
 <!--
+100 points across two sections of 50. These are build points, not course-grade
+percentages: the build is 4.5% of the course.
+
+Functional correctness is the seven features, scored one row each in RUBRIC.md.
 Half credit exists for behavior that partly works, so an unfinished feature is
 not a zero.
 
@@ -648,13 +662,16 @@ Test count and coverage earn nothing by themselves. A test earns credit when it
 asserts an outcome and isolates the filesystem. Weakening an assertion to turn
 the suite green is scored as what it is.
 
-Configuration sits inside F1's four points and is not a gate.
+Configuration sits inside F1's five points and is not a gate.
 
 Staff read the repository snapshot at the deadline, run their own tests, and
 work through ACCEPTANCE.md. There is no hidden suite and no requirement that is
 not in SPEC.md. Routine tests use fakes rather than a live model; live checks
 are documented separately and opt in, and an honestly reported failed live
 attempt still earns its evidence points.
+
+Send them to RUBRIC.md rather than reading rows aloud. It names the requirement
+IDs each row scores.
 -->
 
 ---
@@ -672,38 +689,13 @@ layout: default
 | Reconciliation | Where the design changed, and why |
 
 <!--
-This is the section students lose points on by leaving it to the last evening,
-because it cannot be reconstructed afterwards.
+None of this can be reconstructed the night before, which is why it is worth a
+minute here. Commits and reconciliation are the last two scored rows on the
+specification slide.
 
-A design that worked does not need an invented failure. Say what the evidence
-was. Differences between the initial and final design are worth credit when they
-are explained.
--->
-
----
-layout: default
----
-
-<div class="label">Grading · 20 points</div>
-
-# Development evidence and reconciliation
-
-| Criterion | Points |
-|---|---:|
-| Spec-first history | 5 |
-| Deliberate Aider use | 5 |
-| Diagnosis and reconciliation | 5 |
-| Operating instructions | 3 |
-| Model disclosure and index | 2 |
-
-<div class="caption"><code>RUBRIC.md</code> carries every row.</div>
-
-<!--
-100 points in total across the three sections. These are build points, not
-course-grade percentages: the build is 4.5% of the course.
-
-Send them to RUBRIC.md rather than reading rows aloud. It names the requirement
-IDs each row scores.
+Sessions and model disclosure are required but score no points of their own.
+They are what lets staff follow the rest of the evidence, so a submission
+without them loses credit wherever a claim cannot be checked.
 -->
 ---
 layout: default
