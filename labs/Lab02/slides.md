@@ -121,7 +121,7 @@ layout: default
 
 Hackathon 1: September 24.
 
-Stage 1 build: September 29, 11:59 PM.
+Stage 1 build: October 6, 11:59 PM.
 
 Keep a runnable increment available.
 
