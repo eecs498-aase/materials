@@ -836,7 +836,7 @@ have been driving for two weeks. F2 is /add and /drop, which is L03's demo,
 and F4 is the spec written for one small model, which is the next slide.
 
 Table matches Lab01's exactly, on purpose. The full spec with the checked
-behaviors is in the starter repo.
+behaviors is in the packet repository they clone.
 -->
 
 ---
@@ -851,7 +851,7 @@ layout: default
   <div class="card">
     <ph-package-bold class="text-3xl text-blue-600 mb-3" />
     <div class="font-semibold mb-1">Your build's spec doc</div>
-    <div class="text-sm opacity-70 flex-1">Seven features on a starter is the "three or more files, from scratch" case. The spec is a required deliverable.</div>
+    <div class="text-sm opacity-70 flex-1">Seven features and no starter code is the "three or more files, from scratch" case. The spec is a required deliverable.</div>
   </div>
   <div class="card">
     <ph-code-bold class="text-3xl text-amber-600 mb-3" />
@@ -865,9 +865,10 @@ layout: default
 <!--
 Both cards are graded work, which is the label. Say that first.
 
-Left card: seven features on a starter is exactly the three or more files,
-building from scratch case from the decision rule, so the spec is a required
-deliverable.
+Left card: seven features with no starter code is exactly the three or more
+files, building from scratch case from the decision rule, so the spec is a
+required deliverable. Be plain that the packet ships no application code, no
+module layout and no tests.
 
 Right card is the one worth the time. F4 is the instruction that tells a
 model how to emit an edit. That is a spec written for an audience of one

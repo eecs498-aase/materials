@@ -670,7 +670,7 @@ layout: default
   <div class="card">
     <ph-package-bold class="text-3xl text-blue-600 mb-3" />
     <div class="font-semibold mb-1">What you build</div>
-    <div class="text-sm opacity-70 flex-1">A <strong>pair-programmer</strong>. Everyone builds the same thing: <strong>seven fixed features</strong> on a starter we give you</div>
+    <div class="text-sm opacity-70 flex-1">A <strong>pair-programmer</strong>. Everyone builds the same thing: <strong>seven fixed features</strong>, written from nothing but a spec we give you</div>
   </div>
   <div class="card">
     <ph-clock-bold class="text-3xl text-blue-600 mb-3" />
