@@ -17,9 +17,13 @@ highlighter: shiki
 
 
 <!--
-Two halves. The first takes apart the tool they have been using since Lab00.
-The second hands them the build and gives them 45 minutes to start designing.
-Finish instruction at minute 65 and protect the work block.
+Two halves. The first takes apart the tool they have been using since Lab00,
+in enough depth that they can recognise the same decisions in any harness. The
+second hands them the build.
+
+The deep dive is the point of the session now, not a warm-up for the assignment
+reveal, so do not compress it to reach the packet. Office hours take whatever is
+left.
 -->
 
 ---
@@ -103,7 +107,7 @@ history spends their token budget later in the deck.
 
 The 4B and the 9B are asked for different reply shapes, whole files against
 diffs. That is why a classmate's session looks different from theirs, and why
-the trace in the next ten minutes may not match what they ran in practice.
+the trace they see later may not match what they ran in practice.
 Worth saying here, not worth a slide.
 -->
 
@@ -135,9 +139,96 @@ asked rather than reciting.
 layout: section
 ---
 
+# Who writes the prompt
+
+## There is no conversation, only an assembled buffer
+
+<!--
+The centre of the lab, and the idea the rest of it hangs off. They have spent
+two weeks inside what looks like a chat, and it is not one. There is a single
+block of text, assembled from nothing every turn, and Aider writes every part of
+it including the half that appears to be theirs.
+
+Do not rush this section. The budget, the cache, the stale file and the silent
+undo are all consequences of it.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Authorship</div>
+
+# Aider's first-person messages
+
+```text
+"I have *added these files to the chat* so you can go ahead and edit them."
+
+"I committed the changes with git hash 4f2a1c & commit msg: add search"
+
+"I edited the files myself."
+
+"I didn't see any properly formatted edits in your reply?!"
+```
+
+<div class="caption">Aider's own strings, sent to the model as you.</div>
+
+<!--
+Read the last one out loud. Aider wrote their irritation, interrobang included,
+and sent it over their name.
+
+None of this is Aider deceiving them. The chat format has two roles and a
+harness has to put machine-generated context somewhere, so it goes in the user's
+slot. But the model has no way to tell which of those messages a person typed.
+
+Ask the room: if the model is told a human wrote something a program generated,
+what is it supposed to do with the words "trust this message"? That question is
+the whole grounding problem, and the rest of the deck answers it.
+
+Their build makes this decision too. Anything it sends that the user did not
+type is a message it is authoring on the user's behalf.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The fiction</div>
+
+# Both halves of the transcript
+
+| Written by | Appears in the prompt as |
+|---|---|
+| Aider | Your file listings and status lines |
+| Aider | The model agreeing to them |
+| Aider | The format reminder, glued to your message |
+| You | The sentence you actually typed |
+
+<div class="caption">One author. Two voices.</div>
+
+<!--
+Row two is the one that lands. Aider writes replies for the model, "Ok, any
+changes I propose will be to those files", and puts them in the history, so the
+next turn reads as a dialogue that has already agreed with itself. The model
+never said it.
+
+Row three is worth saying slowly. The instruction that tells the model which
+edit format to produce is appended to the end of the student's own message. What
+the model reads as the request is not what they typed.
+
+There is a cost hidden in row three that comes back later: when the context is
+nearly full, that reminder is the thing dropped to make room. The instruction
+keeping the output parseable is sacrificed exactly when the model is most likely
+to drift.
+-->
+
+---
+layout: section
+---
+
 # Context
 
-## What the harness sends, and what comes back
+## What the harness chooses to send
 
 <!--
 This block is now about context rather than a walkthrough of a whole turn
@@ -237,6 +328,37 @@ weeks. Two things it carried, worth saying if anyone asks rather than putting
 back on the glass: added files can be rewritten while read-only files can only
 be cited, and adding the whole package is not a selection strategy, it is a way
 to spend the budget.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The real constraint</div>
+
+# Context as a budget
+
+| Competing for one window | |
+|---|---|
+| Instructions and examples | Paid every turn |
+| Session history | Grows until it is summarised |
+| Added files | The ones you chose |
+| Repo map | Whatever is left over |
+
+<div class="caption">A harness is a policy for spending it.</div>
+
+<!--
+This is the idea the repo map slides are evidence for, so put it up before them
+rather than after.
+
+A harness is not mainly a parser or an editor. It is a policy for what to spend
+a finite window on, and every design difference between one tool and the next
+comes back to that policy. Aider's is visible and mostly manual: they add the
+files, it fills the remainder with a ranked guess.
+
+Their build has this problem on day one and the packet does not solve it for
+them. What gets sent, what gets refused, and what happens when the required
+input alone will not fit are all their decisions to write down.
 -->
 
 ---
@@ -448,6 +570,148 @@ refusal is a design decision they have to write down and test.
 -->
 
 ---
+layout: section
+---
+
+# What a turn costs
+
+## Why the same text is sent again and again
+
+<!--
+This block is new and it is the one they will not have met anywhere. It pays off
+the budget slide: having decided what to send, the harness now has to send it
+every single turn, because the model remembers nothing.
+
+Keep it on the mechanism. Nobody needs Aider's flag names.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Assembly order</div>
+
+# The prefix
+
+| | |
+|---|---:|
+| System prompt | 1 |
+| Examples | 2 |
+| Read-only files | 3 |
+| Repo map | 4 |
+| Session history | 5 |
+| Added files | 6 |
+| Your message | 7 |
+
+<div class="caption">Rebuilt in this order, from scratch, every turn.</div>
+
+<!--
+Seven parts, one order, and the order is not arbitrary. Walk down it once.
+
+The thing to land: none of this is stored anywhere on the model's side. Turn
+twelve sends all seven parts again, and turn twelve costs more than turn one for
+exactly that reason.
+
+Their build assembles this same thing. The packet asks them to say what is in it
+and in what order, which is a design decision rather than an implementation
+detail.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The optimisation</div>
+
+# Reusing a prefix
+
+A server that has already processed a prefix does not process it again.
+
+| | |
+|---|---|
+| Unchanged prefix | Reused |
+| First changed token | Everything after it is recomputed |
+
+<div class="caption">Reuse is a prefix property, not a memory.</div>
+
+<!--
+This is the single most useful idea in the block and it holds everywhere, on
+ollama and on a hosted API alike. The server keeps the computed state for a
+prefix it has seen. Send the same opening again and it picks up where it left
+off. Change one token near the front and every token after it is recomputed.
+
+Say plainly that this is not memory. Nothing is remembered between sessions.
+It is an optimisation on repeated text, and it is the only reason a design that
+re-sends everything every turn is affordable at all.
+
+Hosted APIs expose it as an explicit marker; a local server does it
+automatically over the longest prefix it recognises. Same rule either way.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Cache invalidation</div>
+
+# What goes cold
+
+- Switching between ask and code
+- Adding or dropping a file
+- Naming a file in your message
+
+**The first changed token invalidates the rest.**
+
+<!--
+All three verified against the source, and the third is the one nobody guesses.
+
+Ask mode is not a smaller version of code mode. It is a different system prompt
+with the worked examples removed, and it sits at the very front, so flipping
+between ask and code throws away the whole prefix and not just part of it.
+Asking a quick question mid task is not free.
+
+Adding a file changes the repo map as well as the file block, because files in
+the chat come out of the map.
+
+The third: by default the map is rebuilt from the filenames and identifiers
+found in the message just typed. Mention a file in passing, the map changes, and
+everything after it recomputes. Aider knows this, which is why turning caching
+on quietly switches the map to a stabler refresh mode.
+
+The habit worth giving them: settle the file set before starting, and keep a
+question in its own session.
+-->
+
+---
+layout: default
+---
+
+<div class="label">A decision worth copying</div>
+
+# The volatility ordering
+
+| | |
+|---|---|
+| Rarely changes | System prompt, examples |
+| Changes on request | Read-only files, repo map |
+| Changes on every edit | Added file contents |
+
+<div class="caption">So an edited file is the cheapest thing to re-send.</div>
+
+<!--
+Now the assembly order makes sense. It is sorted by how often each part changes,
+stable first and volatile last, so the part that changes most often invalidates
+the least behind it.
+
+Edit a file and only the tail of the prefix recomputes. Put the file contents at
+the front instead and every edit would throw away the whole thing.
+
+This is a genuinely good piece of design and it generalises. When their build
+decides what order to assemble a prompt in, the answer is not the order that
+reads nicely, it is stable content first.
+-->
+
+---
 layout: default
 ---
 
@@ -479,6 +743,159 @@ Nothing has changed on disk yet. This is a proposal in a chat reply.
 layout: default
 ---
 
+<div class="label">The general problem</div>
+
+# An action through a text channel
+
+| The model returns | The harness needs |
+|---|---|
+| Prose | A file path |
+| Prose | An exact region |
+| Prose | The replacement text |
+
+<div class="caption">Search blocks, tool-call JSON, tagged output. One problem.</div>
+
+<!--
+Step back from the format for a moment. Whatever the model is asked to produce,
+it is producing text, and the harness has to recover a machine-actionable
+instruction from it. Search and replace blocks are one encoding of that. Function
+calling is another. Tagged output is a third.
+
+They all fail the same three ways: nothing parses, it parses but names something
+that does not exist, or it parses and is wrong. Their error handling has to tell
+those apart, because the recovery is different for each.
+
+That is why the packet asks for match semantics and path validation as separate
+requirements rather than one.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Failure as input</div>
+
+# Errors written for the model
+
+Aider answers the model, not you.
+
+- The failed block, quoted back
+- Lines from the file that nearly match
+- A note if the work already exists
+
+**An error message is a prompt.**
+
+<!--
+When a block fails to apply, what comes back is not a message for the human. It
+is written to be read by the model on the next turn: here is your block, here
+are the lines it almost matched, and if the replacement text is already in the
+file, a question asking whether the block was needed at all.
+
+That reframing is worth the slide on its own. In a system whose only actuator is
+text, an error message is another prompt, and its job is to make the next attempt
+better rather than to describe what went wrong.
+
+Aider will do this up to three times before giving up. Their build does not have
+to retry at all, but it does have to decide, and the packet scores the failure
+paths.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Grounding</div>
+
+# How a file update arrives
+
+Each added file is read from disk and sent whole, every turn.
+
+| | |
+|---|---|
+| Never sent | A diff of what changed |
+| Never kept | The previous copy |
+| Also sent | A line saying it committed |
+
+<div class="caption">Edits made in your own editor arrive the same silent way.</div>
+
+<!--
+The obvious question once they understand the prefix: after an edit lands, does
+the model get told, or does the text change under it? Both, and the second
+matters more.
+
+The file block is rebuilt from disk on every turn, so there is exactly one copy
+of each file in the prompt and it is current. Aider also adds a sentence, in the
+student's voice, saying it committed with a given hash.
+
+The last line is worth saying out loud. A file they edit themselves in another
+window is picked up on the next turn with no announcement at all. Nothing in the
+transcript marks it.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Stale ground</div>
+
+# What it remembers
+
+The file block is rebuilt. The model's own replies are not.
+
+**It can see the lines it chose to change, and nothing else.**
+
+<!--
+Follow the consequence carefully, because this is where the room usually gets a
+surprise.
+
+Old copies of the file never pile up: that block is reassembled every turn. But
+the model's replies stay in the history word for word, and those replies are
+full of search blocks quoting the old text exactly. So the model's record of the
+previous version is whatever it happened to quote, which is precisely the lines
+it chose to change and nothing around them. A biased sample of the past.
+
+Which explains the line in Aider's own prompt warning that other messages may
+hold outdated contents. It is not defending against its own file blocks, it is
+defending against the model's memory of its own edits, and all it can do is
+issue an instruction and hope.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Recovery</div>
+
+# The silent undo
+
+| After an undo | |
+|---|---|
+| The file | Quietly back to the old text |
+| The model | Told nothing at all |
+| The history | Still holds the edit it proposed |
+
+<div class="caption">Its best evidence says the change was made.</div>
+
+<!--
+Aider can send the model a note when an edit is undone, but only for a handful
+of models, and the course configuration is not one of them. So on qwen the undo
+is silent.
+
+Put the pieces together with the room. The file reverts. The model is told
+nothing. Its own search block for the edit that no longer exists is still in the
+history. Ask it for a follow-up change built on that edit and the block will not
+match, and the only feedback it gets is that the match failed.
+
+This is the single clearest case of a harness failing to keep a model grounded,
+and it is why their specification requires undo to be an owned, current-session
+operation on a clean target. That requirement is not bureaucracy, it is this
+slide.
+-->
+
+---
+layout: default
+---
+
 <div class="label">Thursday September 24</div>
 
 # Hackathon 1
@@ -500,6 +917,69 @@ the project slide, which is the only place a student should look for it.
 -->
 
 ---
+layout: default
+---
+
+<div class="label">Hackathon 1</div>
+
+# The hackathon workspace
+
+- Browser VS Code, already set up
+- Aider pointed at the course endpoint
+- Your repository already cloned
+- A Python reference pack, offline
+
+<div class="caption">About 690,000 tokens of documentation. Your budget is 8,000.</div>
+
+<!--
+Nobody installs anything and nobody needs the network. The workspace opens with
+the tools already pointed at the right place and their own repository in it.
+
+The caption is the point of the slide and it connects straight back to the
+budget block. The reference pack in the image is most of the Python
+documentation, converted so a model can read it, and it is roughly eighty times
+any context window in the room. It is split into parts small enough to add one
+at a time.
+
+So the exercise is not whether the documentation is available. It is which
+pages, and choosing well is the difference between finishing and not. That is
+the context budget with a grade attached.
+
+Announce the room, the start time and the makeup path from the current staff
+announcement. Do not invent any of them here.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Hackathon 1</div>
+
+# Weight in the Apply grade
+
+| Share of the Apply grade | |
+|---|---|
+| Hackathon 1 | A half |
+| The pair-programmer build | A quarter |
+| The practice lessons | A quarter |
+
+**Bring a runnable increment.**
+
+<!--
+Say this number plainly, because the deck has never carried it and it changes
+how they should prepare. One evening is worth twice the three-week build.
+
+That is not a reason to spend less time on the build. It is the reason the build
+has to be in a state they can add a feature to on demand: the hackathon prompt
+asks for one feature on their own code, revealed in the room, and a student
+whose repository does not run cannot start.
+
+The bottom line is the whole preparation instruction. Keep something runnable
+from now until the twenty-fourth. Anyone whose build is mid-refactor that
+evening has a much worse two hours than anyone whose build is small and working.
+-->
+
+---
 layout: section
 ---
 
@@ -508,8 +988,8 @@ layout: section
 ## What Stage 1 asks for
 
 <!--
-Minutes 40 to 58. This is the reveal. They have spent two weeks driving a
-harness and the last half hour taking one apart; now they build one.
+The reveal. They have spent two weeks driving a harness and the last hour
+taking one apart; now they build one.
 
 Lead with what the thing is, not with the paperwork. The packet carries the
 requirements and they can read it.
@@ -523,7 +1003,7 @@ layout: default
 
 # A harness from scratch
 
-Everything in the last half hour, written by you.
+Everything in the last hour, written by you.
 
 | | |
 |---|---|
@@ -564,7 +1044,7 @@ has to show it.
 | | |
 |---|---|
 | System design | Once, before implementation |
-| Increment specs | One per change, before it |
+| Increment specs | Slices you choose, each spec first |
 
 <div class="caption">No specification is supplied.</div>
 
@@ -576,8 +1056,14 @@ requirements, their own acceptance criteria, and their own increments.
 The history is evidence, not bureaucracy. A design committed after the code it
 describes earns nothing, and they cannot reconstruct it at the end.
 
-Increment specs are what an Aider session can actually execute: scoped context,
-ordered tasks, a checkable result.
+An increment is not a commit and not a single change. It is a sizeable slice of
+the build that they break out and define themselves, with an observable result,
+its own scoped context and its own ordered tasks. Closest thing they have met is
+an aider-practice lesson, except that here they write the lesson.
+
+They choose how many there are and where the boundaries fall. The packet is
+explicit about that and the rubric scores whether the set covers the whole build
+in a sensible order, not whether there are many of them.
 -->
 
 ---
@@ -608,9 +1094,11 @@ there is no length requirement anywhere in this section.
 layout: default
 ---
 
-<div class="label">Grading · 50 points</div>
+<div class="label">Grading</div>
 
 # Specification and design
+
+**50 of the 100 build points.**
 
 | Criterion | Points |
 |---|---:|
@@ -638,9 +1126,11 @@ finished. A design that worked does not need an invented failure.
 layout: default
 ---
 
-<div class="label">Grading · 50 points</div>
+<div class="label">Grading</div>
 
 # Implementation and tests
+
+**50 of the 100 build points.**
 
 | Criterion | Points |
 |---|---:|
@@ -727,12 +1217,93 @@ quantization you know about.
 layout: section
 ---
 
+# Why this tool
+
+## What it shows you that a better one hides
+
+<!--
+The end of the taught half, and the answer to a question some of them have been
+holding for two weeks: why are we using this rather than the tool everyone talks
+about.
+
+Do not oversell Aider and do not apologise for it. The honest answer is that it
+makes every decision visible, and that is worth more to somebody about to build
+one than a smoother experience would be.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Honest accounting</div>
+
+# The ledger
+
+| What it gives you | What it costs you |
+|---|---|
+| You choose the context | You have to choose it |
+| Every decision is visible | Nothing is done for you |
+| One loop you can follow | It cannot plan ahead |
+| Nothing is written unasked | It forgets between sessions |
+
+<!--
+Work down the rows and resist making the left column win. Each line is the same
+decision read from two sides, which is what a design trade-off actually is.
+
+The right column is not a list of bugs. Every entry is a deliberate choice with
+a reason behind it, and their build will make each of those choices again in
+three weeks, mostly the same way, because the packet asks for the strict version
+on purpose.
+
+The one row worth expanding: forgetting between sessions is not a limitation of
+the model, it is what every one of these tools does. Continuity is the harness
+re-sending, which is the first thing they learned today.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The same shape, more machinery</div>
+
+# Who finds the context
+
+| | |
+|---|---|
+| You name the files | Aider, when you add them |
+| A heuristic guesses | Aider, with the repo map |
+| The model asks for it | The tools you meet next |
+
+<div class="caption">More powerful tools are this shape with more machinery.</div>
+
+<!--
+The ladder, and the reason this lab is worth two hours. All three rungs solve
+the same problem, which is getting the right text in front of the model, and
+they differ in who does the choosing.
+
+Aider stands on the first two with the seams showing. A more automated tool
+makes the same decisions without displaying them, which is exactly why it is a
+worse thing to learn on and a better thing to use. Learn it where the joins are
+visible, recognise it where they are hidden.
+
+Stop at context. Who picks the next action is tomorrow's lecture and it has a
+live demo for it, so do not pre-empt it here.
+
+Then land the promise: everything on this slide is machinery, not magic, and by
+December they will have written the third row themselves.
+-->
+
+---
+layout: section
+---
+
 # What comes next
 
 ## One repository, grown until December
 
 <!--
-Minutes 58 to 65. Short. The point is the arc, not a tour of tools.
+Short, and it comes after the ledger. The point is the arc, not a tour of
+tools.
 
 Nothing here is a Stage 1 dependency and no subscription is needed for this
 course.
@@ -778,30 +1349,12 @@ survives contact with real work.
 Build advice that used to sit on this slide and still belongs in the room: one
 small checkable result first, and keep the phase snapshots.
 
+The Aider versus agentic CLI comparison that used to follow this slide is gone,
+because L05 delivers exactly that the next day with a live demo behind it. Do
+not reconstruct it here.
+
 Do not estimate the workload out loud. Do say that a runnable slice early is
 what keeps the December integration from being a surprise.
--->
-
----
-layout: default
----
-
-<div class="label">Where this is going</div>
-
-# What an agentic CLI adds
-
-| Aider | An agentic CLI |
-|---|---|
-| You frame a bounded task | You hand over a broad one |
-| You select the files | It discovers them |
-| A fixed sequence of steps | The model picks the next tool |
-| You check between tasks | Permissions bound it |
-
-<!--
-Do not turn the left column into a weakness. Aider automates plenty. What
-changes on the right is who decides the next action.
-
-Source: https://code.claude.com/docs/en/overview
 -->
 
 ---
@@ -814,7 +1367,7 @@ layout: default
 
 You will have built the kind of tool this lab took apart: a coding agent in the
 shape of Claude Code or OpenClaw, running against a model you configure, grown
-from the pair-programmer you start on Monday.
+from the pair-programmer you start this week.
 
 **Today you drive one. In December you will have written one.**
 
