@@ -488,9 +488,6 @@ layout: default
 - Submit before you leave
 - Graded separately from the build
 
-
-<div class="caption">Build due <strong>Tuesday October 6, 11:59 PM</strong>.</div>
-
 <!--
 Three minutes including logistics. Room, time and the model in the workspace are
 announced by staff. Do not invent any of them here.
@@ -498,8 +495,8 @@ announced by staff. Do not invent any of them here.
 Say the accommodations line out loud: conflicts and accommodations go to staff
 now, not the week of.
 
-The caption is the only place in the deck a student sees the build deadline, now
-that the after-lab slide is gone. Do not skip past it.
+This slide carries the hackathon date and nothing else. The build deadline is on
+the project slide, which is the only place a student should look for it.
 -->
 
 ---
@@ -536,6 +533,8 @@ Everything in the last half hour, written by you.
 
 <div class="caption">Aider without Aider. Same job, your code.</div>
 
+<div class="caption">Due <strong>Tuesday October 6, 11:59 PM</strong>.</div>
+
 <!--
 Say the one-sentence version out loud: a terminal pair-programmer over files
 you select, talking to an endpoint you configure, that never edits without
@@ -546,6 +545,9 @@ loop, no architect mode. What it must have is the spine they just watched.
 
 If somebody asks how big it is: smaller than they fear, and the specification
 work is the part that decides how long it takes.
+
+The date under the caption is the only place in the deck a student sees the
+build deadline. Say it out loud rather than skipping past it.
 -->
 
 ---
