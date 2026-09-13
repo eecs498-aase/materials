@@ -489,7 +489,7 @@ layout: default
 - Graded separately from the build
 
 
-<div class="caption">Build due <strong>Tuesday September 29, 11:59 PM</strong>.</div>
+<div class="caption">Build due <strong>Tuesday October 6, 11:59 PM</strong>.</div>
 
 <!--
 Three minutes including logistics. Room, time and the model in the workspace are
