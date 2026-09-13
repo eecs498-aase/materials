@@ -675,7 +675,7 @@ layout: default
   <div class="card">
     <ph-clock-bold class="text-3xl text-blue-600 mb-3" />
     <div class="font-semibold mb-1">When</div>
-    <div class="text-sm opacity-70 flex-1">Build it in <strong>weeks 3–4</strong>, about <strong>6 hrs/week</strong>. Planned due <strong>Fri Sep 25</strong></div>
+    <div class="text-sm opacity-70 flex-1">Build it in <strong>weeks 3–6</strong>. Due <strong>Tue Oct 6, 11:59 PM</strong></div>
   </div>
   <div class="card">
     <ph-check-bold class="text-3xl text-amber-600 mb-3" />

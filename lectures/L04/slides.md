@@ -1,6 +1,6 @@
 ---
 theme: ../theme
-title: "L04: Spec-Driven Coding"
+title: "L04: Spec-Driven Development"
 info: |
   EECS 498 AASE — Lecture 04
   Applied Agentic Software Engineering, UMich Fall 2026
@@ -11,7 +11,7 @@ mdc: true
 highlighter: shiki
 ---
 
-# Spec-Driven Coding
+# Spec-Driven Development
 
 ## Lecture 04 · Sep 10, 2026
 
@@ -783,7 +783,7 @@ layout: default
 
 - **Tomorrow (Fri Sep 11)** — Aider setup gate + all sixteen lessons
 - **Mon Sep 14 / Tue Sep 15** — Lab01, the pivot lab
-- **Fri Sep 25** — the build is due (end of week 4)
+- **Tue Oct 6** — the build is due, 11:59 PM
 - **Not yet** — `aider-practice` finishes this week; the build starts after Lab01
 
 </v-clicks>
@@ -792,7 +792,7 @@ layout: default
 Dates, said once and clearly. Setup gate and all sixteen aider-practice
 lessons are due tomorrow, Friday September 11. Lab01 is Monday September 14
 for the Monday section, Tuesday September 15 for the Tuesday section. The
-build is due Friday September 25.
+build is due Tuesday October 6 at 11:59 PM.
 
 Last click prevents a week of confusion. They are not building yet.
 aider-practice finishes this week and the build starts after Lab01.
@@ -802,7 +802,7 @@ aider-practice finishes this week and the build starts after Lab01.
 layout: default
 ---
 
-<div class="label">The build · due Fri Sep 25</div>
+<div class="label">The build · due Tue Oct 6</div>
 
 # The seven features
 
