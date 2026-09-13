@@ -132,40 +132,6 @@ asked rather than reciting.
 -->
 
 ---
-layout: default
----
-
-<div class="label">The running example</div>
-
-# One request, three files
-
-```text
-Add a --priority flag to taskr's add command.
-```
-
-<div class="grid grid-cols-3 gap-5 mt-6">
-  <div class="card">
-    <div class="font-semibold mb-1">taskr/cli.py</div>
-    <div class="text-sm opacity-70">Parses the flag.</div>
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-1">taskr/task.py</div>
-    <div class="text-sm opacity-70">Holds the value.</div>
-  </div>
-  <div class="card">
-    <div class="font-semibold mb-1">taskr/store.py</div>
-    <div class="text-sm opacity-70">Saves and loads it.</div>
-  </div>
-</div>
-
-<!--
-They met this request in the practice lessons, in whole-file mode. Today's
-trace is diff mode and it is illustrative: a simplified turn, not a captured
-transcript of a particular model. The three files matter later, when the
-feature half-works.
--->
-
----
 layout: section
 ---
 
@@ -258,8 +224,8 @@ Do not claim a fixed seven-part ordering. What actually goes into the prompt
 depends on the coder, the model and the settings, and it changes between
 releases. The list above is the shape, not the wire format.
 
-Ask what the model would need in order to add priority consistently to the CLI,
-the task and the store. That question sets up the next two slides.
+Ask what the model would need in order to change three files consistently, when
+nothing has told it which three. That question sets up the next two slides.
 -->
 
 ---
@@ -271,8 +237,8 @@ layout: default
 # File selection with /add
 
 ```text
-/add taskr/cli.py taskr/task.py taskr/store.py
-/read-only specs/priority.md
+/add <file> ...
+/read-only <file> ...
 /tokens
 ```
 
@@ -281,10 +247,10 @@ Added files can be rewritten. Read-only files can only be cited.
 **Only these commands load a file.**
 
 <!--
-Walk through why these three files and not the whole package. This is one
-sensible selection, not a rule to add everything. Read-only context still
-costs budget. /tokens tells you what you are spending, and nothing about
-whether the edit will be correct.
+Walk through choosing the few files a change touches rather than the whole
+package. Adding everything is not a selection strategy, it is a way to spend
+the budget. Read-only context still costs budget. /tokens tells you what you
+are spending, and nothing about whether the edit will be correct.
 -->
 
 ---
@@ -296,11 +262,11 @@ layout: default
 # The repo map
 
 ```text
-taskr/store.py
-  Store.add(title, tags) -> Task
+package/store.py
+  ClassName.method(arg, arg) -> ReturnType
 
-taskr/task.py
-  Task: id, title, tags
+package/model.py
+  ClassName: field, field
 ```
 
 Signatures, ranked into a budget. No function bodies.
@@ -383,21 +349,21 @@ layout: default
 # Edit-shaped replies
 
 ```text
-taskr/cli.py
+path/to/file.py
 <<<<<<< SEARCH
-add.add_argument("title")
+the lines exactly as they appear on disk
 =======
-add.add_argument("title")
-add.add_argument("--priority", default="normal")
+the lines that replace them
 >>>>>>> REPLACE
 ```
 
-**Adds the flag. Stores nothing. Validates nothing.**
+**One block, one file. Nothing forces the set to be complete.**
 
 <!--
-Deliberately small and deliberately incomplete. Ask what is missing before you
-say it: task.py never gains the field, store.py never writes it. A student who
-reads only this block sees a finished feature.
+Ask what a block like this does not tell you. It names one file. A change that
+needs three files needs three blocks, and nothing in the format obliges the
+model to produce all three. A student who reads one well-formed block sees a
+finished feature.
 
 Nothing has changed on disk yet. This is a proposal in a chat reply.
 -->
@@ -448,7 +414,7 @@ layout: default
     <div class="font-semibold mb-2">On disk</div>
 
 ```text
-add.add_argument("title")
+total = price * quantity
 ```
 
   </div>
@@ -456,7 +422,7 @@ add.add_argument("title")
     <div class="font-semibold mb-2">In the SEARCH block</div>
 
 ```text
-add.add_argument( "title" )
+total = price  *  quantity
 ```
 
   </div>
@@ -533,9 +499,9 @@ layout: default
 # One commit per edit set
 
 ```text
-* 8f2a1c3  aider: add --priority to the add command
-* 41b9e07  aider: store priority on Task
-* 0c7d5e1  initial taskr
+* 8f2a1c3  aider: second edit set applied
+* 41b9e07  aider: first edit set applied
+* 0c7d5e1  initial commit
 ```
 
 **Git reverses files. It does not reverse a sent email.**
@@ -569,9 +535,9 @@ With the person next to you:
 4. What evidence proves it works?
 
 <!--
-Pairs for two minutes, then take two answers. You are listening for the missing
-storage write or the missing persistence test. Do not reward naming a source
-file inside aider.
+Pairs for two minutes, then take two answers. You are listening for a write
+that never happened and the test that would have caught it. Do not reward
+naming a source file inside aider.
 -->
 
 ---
@@ -645,21 +611,17 @@ layout: default
 
 # A feature that half works
 
-```text
-$ taskr add "ship lab" --priority high
-added #4
-$ taskr list
-#4  ship lab   priority: high
-
-$ taskr list        # new process, same database
-#4  ship lab   priority: normal
-```
+- Accepted when you set it
+- Correct in the same process
+- Default again after a restart
 
 **What do you inspect first?**
 
 <!--
 Four minutes in pairs, two for answers. A persistence round trip is the answer
-you are hoping for: write it, restart, read it back.
+you are hoping for: write it, restart, read it back. The symptom is stated
+without a worked case on purpose, so ask the room to name a change this could
+happen to before you ask where to look.
 
 Watch for the two reflexes you want to break. Adding every file in the package
 is not diagnosis, and switching models is not diagnosis.
