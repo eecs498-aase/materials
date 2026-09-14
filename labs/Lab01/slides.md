@@ -665,12 +665,26 @@ slide.
 -->
 
 ---
+layout: section
+---
+
+# Hackathon 1
+
+## One feature on your own build, in one evening
+
+<!--
+Section slide added 2026-09-14 at the instructor's request, so the hackathon
+reads as its own block rather than a tail on the grounding slides. Two slides
+under it: the format, and the workspace. Three or four minutes in total.
+-->
+
+---
 layout: default
 ---
 
 <div class="label">Thursday September 24</div>
 
-# Hackathon 1
+# The format
 
 - Two hours, your own project
 - Prompt revealed in the room
@@ -701,11 +715,12 @@ layout: default
 - Your repository already cloned
 - A Python reference pack, offline
 
-<div class="caption">690,000 tokens of documentation. Your budget is 8,000.</div>
-
-**Bring a build that runs. Choosing what to load is the exercise.**
-
 <!--
+The caption with the token figures and the closing line about bringing a build
+that runs both came off this slide on 2026-09-14 at the instructor's request.
+Both points are still worth saying; they are yours to say, not the slide's.
+
+
 Nobody installs anything and nobody needs the network. The workspace opens with
 the tools already pointed at the right place and their own repository in it.
 
@@ -973,28 +988,60 @@ layout: section
 
 # Why this tool
 
-## Five minutes, on the tool you have been driving
+## The tool you have been driving, and why it was this one
 
 <!--
-Reworked into a discussion 2026-09-13. It was two dense tables at the end of a
-long taught half and it read as a summary nobody asked for.
-
-It is now a short argument followed by real questions. The tables are the
-material for the discussion, not the point of the section. Put one up, give them
-the line, and then get out of the way.
+Rewritten 2026-09-14 on instructor direction: the discussion slide is gone and
+the section is now five slides that make an argument rather than a summary.
+What you can see, what seeing it costs, who chooses the context, what you own,
+and the one question left open for tomorrow.
 
 The question some of them have been holding for two weeks is why this course
-teaches on Aider rather than the tool everyone talks about. Answer it here, once,
-and answer it honestly rather than defending the choice.
+teaches on Aider rather than the tool everyone talks about. This section answers
+it, once, honestly, and without defending the choice. The short form: every
+decision a harness makes is on display here, they are about to build one, and
+the bigger tools are this loop with more of it automated.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Honest accounting</div>
+<div class="label">Learning</div>
 
-# The ledger
+# The visible joins
+
+| The decision | Where you saw it |
+|---|---|
+| Which files the model sees | You typed `/add` |
+| Which model answers | One line of config |
+| What a reply must look like | The block format |
+| What changed on disk | The diff, then the commit |
+
+**A tool that decides for you hides what you came to learn.**
+
+<!--
+Four decisions every harness makes, and for each one the moment in the last two
+weeks when they made it or watched it. That is the whole pedagogical case: not
+that Aider is the best tool, but that it is the one where the joins show.
+
+The bold line is the argument against starting on a more automated tool. It
+would make the same four decisions, and they would never see any of them, so
+they would leave knowing how to use it and not how it works. This course is
+about how it works, because in three weeks they have to write one.
+
+If someone says the more automated tool is better: agree. It is. That is a
+different claim from being better to learn on, and the next slide is about what
+the difference costs.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The other side</div>
+
+# What control costs
 
 | What it gives you | What it costs you |
 |---|---|
@@ -1010,8 +1057,9 @@ Read down it and resist making the left column win. Each line is a single design
 choice seen twice, which is what a trade-off actually is, and the right column is
 not a list of bugs.
 
-Do not spend long here. The rows are the raw material for the questions two
-slides on, and the discussion is worth more than your commentary.
+Their build inherits every row. When they write the specification this week they
+are choosing which side of each one to stand on, and the packet does not choose
+for them.
 
 The row to expand if you expand one: forgetting between sessions is not a
 limitation of the model. Every tool of this kind does it. Continuity is the
@@ -1044,43 +1092,71 @@ the same decisions without displaying them, which is exactly what makes it a
 worse thing to learn on and a better thing to use.
 
 Stop at context. Who picks the next action is tomorrow's lecture and it has a
-live demo for it, so do not pre-empt it.
+live demo for it, so do not pre-empt it beyond the last slide of this section.
 
-Then the bold line, which is the promise: none of this is magic, it is machinery,
-and they start writing it this week.
+Then the bold line, which is the promise: none of this is machinery they cannot
+build, and they start writing it this week.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Discussion</div>
+<div class="label">Ownership</div>
 
-# Three questions
+# The part you own
 
-1. Which line of the ledger would you refuse to accept in your own tool?
-2. What would your pair-programmer need before it could choose its own context?
-3. When your tool cannot do what was asked, what should it say, and to whom?
+| | |
+|---|---|
+| The model | A name and a URL |
+| The endpoint | Course server, your laptop, a provider |
+| The harness | Every decision in this deck |
+
+**The model is a dependency. The harness is the product.**
 
 <!--
-Leave this up and let them talk. Five minutes, and it is fine if only two of the
-three get air.
+This is the idea that outlasts the course. Aider talks to any endpoint that
+speaks the common API, which is why it runs against the course server, against
+a model on their own laptop, and against a paid provider with one line changed.
+The model is swappable. It is a dependency, like a database driver.
 
-One is the honest one: somebody will say they would never ship a tool that
-forgets everything, and that is a real design position with a real cost, which is
-the whole point of the ledger.
+What is not swappable is the harness: which text goes in, in what order, what a
+reply is allowed to do, what gets written and committed. Every slide today was
+about that layer, and none of it belonged to the model.
 
-Two is the bridge to tomorrow's lecture and to Analyze, so take an answer and
-leave it open rather than resolving it.
-
-Three is the one that makes them better engineers this week. It comes straight
-off the error-message slide: the audience for a failure might be the user, the
-model, or the log, and choosing wrong is why so many of their sessions will
-stall. Their failure-path tests are worth eight points.
-
-If the room is flat, ask three directly at one person's build rather than at the
-room.
+Their build has this shape by design: one endpoint, any permitted model, and
+everything they are graded on lives above the API call. The same is true of the
+tool everyone talks about. Its value is not the model behind it.
 -->
+
+---
+layout: default
+---
+
+<div class="label">Every tool you will meet</div>
+
+# The same loop, more machinery
+
+- Assemble, answer, parse, apply, repair, commit
+- Every tool you will meet runs it
+- What differs is who takes each step
+
+**One question is still open: who picks the next action?**
+
+<!--
+The bridge, and the end of the taught half. Six steps, and today they followed
+one request through all of them. Every tool of this kind, whatever its name and
+whoever makes it, runs the same six.
+
+Ask the room which of the six belonged to the model. One: the answer. At every
+other step the thing that decided what happened next was them, or a rule
+somebody wrote down in advance.
+
+Then leave the bold line up and do not answer it. Tomorrow's lecture opens on
+exactly this question, has a live demo for it, and spends ninety minutes on the
+answer. Saying more here spoils it; saying this much is what makes tomorrow land.
+-->
+
 ---
 layout: section
 ---
