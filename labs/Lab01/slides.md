@@ -139,104 +139,19 @@ asked rather than reciting.
 layout: section
 ---
 
-# Who writes the prompt
-
-## There is no conversation, only an assembled buffer
-
-<!--
-The centre of the lab, and the idea the rest of it hangs off. They have spent
-two weeks inside what looks like a chat, and it is not one. There is a single
-block of text, assembled from nothing every turn, and Aider writes every part of
-it including the half that appears to be theirs.
-
-Do not rush this section. The budget, the cache, the stale file and the silent
-undo are all consequences of it.
--->
-
----
-layout: default
----
-
-<div class="label">Who the model thinks is talking</div>
-
-# Aider's first-person messages
-
-```text
-"I have *added these files to the chat* so you can go ahead and edit them."
-
-"I committed the changes with git hash 4f2a1c & commit msg: add search"
-
-"I edited the files myself."
-
-"I didn't see any properly formatted edits in your reply?!"
-```
-
-**Aider wrote all four. The model reads them as yours.**
-
-<!--
-Read the last one out loud. Aider wrote their irritation, interrobang included,
-and sent it over their name.
-
-None of this is Aider deceiving them. The chat format has two roles and a
-harness has to put machine-generated context somewhere, so it goes in the user's
-slot. But the model has no way to tell which of those messages a person typed.
-
-Ask the room: if the model is told a human wrote something a program generated,
-what is it supposed to do with the words "trust this message"? That question is
-the whole grounding problem, and the rest of the deck answers it.
-
-Their build makes this decision too. Anything it sends that the user did not
-type is a message it is authoring on the user's behalf.
--->
-
----
-layout: default
----
-
-<div class="label">The fiction</div>
-
-# Both halves of the transcript
-
-| Written by | Appears in the prompt as |
-|---|---|
-| Aider | Your file listings and status lines |
-| Aider | The model agreeing to them |
-| Aider | The format reminder, glued to your message |
-| You | The sentence you actually typed |
-
-**Your own tool will write in your user's name too.**
-
-<!--
-Row two is the one that lands. Aider writes replies for the model, "Ok, any
-changes I propose will be to those files", and puts them in the history, so the
-next turn reads as a dialogue that has already agreed with itself. The model
-never said it.
-
-Row three is worth saying slowly. The instruction that tells the model which
-edit format to produce is appended to the end of the student's own message. What
-the model reads as the request is not what they typed.
-
-There is a cost hidden in row three that comes back later: when the context is
-nearly full, that reminder is the thing dropped to make room. The instruction
-keeping the output parseable is sacrificed exactly when the model is most likely
-to drift.
--->
-
----
-layout: section
----
-
 # Context
 
 ## What the harness chooses to send
 
 <!--
-This block is now about context rather than a walkthrough of a whole turn
-(instructor cuts 2026-09-13). Most of it is the repo map, because that is the
-part nobody has met before and the part that quietly spends their budget.
+Cut back hard on 2026-09-13. L02 and L03 already taught the window, the four
+sources that fill it, surgical selection and /tokens, and this block used to
+repeat all of it. What is left is the part they have not met: the repo map, and
+what happens to the budget as a session runs long.
 
-Say up front that only the reply belongs to the model. Everything else in this
-block is the harness deciding what the model gets to see.
+So do not re-teach context here. One sentence to reconnect it, that only the
+reply belongs to the model and everything else is the harness choosing what the
+model gets to see, and then straight into the map.
 -->
 
 ---
@@ -298,69 +213,6 @@ amber box. The model produced text, and a program decided what to do with it.
 
 This is a picture of Aider, not a required architecture for their build. They
 will draw their own version of this in a week.
--->
-
----
-layout: default
----
-
-<div class="label">The request</div>
-
-# What goes into the request
-
-| | |
-|---|---|
-| Fixed each turn | Instructions, added files, repo map |
-| Grows each turn | Session history, your message |
-
-**Context is a selection. A file you never added is not in it.**
-
-<!--
-Do not claim a fixed seven-part ordering. What actually goes into the prompt
-depends on the coder, the model and the settings, and it changes between
-releases. The list above is the shape, not the wire format.
-
-Ask what the model would need in order to change three files consistently, when
-nothing has told it which three. That question sets up the repo map.
-
-The /add slide was cut on 2026-09-13 because they have been doing this for two
-weeks. Two things it carried, worth saying if anyone asks rather than putting
-back on the glass: added files can be rewritten while read-only files can only
-be cited, and adding the whole package is not a selection strategy, it is a way
-to spend the budget.
--->
-
----
-layout: default
----
-
-<div class="label">The real constraint</div>
-
-# Context as a budget
-
-| Competing for one window | |
-|---|---|
-| Instructions and examples | Paid every turn |
-| Session history | Grows until it is summarised |
-| Added files | The ones you chose |
-| Repo map | Whatever is left over |
-
-<div class="caption">A harness is a policy for spending it.</div>
-
-**Yours needs a policy too, and the packet does not supply one.**
-
-<!--
-This is the idea the repo map slides are evidence for, so put it up before them
-rather than after.
-
-A harness is not mainly a parser or an editor. It is a policy for what to spend
-a finite window on, and every design difference between one tool and the next
-comes back to that policy. Aider's is visible and mostly manual: they add the
-files, it fills the remainder with a ranked guess.
-
-Their build has this problem on day one and the packet does not solve it for
-them. What gets sent, what gets refused, and what happens when the required
-input alone will not fit are all their decisions to write down.
 -->
 
 ---
@@ -510,53 +362,54 @@ layout: default
 
 <div class="caption">One budget. Your message is what stops fitting.</div>
 
-**On a small model the map can outweigh the files it describes.**
+**Your build decides what to drop. The packet does not.**
 
 <!--
-This slide now carries what the separate map-cost slide used to say, because two
-diagrams of the same budget read as two unrelated facts (instructor note
-2026-09-13).
+The one context slide worth keeping, because it is the part L02 and L03 did not
+show. They have seen that the window is finite and they have read /tokens. They
+have not seen it fill up over a session.
 
 Walk the two bars. Nothing about the early turn is wrong; the later turn is the
 same prompt after the history has grown, and the thing that stops fitting is
 their own message. Everything above it was spent before they typed.
 
-The bold line is the map's part in that. It is charged to the same budget as the
-files it was guessing about, which on a 4B can be a third of the window spent
-describing files the model then cannot see inside. That is why aider-practice
-turns it down, and it is why the map is out of scope for the build. Say so, so
-nobody spends week 4 on it.
+The map is charged to this same budget, which on a 4B can be a third of the
+window spent describing files the model then cannot see inside. That is why
+aider-practice turns it down, and why the map is out of scope for the build. Say
+so, so nobody spends week 4 on it.
 
-Ask what they would drop first and what has to survive. Their Stage 1 contract
-keeps the system instructions, the current request and the added file contents,
-and refuses an oversized required input instead of silently trimming it. That
-refusal is a design decision they have to write down and test.
+Then the bold line, which is the whole reason this slide is still here. Ask what
+they would drop first and what has to survive. Their Stage 1 contract keeps the
+system instructions, the current request and the added file contents, and refuses
+an oversized required input instead of silently trimming it. That refusal is a
+design decision they have to write down and test, and the packet does not make it
+for them.
 -->
 
 ---
 layout: section
 ---
 
-# What every turn re-sends
+# Rebuilding the prompt
 
-## The model remembers nothing, so all of it goes again
+## Nothing carries over, so all of it is sent again
 
 <!--
-Reworked 2026-09-13: the old version of this section had four slides and two of
-them showed the same seven-part list in different groupings, which is what made
-it read as confusing. It is three slides now and they argue in a line: here is
-the order, here is why the order was chosen, here is what ruins it.
+Simplified 2026-09-13 on instructor note: this section was three slides and read
+as confusing, because two of them argued the same point from different angles.
+Two slides now, and they argue in a line: here is the order, here is why that
+order was chosen.
 
-The one sentence to open with, because everything here follows from it: the
-model keeps nothing between turns. Turn twelve sends everything turn one sent,
-plus more. Every design decision in this section exists because of that.
+Open with the one sentence everything else follows from. The model keeps nothing
+between turns. Turn twelve sends everything turn one sent, plus more. That is not
+a limitation to work around, it is the condition their own build runs under.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Assembly order</div>
+<div class="label">Sorted by volatility</div>
 
 # The order of the prefix
 
@@ -566,17 +419,15 @@ layout: default
 | When you ask | Read-only files, repo map |
 | Every turn | History, added files, your message |
 
-<div class="caption">Sent in that order, top row first.</div>
-
-**Sorted by how often it changes, not by how it reads.**
+**Stable first, volatile last. The order is a design decision.**
 
 <!--
-Three groups rather than a numbered list of seven, because the grouping is the
-point and the exact ordinal of each part is not.
+Three groups rather than a list of seven parts, because the grouping is the point
+and the exact ordinal of each part is not.
 
-Do not explain why yet. Put it up, say that the order is deliberate and looks
-strange, and let the next slide pay it off. If someone guesses the reason before
-you get there, that is the best outcome available.
+Work the bold line rather than the table. The parts that change every turn were
+deliberately put last. The next slide says what that buys, so put the ordering up
+first and let someone in the room guess why before you explain it.
 
 Their build assembles this same thing, and the packet asks them to say what goes
 in it and in what order. This slide is the argument that the answer is a design
@@ -587,71 +438,47 @@ decision rather than a detail.
 layout: default
 ---
 
-<div class="label">Why that order</div>
+<div class="label">What throws it away</div>
 
-# Reusing a prefix
+# Prefix reuse
 
 | | |
 |---|---|
 | Opening unchanged | The server skips re-reading it |
 | One token different | Everything after it is redone |
 
-<div class="caption">Not memory. The same text, recognised again.</div>
-
-**So the cheapest thing to change is the last thing in the prompt.**
-
-<!--
-Now the previous slide makes sense. Work the two rows and then point back.
-
-This is not the model remembering. Nothing is remembered between sessions. It is
-the serving layer recognising text it has already processed and picking up where
-it left off, and it holds on the course endpoint as much as on a hosted API. The
-plumbing differs, a hosted API marks the points explicitly and a local server
-reuses the longest opening it recognises, and the rule is identical either way.
-
-Then land the bold line against the order slide: the parts that change every
-turn were put at the end so that changing them costs the least. That is a real
-design principle and it is worth more to them than the mechanism itself.
-
-If they want dollar figures, quote the provider's current pricing page rather
-than a number from memory. What they will feel on their own machine is the
-wait before the first token, not money.
--->
-
----
-layout: default
----
-
-<div class="label">What ruins it</div>
-
-# What goes cold
-
 - Switching between ask and code
 - Adding or dropping a file
 - Naming a file in your message
 
-**All three change the front, so the whole prefix is redone.**
+**So the cheapest thing to change is the last thing you send.**
 
 <!--
-Three things, all verified in the source, and the third is the one nobody
-guesses.
+Table first, then the three bullets: here is the rule, here is what trips it.
 
-Ask mode is not a smaller code mode. It is a different system prompt with the
-worked examples removed, and it sits at the very front, so flipping between ask
-and code throws the whole prefix away rather than part of it. A quick question
-mid task is not free.
+The rule is not the model remembering. Nothing is remembered between sessions.
+It is the serving layer recognising text it has already processed and picking up
+where it left off, and it holds on the course endpoint as much as on a hosted
+API. A hosted API marks the reuse points explicitly and a local server reuses the
+longest opening it recognises; the rule is identical either way.
 
-Adding a file changes the file block and the repo map, because files in the chat
-come out of the map.
-
-The third: by default the map is rebuilt from the filenames and identifiers
-found in the message just typed. Mention a file in passing and the map moves.
-Aider knows, which is why turning caching on quietly switches the map to a
-stabler refresh mode.
+Then the three bullets, all verified in the source, and the third is the one
+nobody guesses. Ask mode is not a smaller code mode: it is a different system
+prompt with the worked examples removed, sitting at the very front, so a quick
+question mid task throws the whole prefix away rather than part of it. Adding a
+file changes both the file block and the map, because files in the chat come out
+of the map. And by default the map is rebuilt from the filenames found in the
+message just typed, so mentioning a file in passing moves it.
 
 The habit worth giving them: settle the file set before starting, and keep a
-question in its own session.
+question in its own session. The design lesson worth more: what they put first in
+their own prompt decides what a turn costs.
+
+If they want dollar figures, quote the provider's current pricing page rather
+than a number from memory. What they will feel on their own machine is the wait
+before the first token, not money.
 -->
+
 ---
 layout: default
 ---
