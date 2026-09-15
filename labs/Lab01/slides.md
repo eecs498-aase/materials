@@ -1392,7 +1392,7 @@ layout: default
 
 <div class="label">Three tiers</div>
 
-# You will climb the tiers yourself {.assert}
+# Project milestones
 
 | Tier | Who takes the step | When you build it |
 |---|---|---|
