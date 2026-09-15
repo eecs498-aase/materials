@@ -1153,10 +1153,11 @@ layout: default
 You write the requirements before you write the code, and the commit history
 has to show it.
 
-| | |
-|---|---|
-| System design | Once, before implementation |
-| Increment specs | Slices you choose, each spec first |
+| What you write | When | Covers |
+|---|---|---|
+| System design | Once, before implementation | Config, run contract, seven features |
+| Three diagrams | With the design | Components, sequence, edit lifecycle |
+| Increment specs | One before each slice you choose | Ordered, testable, context scoped |
 
 <div class="caption">No specification is supplied.</div>
 
@@ -1168,6 +1169,13 @@ requirements, their own acceptance criteria, and their own increments.
 The history is evidence, not bureaucracy. A design committed after the code it
 describes earns nothing, and they cannot reconstruct it at the end.
 
+Row by row. The requirements have to cover the configuration and execution
+contracts as well as the seven features, with observable outcomes, edge cases
+and exclusions, and each one has to trace to an acceptance criterion of their
+own. The diagrams describe their system, not Aider: copying this morning's
+picture earns nothing, Mermaid is enough, and labels have to be legible and
+accurate. There is no length requirement anywhere in this section.
+
 An increment is not a commit and not a single change. It is a sizeable slice of
 the build that they break out and define themselves, with an observable result,
 its own scoped context and its own ordered tasks. Closest thing they have met is
@@ -1176,30 +1184,6 @@ an aider-practice lesson, except that here they write the lesson.
 They choose how many there are and where the boundaries fall. The packet is
 explicit about that and the rubric scores whether the set covers the whole build
 in a sensible order, not whether there are many of them.
--->
-
----
-layout: default
----
-
-<div class="label">What you write</div>
-
-# The design artifacts
-
-| Artifact | Covers |
-|---|---|
-| Your requirements | Config, run contract, seven features |
-| Increment specs | Ordered, testable, context scoped |
-| Three diagrams | Components, sequence, edit lifecycle |
-
-<!--
-Their requirements have to cover the configuration and execution contracts as
-well as the seven features, with observable outcomes, edge cases and exclusions,
-and each one has to trace to an acceptance criterion of their own.
-
-The diagrams describe their system, not Aider. Copying this morning's picture
-earns nothing. Mermaid is enough, labels have to be legible and accurate, and
-there is no length requirement anywhere in this section.
 -->
 
 ---
