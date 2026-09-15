@@ -31,18 +31,164 @@ layout: default
 
 # Lab01 left one question open {.assert}
 
-You followed one request through six steps: assemble, answer, parse, apply,
-repair, commit.
+You sorted the prompt by who chose each part.
 
-At every step, the thing that picked what happened next was you, or a rule
-somebody wrote down in advance.
+| Part of the prompt | Chosen by |
+|---|---|
+| System prompt | Aider, by mode |
+| Added and read-only files | You, by command |
+| Repo map | Aider, by a ranking |
+| History | You start it, Aider trims it |
+| Your message | You |
+
+**Two rows you never touched. One of them passed for intelligence.**
 
 <!--
 Thirty seconds of recall, no more. Monday's room did this yesterday, Tuesday's
 finished ninety minutes ago, so this is a pointer and not a recap.
 
-If you want one answer out loud, ask which of the six steps belonged to the
-model. Step 2, and only step 2.
+Lab01's table, unchanged. It is here because the whole lecture is about that
+right-hand column, and because the answer they gave yesterday is about to get
+one row longer.
+
+Read down the right side and stop. Do not answer the next slide.
+-->
+
+---
+layout: default
+---
+
+<div class="label">Aider is one</div>
+
+# Aider, the model, and the repo
+
+<div class="mt-2">
+<svg viewBox="0 0 900 330" style="width:100%;max-height:330px" role="img"
+     aria-label="Aider sits between your repository and the model. Aider reads files, sends prompt text up to the model, receives reply text, then writes and commits. No line connects the model to the repository.">
+  <defs>
+    <marker id="ar-b" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="var(--c-primary)" /></marker>
+    <marker id="ar-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="var(--c-amber)" /></marker>
+  </defs>
+  <rect x="300" y="8" width="300" height="58" rx="8" fill="var(--c-highlight)" stroke="var(--c-amber)" stroke-width="2.5" />
+  <text x="450" y="34" text-anchor="middle" style="font:600 17px var(--font-mono)" fill="var(--c-amber)">the model</text>
+  <text x="450" y="53" text-anchor="middle" style="font:400 12.5px var(--font-sans)" fill="var(--c-ink-soft)">text in, text out</text>
+  <rect x="40" y="128" width="820" height="92" rx="10" fill="var(--c-bg-1)" stroke="var(--c-rule-strong)" />
+  <text x="58" y="151" style="font:500 11px var(--font-mono); letter-spacing:0.14em" fill="var(--c-ink-muted)">AIDER</text>
+  <rect x="70" y="160" width="220" height="44" rx="6" fill="var(--c-bg-0)" stroke="var(--c-primary)" stroke-width="1.5" />
+  <rect x="340" y="160" width="220" height="44" rx="6" fill="var(--c-bg-0)" stroke="var(--c-primary)" stroke-width="1.5" />
+  <rect x="610" y="160" width="220" height="44" rx="6" fill="var(--c-bg-0)" stroke="var(--c-primary)" stroke-width="1.5" />
+  <g style="font:500 14.5px var(--font-mono)" fill="var(--c-ink)" text-anchor="middle">
+    <text x="180" y="187">assemble request</text>
+    <text x="450" y="187">parse and apply</text>
+    <text x="720" y="187">commit</text>
+  </g>
+  <rect x="40" y="256" width="820" height="54" rx="10" fill="var(--c-bg-1)" stroke="var(--c-rule-strong)" />
+  <text x="450" y="289" text-anchor="middle" style="font:500 15px var(--font-mono)" fill="var(--c-ink)">your files  ·  git repository</text>
+  <g stroke="var(--c-amber)" stroke-width="2" fill="none">
+    <path d="M180,158 V100 H350 V70" marker-end="url(#ar-a)" />
+    <path d="M550,68 V100 H450 V156" marker-end="url(#ar-a)" />
+  </g>
+  <g style="font:500 12.5px var(--font-sans)" fill="var(--c-amber)" text-anchor="middle">
+    <text x="264" y="91">prompt text</text>
+    <text x="502" y="91">reply text</text>
+  </g>
+  <g stroke="var(--c-primary)" stroke-width="2" fill="none">
+    <path d="M110,252 V210" marker-end="url(#ar-b)" />
+    <path d="M450,208 V250" marker-end="url(#ar-b)" />
+    <path d="M720,208 V250" marker-end="url(#ar-b)" />
+  </g>
+  <g style="font:400 12.5px var(--font-sans)" fill="var(--c-ink-muted)">
+    <text x="122" y="236">reads</text>
+    <text x="462" y="236">writes</text>
+    <text x="732" y="236">records</text>
+  </g>
+</svg>
+</div>
+
+<div class="caption">The model touches no file.</div>
+
+<!--
+Lab01's slide, as they saw it. Do not re-teach it: ask them to name the three
+boxes and move.
+
+The three boxes are five of the six steps, which is the point of putting it
+back up. Assemble the request. The model answers. Parse the reply and apply
+it. Record it. Nobody drew them as a numbered line yesterday, and the next
+slide does.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The loop, written out</div>
+
+# Six steps, in order
+
+<div class="mt-4 text-base">
+
+<div class="grid grid-cols-6 gap-2 items-stretch">
+  <div class="card"><div class="text-sm font-semibold">1 assemble</div><div class="text-xs opacity-70 mt-1">you and Aider, per the table</div></div>
+  <div class="card"><div class="text-sm font-semibold">2 answer</div><div class="text-xs opacity-70 mt-1">the model. Text out</div></div>
+  <div class="card"><div class="text-sm font-semibold">3 parse</div><div class="text-xs opacity-70 mt-1">Aider, by a fixed rule</div></div>
+  <div class="card"><div class="text-sm font-semibold">4 apply</div><div class="text-xs opacity-70 mt-1">Aider, or it refuses</div></div>
+  <div class="card" style="border-color:var(--c-amber)"><div class="text-sm font-semibold" style="color:var(--c-amber)">5 repair</div><div class="text-xs opacity-70 mt-1">only if 4 failed</div></div>
+  <div class="card"><div class="text-sm font-semibold">6 commit</div><div class="text-xs opacity-70 mt-1">Aider, every time</div></div>
+</div>
+
+</div>
+
+<div class="caption mt-6">One request, start to finish, and the order never varies. Step 2 is the only one the model takes.</div>
+
+<!--
+The diagram before this drew three boxes. This is the same thing as a line,
+because the argument needs an order to point at.
+
+Five of the six were on that diagram. Step 5 is the one it does not draw, and
+the next slide is why.
+
+The number to land: exactly one of six belongs to the model. Ask for it out
+loud rather than saying it. At every other step the thing deciding what
+happens next is them, or a rule somebody wrote down in advance.
+-->
+
+---
+layout: default
+---
+
+<div class="label">The one that loops back</div>
+
+# Repair is an insertion, not a stage
+
+<div class="mt-4 space-y-2">
+
+- A block that does not match is **normal**, not exceptional
+- Aider writes the failure back as a prompt, and step 2 runs again
+- Up to three times, then it gives up and tells you
+
+</div>
+
+<div class="caption mt-6">It re-enters at step 2. It never chooses a different step, and it never chooses a different file.</div>
+
+<!--
+Say this, in these words: a block that does not match is normal, not
+exceptional. The model quotes the lines it wants to replace, and the quote has
+to match the file exactly. One line it remembered wrong, and the block does not
+apply. Aider sends the miss back as the next prompt and runs step 2 again, up
+to three times, then it stops and tells you.
+
+This is the slide that keeps the "Aider has a loop" claim honest twenty
+minutes from now, so do not skip it.
+
+Repair is the only backward arrow in the whole sequence, which is why it was
+not on Lab01's diagram: three boxes left to right cannot draw it.
+
+The two things that make it a fixed loop rather than a decision: it always
+re-enters at the same step, and the repertoire it re-enters with is the same
+one it started with. Nothing new becomes possible on attempt two.
+
+Say the retry limit. Three, then it stops. A loop with a counter is still a
+loop, and it is still not choosing.
 -->
 
 ---
@@ -106,7 +252,7 @@ layout: default
 </svg>
 </div>
 
-<div class="caption">The blue rung is where you have spent two weeks.</div>
+<div class="caption">The blue rung is where you have spent two weeks. M1 is this rung; M2 and M3 are rung 4.</div>
 
 <!--
 Walk up it once, fast, one sentence each. The detail is in content.md and they
@@ -114,6 +260,13 @@ do not need all of it.
 
 The dashed line is the slide. Rungs 1 to 3 differ in how much they automate.
 Rung 4 differs in who decides. That is a change of kind, not of degree.
+
+Lab01 names three milestones for the build: M1 pair-programmer, M2 agent, M3
+assistant. Those are the shapes one repository passes through; the rungs are
+where any tool sits. M1 is rung 3, M2 crosses the dashed line to rung 4, M3
+stays there and hardens it. Say it once so the two ladders do not compete.
+Monday's room heard the older closing without the milestone names, so say
+them as if new.
 -->
 
 ---
@@ -273,6 +426,12 @@ The difference is *who chooses*.
 Pause here. This is the sentence the lecture turns on.
 
 Not which primitives exist. Which of them the human still holds.
+
+The six steps, for the callback: 1 assemble, you and Aider per the table.
+2 answer, the model, text out. 3 parse, Aider by a fixed rule. 4 apply,
+Aider, or it refuses. 5 repair, only if 4 failed, and it re-enters at 2.
+6 commit, Aider, every time. One of six belongs to the model. At every other
+step the chooser is you or a rule somebody wrote down in advance.
 -->
 
 ---
@@ -302,7 +461,7 @@ layout: section
 
 # Chat break
 
-## Five minutes, on the design you drafted yesterday
+## Five minutes, on the tool you already know
 
 ---
 layout: default
@@ -310,14 +469,15 @@ layout: default
 
 <div class="label">Chat break · 5 minutes</div>
 
-# Move your own design up a rung {.assert}
+# Give one choice away {.assert}
 
-Your assistant sits at rung 3, and your specification puts it there.
+Two weeks of Aider on taskr. Three choices are still yours every time:
+which files it sees, where the task ends, whether the plan runs.
 
-Pick **one** primitive you would add: the model choosing its next action,
-discovering files you never selected, or carrying state between sessions.
+Hand **exactly one** of them to the model.
 
-**Then say what you would have to build first to make it safe.**
+**Then say what you would have to build before you would let that loose
+on a repository you care about.** Which is more work, the handover or the guardrail?
 
 <!--
 **"OK, Zoom, we're on break."**
@@ -375,7 +535,7 @@ You added three files, because a file you do not add is not in the context.
 You framed the task. You read the diff. You found the missing write yourself.
 
 <!--
-Same request as Lab01, deliberately. One task at two rungs is the only honest
+Same request as lesson three, deliberately. One task at two rungs is the only honest
 comparison available in eighty minutes.
 
 Nobody needs the taskr recap. They have been living in it for two weeks.
@@ -408,7 +568,7 @@ layout: default
 
 <!--
 Switch to the terminal here and drive it. Runbook in `assets/demo-runbook.md`;
-if the network is down, the recording is in `assets/demo-fallback.md`.
+there is no recording behind this, so if the network is down see `assets/demo-fallback.md`.
 
 Narrate the decisions, not the typing. Every time it picks a file, say that
 nobody told it to.
@@ -530,15 +690,17 @@ layout: default
 
 # Permissions are the real safety layer {.assert}
 
-You already built this shape. Nothing changes on disk until a human approves
-it, and that holds whatever the model says, because your program enforces it.
+You were handed this shape in lab. Nothing changes on disk until a human
+approves it, and that holds whatever the model says, because the program
+enforces it, not the prompt.
 
 **The same question scales up: when the model can run commands, which ones run
 without being asked?**
 
 <!--
-Tie it to their own specification explicitly. They wrote the approval gate last
-week and may not have noticed it was the same idea.
+Tie it to the specification they were handed: F6, preview, approval and
+application. Lab01's closing table already put it in front of them as the rule
+they will write.
 
 Do not answer the question on the slide. It is Analyze's, and Lab03's.
 -->
