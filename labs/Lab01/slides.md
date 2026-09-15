@@ -1329,130 +1329,94 @@ quantization you know about.
 layout: section
 ---
 
-# Why this tool, and what's next
+# Autonomy, and where your harness goes
 
-## Aider on purpose, then one repository to December
+## Harnesses got better. You will build that yourself.
 
 <!--
-Combined 2026-09-13, late, on instructor direction, from "Why this tool" and
-"What comes next", and titled as the combination. He found himself saying the
-last section's content during this one. One arc now, six slides, past to
-future. "The part you own" was cut on instruction later the same night. Where the field started.
-Aider is good to learn on. The models are weak on purpose. One repository to
-December. You will know how Claude Code works. The same loop
-with more machinery, which ends on the question L05 opens with.
+Rewritten 2026-09-15 on instructor direction. The old opening of this section
+argued for Aider and for the weak models, and both arguments had already been
+made in L01 to L04, so those three slides are gone: "This is where the field
+started", "Aider is good to learn on" and "The models are weak on purpose".
+The section now opens on autonomy: what a harness decides, how much of that
+the model has been handed since 2023, and the fact that this course climbs
+those tiers in one repository. The three slides after that were kept and
+tightened.
+
+Five slides. What a harness decides, and who got to decide it in 2023 against
+2025. The three tiers, and that they are built here in order. One repository
+to December. You will know how Claude Code works. The same loop with more
+machinery, ending on what is left for L05.
 
 Each slide's notes end with a "Next:" line saying what the following slide
-carries, so nothing gets said a slide early. The order is the talk: this is
-where it started, it is the one to learn on, the weak models are deliberate,
-that harness grows through three phases, it ends up Claude Code-shaped and you will know why, and one question
-is left open for tomorrow.
+carries, so nothing gets said a slide early.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Where it started</div>
+<div class="label">Autonomy</div>
 
-# This is where the field started {.assert}
+# Autonomy is decisions handed to the model {.assert}
 
-| | |
-|---|---|
-| 2023 | Aider and Cursor: the model edits your files |
-| 2025 | Claude Code and Codex: the same loop, most of it automated |
-| Today | Aider still runs the 2023 loop, in source you can open |
+| The harness decides | 2023, Aider | 2025, an agentic CLI |
+|---|---|---|
+| What the model sees | You, with `/add` | The model asks, and reads it |
+| What happens to a reply | An edit, shown to you first | A tool call, checked against a rule |
+| What comes next | You type the next request | The model picks the next action |
+| What survives the session | Nothing | Notes, memory, a run it can resume |
 
-**Start where the field started, then build forward.**
+**The model call did not change shape. Everything around it did.**
 
 <!--
-L01's four waves, compressed to the two that matter here. Aider and Cursor are
-the first generation of tools where the model edits files rather than pasting
-into a chat. Claude Code and Codex came two years later and run the same loop
-with far more of it automated.
+Every row is a decision the harness makes, and the two columns are who it lets
+make it. Read the middle column first: in Aider they made every one of these
+themselves for two weeks, and the model's contribution was one block of text.
+Then the right column: the same four decisions, and at each one the harness
+now lets the model choose and checks the choice against a rule.
 
-The third row is the reason for the first two. Aider is open source and still
-runs the original loop, so the whole thing is readable: the repo map they saw
-earlier is under nine hundred lines. Nothing about the tool everyone talks
-about is that inspectable.
+That is what "more autonomous" means, and it is where the complexity and the
+power of a 2025 harness live. The model on the right is often the same model
+as on the left. What changed is how much of its own turn it gets to decide.
 
-Do not say what "most of it automated" means. That is the closing slide's
-question and L05's lecture.
+Do not say how a harness lets the model pick the next action, or what that
+costs. L05 spends ninety minutes on exactly that, with a live demo.
 
-Next: the four decisions you can see in Aider. Do not list them here; the
-row that says Aider is readable is enough.
+Next: the tiers, and that they are built here in order.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Learning</div>
+<div class="label">Three tiers</div>
 
-# Aider is good to learn on {.assert}
+# You will climb the tiers yourself {.assert}
 
-| The decision | Where you saw it |
-|---|---|
-| Which files the model sees | You typed `/add` |
-| Which model answers | One line of config |
-| What a reply must look like | The block format |
-| What changed on disk | The diff, then the commit |
+| Tier | Who takes the step | When you build it |
+|---|---|---|
+| 1. Pair-programmer | You choose the files and approve the edit; the model writes | Apply, starting this week |
+| 2. Agent | The model picks the next action; a rule you wrote approves it | Analyze |
+| 3. Assistant | It keeps state between runs and survives real work | Create |
 
-**A tool that decides for you hides what you came to learn.**
-
-<!--
-Four decisions every harness makes, and for each one the moment in the last two
-weeks when they made it or watched it. That is the whole pedagogical case, and
-the headline now says it rather than implying it: Aider is not the best tool,
-it is the one where the joins show, and that is what makes it the one to learn
-on.
-
-The bold line is the argument against starting on a more automated tool. It
-would make the same four decisions, and they would never see any of them, so
-they would leave knowing how to use it and not how it works. This course is
-about how it works, because in three weeks they have to write one.
-
-If someone says the more automated tool is better: agree. It is. That is a
-different claim from being better to learn on, and the next slide is about what
-the difference costs.
-
-Next: the weak models. Do not defend the 4B here; the next slide does.
--->
-
----
-layout: default
----
-
-<div class="label">Small models, on purpose</div>
-
-# The models are weak on purpose {.assert}
-
-| The 4B and the 9B | |
-|---|---|
-| Free | Your laptop or the course server, no subscription |
-| Fail often | So the diagnosis gets practised every session |
-| Fail for a reason | Context, model or prompt, and you can tell which |
-
-**When someone says AI is bad, you will know what they saw.**
+**A bigger model buys none of this. Every tier is harness you wrote.**
 
 <!--
-The direct version of something the course has only implied. Most people who
-have decided AI cannot code met a weak model with no context management and a
-vague prompt, and drew a conclusion. That is the setup every student in this
-room has run sixteen times, and L03 gave them three words for what went wrong.
+The three tiers are the three phases, and the order is the order harnesses
+grew in. Tier 1 is the build they are reading about this week: they choose
+what the model sees, and nothing touches disk until they say yes. Tier 2 moves
+one decision, the next action, from them to the model, and the price of that
+move is an approval layer they have to write. Tier 3 is what makes it usable
+day after day: memory, hardening, more than one way in.
 
-So they can now reproduce the skeptic's experience on demand and say which
-lever was set wrong. A frontier model would not have taught them that, because
-it hides the same failures behind polish and they happen less often.
+The bold line is the design of the course. The model does not grow between
+now and December, so nothing they gain in autonomy comes from a bigger model.
+It comes from harness code in their own repository. That is also why the
+model is one config line and the harness is the product.
 
-The 4B fails in the practice lessons on purpose. It is weak enough to punish a
-sloppy context or a vague ask immediately, which is how the habit lands. The
-next slide is why none of that is baked in: the model is one config line.
-
-Next: the arc to December. The weak model is the setup, the growing
-repository is the payoff, so stop at the bold line and let the timeline say
-it. If the room needs it, one sentence: the model is one config line and the
-harness is theirs; there is no longer a slide for that.
+Next: the same three tiers as a timeline, with what each adds in code. Do
+not walk the phases here; the next slide does.
 -->
 
 ---
@@ -1465,7 +1429,7 @@ layout: default
 
 <div class="mt-4">
 <svg viewBox="0 0 900 150" style="width:100%;max-height:180px" role="img"
-     aria-label="A timeline with three phases: Apply adds one loop with exact edits and git, Analyze adds model-selected tools, Create adds memory, hardening and another way in.">
+     aria-label="A timeline with three phases: Apply is tier 1, one loop with exact edits and git; Analyze is tier 2, the model picks its tools; Create is tier 3, memory, hardening and another way in.">
   <line x1="80" y1="70" x2="820" y2="70" stroke="var(--c-rule-strong)" stroke-width="2" />
   <g fill="var(--c-primary)">
     <circle cx="170" cy="70" r="7" />
@@ -1478,9 +1442,9 @@ layout: default
     <text x="730" y="48">CREATE</text>
   </g>
   <g style="font:400 13px var(--font-sans)" fill="var(--c-ink-soft)" text-anchor="middle">
-    <text x="170" y="102">one loop, exact edits, git</text>
-    <text x="450" y="102">model-selected tools</text>
-    <text x="730" y="102">memory, hardening, another way in</text>
+    <text x="170" y="102">tier 1: one loop, exact edits, git</text>
+    <text x="450" y="102">tier 2: the model picks its tools</text>
+    <text x="730" y="102">tier 3: memory, hardening, another way in</text>
   </g>
 </svg>
 </div>
@@ -1488,16 +1452,16 @@ layout: default
 **Nothing is thrown away. Each phase grows the last.**
 
 <!--
-Walk the timeline left to right and say what changes at each dot: first the
-human is in the loop, then the model picks the tools, then it keeps state and
-survives contact with real work.
+Walk the timeline left to right and say what each dot adds in code: tier 1 is
+the loop, exact edits and git they build this month; tier 2 is tools the model
+chooses and the approval layer that gates them; tier 3 is state that survives
+a run, hardening, and another way in.
 
 Build advice that used to sit on this slide and still belongs in the room: one
 small checkable result first, and keep the phase snapshots.
 
-The Aider versus agentic CLI comparison that used to follow this slide is gone,
-because L05 delivers exactly that the next day with a live demo behind it. Do
-not reconstruct it here.
+The 2023-against-2025 table two slides back is as far as the tool comparison
+goes in this lab. L05 has the live demo; do not reconstruct it here.
 
 Do not estimate the workload out loud. Do say that a runnable slice early is
 what keeps the December integration from being a surprise.
@@ -1514,8 +1478,8 @@ layout: default
 
 # You will know how Claude Code works {.assert}
 
-By December: a coding agent in the shape of Claude Code, grown from the
-pair-programmer you start this week.
+By December: a tier-3 harness in the shape of Claude Code, grown from the
+tier-1 pair-programmer you start this week.
 
 | Using it | Knowing it |
 |---|---|
@@ -1561,22 +1525,23 @@ layout: default
 - Every tool you will meet runs it
 - What differs is who takes each step
 
-**One question is still open: who picks the next action?**
+**Left for L05: how the model gets to pick the next action, and what it costs.**
 
 <!--
 The bridge, and the end of the taught half. Six steps, and today they followed
 one request through all of them. Every tool of this kind, whatever its name and
 whoever makes it, runs the same six.
 
-Ask the room which of the six belonged to the model. One: the answer. At every
-other step the thing that decided what happened next was them, or a rule
-somebody wrote down in advance.
+Ask the room which of the six belonged to the model in their own sessions.
+One: the answer. At every other step the thing that decided what happened
+next was them, or a rule somebody wrote down in advance.
 
-Then leave the bold line up and do not answer it. Tomorrow's lecture opens on
-exactly this question, has a live demo for it, and spends ninety minutes on the
-answer. Saying more here spoils it; saying this much is what makes tomorrow land.
+Then leave the bold line up. The autonomy slide already said that at tier 2
+the model picks the next action. What this deck has not said is how a harness
+makes that possible and what it costs, and L05 opens on exactly that with a
+live demo. Saying more here spoils it.
 
-This is the last slide before office hours. Leave the question up.
+This is the last slide before office hours. Leave the line up.
 -->
 
 ---
