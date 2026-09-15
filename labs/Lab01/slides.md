@@ -1339,12 +1339,12 @@ argued for Aider and for the weak models, and both arguments had already been
 made in L01 to L04, so those three slides are gone: "This is where the field
 started", "Aider is good to learn on" and "The models are weak on purpose".
 The section now opens on autonomy: what a harness decides, how much of that
-the model has been handed since 2023, and the fact that this course climbs
-those tiers in one repository. The three slides after that were kept and
+the model has been handed since 2023, and the fact that this course reaches
+those milestones in one repository. The three slides after that were kept and
 tightened.
 
 Five slides. What a harness decides, and who got to decide it in 2023 against
-2025. The three tiers, and that they are built here in order. One repository
+2025. The three milestones, M1 to M3, built here in order. One repository
 to December. You will know how Claude Code works. The same loop with more
 machinery, ending on what is left for L05.
 
@@ -1383,31 +1383,31 @@ as on the left. What changed is how much of its own turn it gets to decide.
 Do not say how a harness lets the model pick the next action, or what that
 costs. L05 spends ninety minutes on exactly that, with a live demo.
 
-Next: the tiers, and that they are built here in order.
+Next: the milestones, M1 to M3, built here in order.
 -->
 
 ---
 layout: default
 ---
 
-<div class="label">Three tiers</div>
+<div class="label">Milestones</div>
 
 # Project milestones
 
-| Tier | Who takes the step | When you build it |
+| Milestone | Who takes the step | When you build it |
 |---|---|---|
-| 1. Pair-programmer | You choose the files and approve the edit; the model writes | Apply, starting this week |
-| 2. Agent | The model picks the next action; a rule you wrote approves it | Analyze |
-| 3. Assistant | It keeps state between runs and survives real work | Create |
+| M1. Pair-programmer | You choose the files and approve the edit; the model writes | Apply, starting this week |
+| M2. Agent | The model picks the next action; a rule you wrote approves it | Analyze |
+| M3. Assistant | It keeps state between runs and survives real work | Create |
 
-**A bigger model buys none of this. Every tier is harness you wrote.**
+**A bigger model buys none of this. Every milestone is harness you wrote.**
 
 <!--
-The three tiers are the three phases, and the order is the order harnesses
-grew in. Tier 1 is the build they are reading about this week: they choose
-what the model sees, and nothing touches disk until they say yes. Tier 2 moves
+The three milestones are the three phases, and the order is the order harnesses
+grew in. M1 is the build they are reading about this week: they choose
+what the model sees, and nothing touches disk until they say yes. M2 moves
 one decision, the next action, from them to the model, and the price of that
-move is an approval layer they have to write. Tier 3 is what makes it usable
+move is an approval layer they have to write. M3 is what makes it usable
 day after day: memory, hardening, more than one way in.
 
 The bold line is the design of the course. The model does not grow between
@@ -1415,7 +1415,7 @@ now and December, so nothing they gain in autonomy comes from a bigger model.
 It comes from harness code in their own repository. That is also why the
 model is one config line and the harness is the product.
 
-Next: the same three tiers as a timeline, with what each adds in code. Do
+Next: the same three milestones as a timeline, with what each adds in code. Do
 not walk the phases here; the next slide does.
 -->
 
@@ -1429,7 +1429,7 @@ layout: default
 
 <div class="mt-4">
 <svg viewBox="0 0 900 150" style="width:100%;max-height:180px" role="img"
-     aria-label="A timeline with three phases: Apply is tier 1, one loop with exact edits and git; Analyze is tier 2, the model picks its tools; Create is tier 3, memory, hardening and another way in.">
+     aria-label="A timeline with three phases: Apply is M1, one loop with exact edits and git; Analyze is M2, the model picks its tools; Create is M3, memory, hardening and another way in.">
   <line x1="80" y1="70" x2="820" y2="70" stroke="var(--c-rule-strong)" stroke-width="2" />
   <g fill="var(--c-primary)">
     <circle cx="170" cy="70" r="7" />
@@ -1442,9 +1442,9 @@ layout: default
     <text x="730" y="48">CREATE</text>
   </g>
   <g style="font:400 13px var(--font-sans)" fill="var(--c-ink-soft)" text-anchor="middle">
-    <text x="170" y="102">tier 1: one loop, exact edits, git</text>
-    <text x="450" y="102">tier 2: the model picks its tools</text>
-    <text x="730" y="102">tier 3: memory, hardening, another way in</text>
+    <text x="170" y="102">M1: one loop, exact edits, git</text>
+    <text x="450" y="102">M2: the model picks its tools</text>
+    <text x="730" y="102">M3: memory, hardening, another way in</text>
   </g>
 </svg>
 </div>
@@ -1452,9 +1452,9 @@ layout: default
 **Nothing is thrown away. Each phase grows the last.**
 
 <!--
-Walk the timeline left to right and say what each dot adds in code: tier 1 is
-the loop, exact edits and git they build this month; tier 2 is tools the model
-chooses and the approval layer that gates them; tier 3 is state that survives
+Walk the timeline left to right and say what each dot adds in code: M1 is
+the loop, exact edits and git they build this month; M2 is tools the model
+chooses and the approval layer that gates them; M3 is state that survives
 a run, hardening, and another way in.
 
 Build advice that used to sit on this slide and still belongs in the room: one
@@ -1478,8 +1478,8 @@ layout: default
 
 # You will know how Claude Code works {.assert}
 
-By December: a tier-3 harness in the shape of Claude Code, grown from the
-tier-1 pair-programmer you start this week.
+By December: an M3 harness in the shape of Claude Code, grown from the
+M1 pair-programmer you start this week.
 
 | Using it | Knowing it |
 |---|---|
@@ -1536,7 +1536,7 @@ Ask the room which of the six belonged to the model in their own sessions.
 One: the answer. At every other step the thing that decided what happened
 next was them, or a rule somebody wrote down in advance.
 
-Then leave the bold line up. The autonomy slide already said that at tier 2
+Then leave the bold line up. The autonomy slide already said that at M2
 the model picks the next action. What this deck has not said is how a harness
 makes that possible and what it costs, and L05 opens on exactly that with a
 live demo. Saying more here spoils it.
