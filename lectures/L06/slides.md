@@ -270,19 +270,20 @@ layout: default
 # The shape of a tool call
 
 ```json
-{
-  "tool_calls": [{
-    "name": "run_command",
-    "arguments": {"command": "pytest -q tests/"}
-  }]
-}
+{"tool_calls": [
+  {"name": "read_file",   "arguments": {"path": "cli.py"}},
+  {"name": "write_file",  "arguments": {"path": "cli.py", "content": "..."}},
+  {"name": "run_command", "arguments": {"command": "pytest -q tests/"}}
+]}
 ```
 
-<div class="caption mt-4">A parseable request, not prose. Your code decides what happens next.</div>
+<div class="caption mt-4">Three verbs, one shape. A parseable request, not prose. Your code decides what happens next.</div>
 
 <!--
 You describe each tool as a name, a description, and a parameter schema. The
-model replies with a structured request rather than text.
+model replies with a structured request rather than text. The three calls are
+the three verbs from the last slide; a reply may carry one or several, which is
+why the loop slide iterates over the array.
 
 Walk the JSON slowly. This shape is the entire reason an approval layer is
 possible at all: there is a moment, after the ask and before the act, that
