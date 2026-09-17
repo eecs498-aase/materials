@@ -32,7 +32,7 @@ layout: default
 
 # Where the build stands
 
-- The packet: seven features, spec first
+- The packet: seven features, every one numbered
 - `design/SYSTEM.md` and three diagrams before code
 - Then increment specs, one at a time
 
@@ -43,9 +43,11 @@ Thirty seconds. Do not audit the room and do not ask who has code; the office
 hours conversation is the place for that. On track on Thursday means inside the
 design, and the rubric reads that order out of git history.
 
-L04's spec discipline grows into these files: the system design is what the
-increment specs cite, and each increment spec is the bounded, ordered kind they
-wrote for taskr.
+README's reading order is EXAMPLES.md, then SPEC.md and RUBRIC.md; SPEC.md is
+the staff contract, seven features with requirement IDs. The other two bullets
+are what they write: L04's spec discipline grows into them, the system design
+is what the increment specs cite, and each increment spec (specs/, one per
+Aider increment) is the bounded, ordered kind they wrote for taskr.
 
 The point of the slide is that they hold a real specification. Everything today
 is argued against it, by requirement ID.
