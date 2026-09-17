@@ -573,7 +573,7 @@ layout: default
 
 Reference points are one construct.
 
-Name **one other habit or construct** that makes a model's output easier to understand.
+Name **one other habit or construct** that makes a model's output easier to understand, or otherwise facilitates communication.
 
 <div class="caption mt-6">One line each. We will collect five.</div>
 
