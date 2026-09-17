@@ -57,11 +57,12 @@ is argued against it, by requirement ID.
 layout: statement
 ---
 
-Tuesday: the loop stops being *someone else's*.
+Tuesday's promise: today the loop stops being *someone else's*.
 
 <!--
-That is how L05 closed. Today it becomes theirs, and in three weeks it stops
-needing them.
+L05's last slide said "Thursday, the loop stops being someone else's". It is
+Thursday. Today the loop is theirs as a specification, it becomes theirs as
+code across the build, and in three weeks it stops needing them.
 
 Tuesday made the argument with Aider and a demo. Today the same argument gets
 made with their specification, which is a much harder place to hide, because
