@@ -348,13 +348,19 @@ layout: default
 
 # What the harness still does
 
-- The model still only emits text
-- Every read, write and command is yours
-- What moved is *who chose*
+| | Pair-programmer | Agent v0 |
+|---|---|---|
+| Emits text, nothing else | the model | the model |
+| Reads, writes, runs commands | your code | your code |
+| Picks the next action | you | the model |
+
+<div class="caption mt-6">Two rows did not move. The third row is the whole change.</div>
 
 <!--
 Worth being explicit, because the loop slide reads as a loss of control and it
-is not, quite.
+is not, quite. Read the table by row: the model's output is still text in both
+columns; every read, write and command is still executed by code they wrote;
+the only cell that changes is who picks the next action.
 
 Tie it back to Tuesday's question, which is now answered from the inside: who
 picks the next action. In week 5 their own code will be the thing that stopped
