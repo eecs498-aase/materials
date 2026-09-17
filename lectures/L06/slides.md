@@ -847,7 +847,7 @@ model   READ tests/test_cli.py
 you     (contents) keep going
 model   RUN bin/test
 you     (output) keep going
-model   SEARCH/REPLACE tests/test_cli.py
+model   SEARCH/REPLACE greet.py
 ```
 
 <div class="caption mt-4">Every "keep going" is you, being the loop.</div>
