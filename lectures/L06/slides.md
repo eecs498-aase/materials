@@ -16,10 +16,10 @@ highlighter: shiki
 ## Lecture 06 · Sep 17, 2026
 
 <!--
-This closes Apply and opens Analyze. The room was handed the build this week
-and, on track, is inside the design rather than running code, so every argument
-today is made against their own specification, by requirement ID, rather than
-against somebody else's tool.
+This closes Apply and opens Analyze. Lab01 introduced the build and the packet
+goes out right after this lecture, so nobody has code or the spec in hand yet.
+Every argument today is made against the specification on the screen, by
+requirement ID, rather than against somebody else's tool.
 
 Nothing about Analyze is due next week. Say that more than once.
 -->
@@ -30,18 +30,18 @@ layout: default
 
 <div class="label">Where we are</div>
 
-# Where the build stands
+# Where the build starts
 
 - The packet: seven features, every one numbered
 - `design/SYSTEM.md` and three diagrams before code
 - Then increment specs, one at a time
 
-<div class="caption mt-6">Specs before code is graded. Nobody is behind.</div>
+<div class="caption mt-6">The packet lands after this lecture. Specs before code is graded.</div>
 
 <!--
-Thirty seconds. Do not audit the room and do not ask who has code; the office
-hours conversation is the place for that. On track on Thursday means inside the
-design, and the rubric reads that order out of git history.
+Thirty seconds. The packet goes out right after this lecture, so nobody has it
+yet and nobody has code. The first thing it asks for is the design, and the
+rubric reads that order out of git history.
 
 README's reading order is EXAMPLES.md, then SPEC.md and RUBRIC.md; SPEC.md is
 the staff contract, seven features with requirement IDs. The other two bullets
@@ -49,8 +49,9 @@ are what they write: L04's spec discipline grows into them, the system design
 is what the increment specs cite, and each increment spec (specs/, one per
 Aider increment) is the bounded, ordered kind they wrote for taskr.
 
-The point of the slide is that they hold a real specification. Everything today
-is argued against it, by requirement ID.
+The point of the slide is that a real specification is about to be theirs.
+Everything today is argued against it, by requirement ID, with SPEC.md on the
+screen.
 -->
 
 ---
@@ -143,7 +144,7 @@ layout: default
 
 <!--
 This is the slide the lecture turns on. Put SPEC.md on the screen and read the
-lines; let them find the IDs in their own copy.
+lines; they get their own copy tonight.
 
 Section 1's "what this program is not" is a fixed repertoire written down as a
 requirement: the list of things it will not do is longer than the list it will.
@@ -400,8 +401,9 @@ layout: default
 
 # Handing one task over
 
-Pick one task from your own build that you would hand over completely,
-so that you type it once and read the result at the end.
+Pick one task from `taskr`, the project you drove Aider through for two
+weeks, that you would hand over completely, so that you type it once and
+read the result at the end.
 
 What would the program be allowed to do without asking you first?
 
@@ -443,7 +445,7 @@ layout: default
 
 <!--
 Structural fact and they should hear it from you before they read it in the
-Analyze packet: the design they commit this week is in the same history as the
+Analyze packet: the first design they commit is in the same history as the
 agent they gate in week 7. Lab01 called this milestone M2; the packet calls it
 v0.
 
@@ -666,8 +668,8 @@ arrives in the lectures first and on paper later.
 
 Lab02 opens with forty minutes on a stockroom app: functions become actions the
 model requests, in the shape they saw an hour ago, one increment built with
-Aider from an increment spec. Then seventy minutes of supported build: finish
-the design, then increments and tests, reconciled against design/SYSTEM.md.
+Aider from an increment spec. Then seventy minutes of supported build: the
+design first, then increments and tests, reconciled against design/SYSTEM.md.
 
 Hackathon 1 is two hours on a supplied, working application: they design and
 build its AI capabilities from a prompt revealed in the room and submit inside
