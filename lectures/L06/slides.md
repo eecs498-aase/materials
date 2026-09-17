@@ -349,7 +349,7 @@ layout: default
 
 # What the harness still does
 
-| | Pair-programmer | Agent v0 |
+| | Pair-programmer (M1) | Agent (M2) |
 |---|---|---|
 | Emits text, nothing else | the model | the model |
 | Reads, writes, runs commands | your code | your code |
@@ -359,8 +359,9 @@ layout: default
 
 <!--
 Worth being explicit, because the loop slide reads as a loss of control and it
-is not, quite. Read the table by row: the model's output is still text in both
-columns; every read, write and command is still executed by code they wrote;
+is not, quite. The columns are Lab01's milestones; v0 is not named until the
+Agent v0 section. Read the table by row: the model's output is still text in
+both columns; every read, write and command is still executed by code they wrote;
 the only cell that changes is who picks the next action.
 
 Tie it back to Tuesday's question, which is now answered from the inside: who
