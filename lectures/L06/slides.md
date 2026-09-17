@@ -396,7 +396,7 @@ layout: default
 
 - SPEC names its 7 features
 - You name your acceptance criteria
-- Each of your IDs traces to a feature
+- Each of your names traces to a feature
 
 <div class="caption mt-6">"Restating SPEC.md section 4 earns nothing." RUBRIC.md</div>
 
