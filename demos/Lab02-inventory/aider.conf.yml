@@ -1,5 +1,0 @@
-# Set the classroom model and endpoint using your existing course configuration.
-# No model identifier is assumed by this example.
-read:
-  - BRIEF.md
-  - design/SYSTEM.md
