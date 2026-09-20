@@ -89,7 +89,7 @@ layout: default
 |---|---|
 | The contract: 7 features | Modules, interfaces and state |
 | A starter loop, `bin/assistant`, `bin/test` | Estimator, trimming, file delimiter |
-| `ENDPOINT.md` and `ACCEPTANCE.md` | Error messages and commit ownership |
+| `ENDPOINT.md`, and the checks in `SPEC.md` §5 | Error messages and commit ownership |
 | | Your tests |
 
 <!--
@@ -131,7 +131,7 @@ Step 3: an increment spec in specs/ before each increment, from the five-section
 template. Load only the files that increment needs and verify before moving on.
 Try the program on a disposable target repository, never on this one.
 
-Step 4: the live edit-prompt protocol in ACCEPTANCE.md with every attempt
+Step 4: the live edit-prompt protocol in SPEC.md section 5, with every attempt
 recorded, USAGE.md, REFLECTION.md, and diagrams updated to match what they built.
 -->
 
