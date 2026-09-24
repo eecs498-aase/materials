@@ -958,7 +958,7 @@ layout: default
 |---|---|
 | `model.call(..., tools=)` | The POST, plus 400 tokens |
 | `if not reply.tool_calls` | Branch on `finish_reason` |
-| `execute(call)` | Parts two and three. Thursday: approval |
+| `execute(call)` | Parts two and three. Later: approval |
 | `messages.append(result)` | Two appends, not one |
 
 <!--
@@ -966,7 +966,7 @@ layout: default
 
 The `if` is a branch on `finish_reason`.
 
-`execute` is parts two and three: the argument contract, then the dispatch. From Thursday there is an approval prompt sitting between them.
+`execute` is parts two and three: the argument contract, then the dispatch. Soon there is an approval prompt sitting between them.
 
 And the last line is wrong. It is two appends, not one. The six lines as written skip the assistant message, which is the bug I just told you everybody ships.
 -->
@@ -1081,7 +1081,7 @@ On Thursday I called that the model filling its own haystack. There it is, measu
 
 And notice how it ends. Not with the model saying it was done: every one of those nine replies asked for another tool, and not one was a plain answer. It ends because the loop ran out of turns, so the ending was chosen by the harness, arbitrarily, after the `rm` and before the work was finished.
 
-Direction: This is the argument for a token budget alongside a step limit, which is Thursday.
+Direction: This is the argument for a token budget alongside a step limit, which comes in the stop-conditions lecture.
 -->
 
 ---
@@ -1161,26 +1161,18 @@ layout: default
 
 | When | What |
 |---|---|
-| Thursday, first half | Stop conditions and the approval layer |
-| Thursday, second half | A rehearsal for the evening, on `taskr` |
-| Thursday evening | Hackathon 1. Two hours |
+| Today, after this | The briefing for tonight |
+| Tonight, 7 to 9 PM | Hackathon 1, Leinweber 1355 |
 | Tue Oct 6 | The build is due. Analyze releases |
 
 <div class="caption mt-6">Nothing about Analyze is handed out before October 6.</div>
 
 <!--
-Thursday is the whole day.
+Right after this, the briefing for tonight.
 
-First half of the lecture: what the six lines are missing. Second half: a rehearsal for the evening, on `taskr`, with the round trip you just watched.
-
-[If the rehearsal's logistics are settled by now, say them here in one sentence: which copy of `taskr`, and which endpoint. If they are not settled, say nothing about what to bring.]
-
-Then the evening. Two hours, your own extension.
+Tonight, seven to nine in Leinweber 1355, Hackathon 1. Two hours.
 
 And the build is due Tuesday October 6 at 11:59 PM. The Analyze specification releases the same day. Nothing about Analyze is handed out before then.
-
-Direction: What to bring is not on this slide on purpose. An invented instruction is worse
-than silence, because a hundred students will act on it.
 -->
 
 ---
@@ -1202,7 +1194,7 @@ Your program has printed forty words and the stream dies. What is in `messages` 
 
 Three tools cost four hundred tokens a request. At how many tools does a budget of 24000 stop leaving room for a selected file?
 
-And the one you will answer on Thursday: your agent runs `rm -f` on something outside the repository. Which of the six lines has to change to stop it, and what would you need to have written by Thursday for that change to be possible?
+And the one we come back to when we cover stop conditions: your agent runs `rm -f` on something outside the repository. Which of the six lines has to change to stop it, and what would you need to have written for that change to be possible?
 
 Direction: Do not answer them. Two is arithmetic they can do on the bus.
 -->
@@ -1211,21 +1203,21 @@ Direction: Do not answer them. Two is arithmetic they can do on the bus.
 layout: default
 ---
 
-<div class="label">Thursday</div>
+<div class="label">Coming up</div>
 
 # What the six lines are missing
 
 - Six reasons a run ends, each named in the log
 - The prompt in front of an action you did not read
 
-<div class="caption mt-6">Then a rehearsal for the evening, on <code>taskr</code>.</div>
+<div class="caption mt-6">Next: the briefing for tonight.</div>
 
 <!--
 Today the loop ran nine steps, deleted a file in a home directory twice, and stopped because it ran out of turns rather than because it was done.
 
-Thursday is the two things it is missing. Six reasons a run ends, each with a name in the log. And the prompt that sits in front of an action you did not read first. Both are week 5's build, and both are what makes a two-hour build finish instead of hang.
+Those are the two things it is missing. Six reasons a run ends, each with a name in the log. And the prompt that sits in front of an action you did not read first. Both are week 5's build, and each gets a lecture of its own after the hackathon.
 
-Then we rehearse. See you Thursday.
+Next, the briefing for tonight.
 -->
 
 ---
