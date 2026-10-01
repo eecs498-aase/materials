@@ -1,0 +1,14 @@
+[
+  {"query": "I have a strong intuition this code is bad. tear it apart: src/importer.py", "should_trigger": true},
+  {"query": "mean review of my branch before I open the PR", "should_trigger": true},
+  {"query": "be brutal. find every way the retry module sucks", "should_trigger": true},
+  {"query": "egm-implement says the webhook-retries diff is ready for review. shred it", "should_trigger": true},
+  {"query": "review PR #88 and don't pull punches, my partner thinks it's fine and I don't", "should_trigger": true},
+  {"query": "no soft pedaling: what's wrong with taskr/storage.py", "should_trigger": true},
+  {"query": "can you do a quick normal code review of this diff, just the important stuff", "should_trigger": false},
+  {"query": "check my design doc for gaps before I implement it", "should_trigger": false},
+  {"query": "explain what this regex does: ^(\\d{3})-(\\d{4})$", "should_trigger": false},
+  {"query": "write unit tests for parse_args()", "should_trigger": false},
+  {"query": "give me harsh feedback on my resume", "should_trigger": false},
+  {"query": "fix the failing test in test_storage.py", "should_trigger": false}
+]

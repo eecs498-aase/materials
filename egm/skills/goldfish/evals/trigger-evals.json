@@ -1,0 +1,14 @@
+[
+  {"query": "goldfish test docs/designs/webhook-retries.md please", "should_trigger": true},
+  {"query": "ok the elephant session is done and the doc is saved. is it actually ready or does it only make sense to me?", "should_trigger": true},
+  {"query": "can you get some fresh eyes on my design doc for the csv export? I want reviewers who haven't seen our chat", "should_trigger": true},
+  {"query": "validate this design before we build it: docs/designs/rate-limiter.md", "should_trigger": true},
+  {"query": "I edited the doc after round 2's findings, run the three reviewers again", "should_trigger": true},
+  {"query": "review my design doc and tell me what's missing, be thorough", "should_trigger": true},
+  {"query": "tear apart the diff on this branch, I think the retry code is sloppy", "should_trigger": false},
+  {"query": "write a design doc for adding SSO to the admin panel", "should_trigger": false},
+  {"query": "proofread my cover letter for typos", "should_trigger": false},
+  {"query": "review PR #214, the usual review is fine, nothing brutal", "should_trigger": false},
+  {"query": "goldfish keep dying in my tank after a week, what am I doing wrong", "should_trigger": false},
+  {"query": "summarize docs/designs/rate-limiter.md in three bullets for my manager", "should_trigger": false}
+]

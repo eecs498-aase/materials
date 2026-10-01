@@ -1,0 +1,14 @@
+[
+  {"query": "the webhook-retries design passed goldfish and my teammate signed off. implement it", "should_trigger": true},
+  {"query": "egm implement docs/designs/dark-mode.md", "should_trigger": true},
+  {"query": "build the feature from the doc, docs/designs/csv-export.md. follow the plan exactly", "should_trigger": true},
+  {"query": "my implementation session crashed halfway through the rate limiter. IMPLEMENT.md is there, pick it back up", "should_trigger": true},
+  {"query": "ship the design. I'm working alone so I marked the review gate skipped-solo", "should_trigger": true},
+  {"query": "execute the plan in docs/designs/notifications.md", "should_trigger": true},
+  {"query": "add a --verbose flag to the cli, it's a two line change", "should_trigger": false},
+  {"query": "let's plan the notifications feature, no code yet", "should_trigger": false},
+  {"query": "run the goldfish reviewers on docs/designs/csv-export.md again", "should_trigger": false},
+  {"query": "brutally review the code you just wrote for the rate limiter", "should_trigger": false},
+  {"query": "implement quicksort in python for my algorithms homework", "should_trigger": false},
+  {"query": "write a plan for my week, I have three exams and a lab due", "should_trigger": false}
+]

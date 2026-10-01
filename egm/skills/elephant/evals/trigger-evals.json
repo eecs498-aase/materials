@@ -1,0 +1,14 @@
+[
+  {"query": "I want to add webhook retries to our order service. right now if the customer's endpoint is down we just drop the event. let's plan this out before anyone writes code", "should_trigger": true},
+  {"query": "we need a dark mode for the dashboard app (react, tailwind). can you help me spec this out? I don't want a PR yet", "should_trigger": true},
+  {"query": "Let's design the export-to-CSV feature for taskr. Design doc first, the TA said we have to", "should_trigger": true},
+  {"query": "build me a rate limiter for the public API, we keep getting hammered by one client", "should_trigger": true},
+  {"query": "I'm thinking of splitting the monolith's billing code into its own service. architect it with me", "should_trigger": true},
+  {"query": "we're picking back up the notifications redesign from yesterday, the ELEPHANT.md is in docs/egm/notifications", "should_trigger": true},
+  {"query": "fix the typo in the README where it says 'recieve'", "should_trigger": false},
+  {"query": "what does parse_args() in notes.py do when argv is empty?", "should_trigger": false},
+  {"query": "here's my design doc at docs/designs/dark-mode.md, run the goldfish reviewers on it", "should_trigger": false},
+  {"query": "the design doc for webhook-retries passed review, go ahead and implement it", "should_trigger": false},
+  {"query": "should we use Postgres or SQLite for a class project with 30 users? just give me your recommendation", "should_trigger": false},
+  {"query": "rename the variable tmp to pending_rows in importer.py", "should_trigger": false}
+]

@@ -1,0 +1,14 @@
+[
+  {"query": "I just joined a team with a 400k line java monolith and zero docs. help the AI understand it without reading every file", "should_trigger": true},
+  {"query": "generate READMEs for every directory in this repo, bottom up", "should_trigger": true},
+  {"query": "feed the elephant: our legacy php codebase needs context files before we start using claude on it", "should_trigger": true},
+  {"query": "onboard me onto this codebase, it's huge and I don't know where anything is", "should_trigger": true},
+  {"query": "resume the README hierarchy work, PEANUTS.md says some leaves are approved now", "should_trigger": true},
+  {"query": "document this monolith so a fresh session can load it cheaply", "should_trigger": true},
+  {"query": "write a README for my new side project so people know how to install it", "should_trigger": false},
+  {"query": "update the root README with the new install steps for python 3.12", "should_trigger": false},
+  {"query": "add docstrings to every function in utils.py", "should_trigger": false},
+  {"query": "design the new caching layer for the API", "should_trigger": false},
+  {"query": "what's a good recipe for peanut butter cookies", "should_trigger": false},
+  {"query": "generate API reference docs from the openapi spec", "should_trigger": false}
+]
