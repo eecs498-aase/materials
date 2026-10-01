@@ -42,7 +42,7 @@ walkthrough for that skill tells you.
 
 The ledgers (`ELEPHANT.md`, `GOLDFISH.md`, `IMPLEMENT.md`) live together in
 `docs/egm/<slug>/`, one folder per feature. The slug is the design doc's
-filename without `.md`, and every skill relies on that.
+filename without `.md`, and the four skills after `peanuts` rely on that.
 
 ## How they fit together
 
@@ -153,23 +153,26 @@ does.
 
 Two parts are harness-specific. `goldfish` needs a way to start fresh
 subagents (its `references/runtimes.md` covers several harnesses, and how to
-do it by hand). Slash commands like `/goldfish` are Claude Code's syntax;
-elsewhere, name the skill or let the description match.
+do it by hand). Invocation syntax also varies by harness. Claude Code and
+several others expose each skill as a slash command such as `/goldfish`;
+where yours doesn't, name the skill or let the description match.
 
 ### Aider
 
-Aider has no skill loader, so you are the loader. Adding a skill's body to
-the chat by hand works:
+Aider has no skill loader, so you are the loader. Add a skill's body to the
+chat by hand, from your clone of this repo (the `git clone` line above):
 
 ```
-/read-only ~/.claude/skills/elephant/SKILL.md
+/read-only path/to/materials/egm/skills/elephant/SKILL.md
 ```
+
+Replace `path/to/materials` with wherever your clone lives.
 
 Notice what that costs. Aider now sends the whole body in every request it
-assembles, for the rest of the session, whether you need it or not. A harness
-with real skill support sends only the one-line description until the model
-asks for more. The anatomy page explains that difference, and it is most of
-the point.
+assembles, whether you need it or not, and keeps sending it until you
+`/drop` the file. A harness with real skill support sends only the one-line
+description until the model asks for more. The anatomy page explains that
+difference, and it is most of the point.
 
 For `goldfish` in Aider, each reviewer is a new `aider` session that has
 never seen your design chat. Give it the doc with `/read-only` and paste one
@@ -185,6 +188,10 @@ read what three strangers think of it.
 `elephant` and `goldfish` write only under `docs/`. `peanuts` writes a
 `README.md` per directory and `PEANUTS.md` at the root of the tree.
 `egm-implement` changes code, and only the files your design doc lists.
+
+On a real repo, run `peanuts` on a branch. It writes a `README.md` into every
+in-scope directory and can overwrite one that is already there, so you want
+`git diff` to show you what changed and an easy way back.
 
 ## Each skill also ships trigger tests
 

@@ -22,8 +22,9 @@ when it doesn't:
    that a dozen times and the doc no longer describes the system, and the
    "source of truth" is fiction.
 
-So the skill adds an entry gate, a rule that drift is surfaced instead of
-absorbed, and a ledger (`IMPLEMENT.md`) that records both.
+The skill meets the first moment with an entry gate and the second with a
+rule: drift is surfaced, not absorbed. A ledger, `IMPLEMENT.md`, records
+both.
 
 ## How it triggers
 
@@ -32,18 +33,18 @@ absorbed, and a ledger (`IMPLEMENT.md`) that records both.
 design doc in `docs/designs/`. It also says up front that it refuses to start
 until the gate is resolved, so the model knows that before it loads anything.
 
-The near misses in `evals/trigger-evals.json` are instructive: "add a
---verbose flag, it's a two line change" (no design doc, too small), "let's
-plan the notifications feature, no code yet" (elephant), "implement
-quicksort for my homework" (no design doc at all). Each shares a word with
+The near misses in `evals/trigger-evals.json` are instructive. "add a
+--verbose flag to the cli, it's a two line change" is too small to need a
+design doc. "implement quicksort in python for my algorithms homework" uses
+the skill's own verb and has no design doc at all. Each shares a word with
 the triggers and wants something else.
 
 ## The SKILL.md, section by section
 
 **Opening.** Where the skill sits between `/goldfish` and `/mean-review`,
-and the three things it makes authoritative: the doc (source of truth),
-`GOLDFISH.md` (entry gate), `IMPLEMENT.md` (trace). Then the article's Step 8
-prompt, quoted as the working frame.
+and which file has authority over what. The doc is the source of truth and
+`GOLDFISH.md` is the entry gate; `IMPLEMENT.md` is the trace. Then the
+article's Step 8 prompt, quoted as the working frame.
 
 **Hard rules.** Four: no code until ready *and* the human gate is resolved;
 no file the doc doesn't list; log as you go, not afterward; end with a
@@ -77,8 +78,9 @@ back to a person.
 
 Notice also where the script looks for the gate: the `human_review_gate`
 field in the `GOLDFISH.md` header. Round entries and `ELEPHANT.md` carry
-copies for the record, but the header is the one place a person signs off,
-so there is never a question of which copy counts.
+copies for the record, but the header is where a person signs off, so the
+header wins. The script falls back to the latest round's copy only if the
+header has no gate line, and it never reads the copy in `ELEPHANT.md`.
 
 **Step 2, the ledger.** Created from a template, or read and resumed. The
 resume case is the article's crash recovery made concrete: the new session
@@ -96,8 +98,8 @@ section-level change is rewritten with Elephant discipline, and a big one
 goes back through `/goldfish`.
 
 **Step 5, verification.** Run the smallest real check the doc names (or the
-project implies), record the exact command and result, and if it fails,
-treat that as drift and loop.
+project implies) and record the exact command and result. A failure is
+treated as drift, and the loop starts again.
 
 **Step 6, hand off.** Close the ledger, point at `/mean-review`, and don't
 run it. Writing code and attacking code are different jobs, and a review
@@ -133,8 +135,8 @@ verdict:     GO
 all `planned`, matching the doc's seven entries. The model notes that it will
 build the outbox migration first, though the doc lists it fourth.
 
-**Step 3.** The migration, the outbox model, and the worker go in, each a
-separate change, each row flipped to `done`.
+**Step 3.** The migration and the outbox model go in, each a separate
+change, each row flipped to `done`.
 
 **Step 4.** Writing the worker, the model finds that the HTTP client in
 `shipyard/notify/http.py` has a hard-coded 2-second timeout and no way to
@@ -151,7 +153,7 @@ the file list. The model stops and logs:
 
 The user agrees. The model edits the doc in place, marks the drift
 `resolved: doc edited in place at docs/designs/webhook-retries.md`, and only
-then changes `http.py`.
+then changes `http.py` and goes back to the worker.
 
 **Step 5.** `pytest tests/notify -q` passes; command and result are
 recorded.

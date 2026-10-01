@@ -32,11 +32,11 @@ session and needs to know whether the doc stands on its own".
 
 The boundary with `mean-review` is written into both descriptions: goldfish
 reviews a *design doc*, mean-review reviews *code*. The trigger tests include
-"tear apart the diff on this branch" (mean-review's job) and "summarize this
-design doc for my manager" (shares the words, wants something else). One
-negative is about actual goldfish dying in a tank. A keyword-matching
-harness would fall for it; a description that says what the skill *does*
-won't.
+"tear apart the diff on this branch" (mean-review's job) and "summarize
+docs/designs/rate-limiter.md in three bullets for my manager" (names a
+design doc, wants something else). One negative is about actual goldfish
+dying in a tank. A keyword-matching harness would fall for it; a description
+that says what the skill *does* won't.
 
 ## The SKILL.md, section by section
 

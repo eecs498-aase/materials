@@ -122,7 +122,7 @@ How the script is built is worth a look, since you will write tools like it:
 [egm-implement walkthrough](egm-implement.md)). The user types "mean review,
 don't hold back."
 
-**Step 1.** "Reviewing 8 changed files, 412 added lines, 37 removed, on
+**Step 1.** "Reviewing 10 changed files, 463 added lines, 39 removed, on
 branch `webhook-retries`." The model reads `IMPLEMENT.md`: one drift entry,
 resolved (the `http.py` timeout).
 
@@ -135,11 +135,15 @@ shipyard/notify/worker.py:41-62  10-line  17 code lines with no comment
 shipyard/notify/worker.py:30  fn-length  drain() body is 64 lines (limit 50)
 shipyard/notify/outbox.py:22  weak-name  data (parameter)
 skipped deploy/worker.yaml: no rules for .yaml files
-4 finding(s) in 7 scanned file(s); 1 skipped
+skipped docs/designs/webhook-retries.md: no rules for .md files
+skipped docs/egm/webhook-retries/IMPLEMENT.md: no rules for .md files
+4 finding(s) in 7 scanned file(s); 3 skipped
 ```
 
-The YAML file is deployment config, declarative by nature, so there is
-nothing to scan by hand.
+Step 3 says to run the scans by hand on every skipped file that still
+exists, so the model checks all three. The YAML is deployment config, which
+is declarative, and the two Markdown files are prose. There is nothing to
+flag.
 
 **Step 4.** Reading the full `worker.py`, the model finds the real problem
 the scans can't see: the worker marks an event `sent` *before* the HTTP call
@@ -150,14 +154,14 @@ failure the feature exists to prevent.
 
 ```
 1. [correctness] shipyard/notify/worker.py:71 Event is marked sent before the POST returns; a crash in between drops it, which is the bug this feature exists to fix. Fix: mark sent only after a 2xx, inside the same transaction as the attempt record.
-2. [correctness][enforced] shipyard/notify/worker.py:88 `except Exception:` swallows everything, including the database error that would tell you the outbox is broken. Fix: catch the HTTP client's error only; log and re-raise the rest.
-3. [readability][enforced] shipyard/notify/worker.py:41-62 The backoff calculation has no comment saying why the base is 30 seconds or why the cap is 1 hour. Fix: two lines stating the policy and pointing at the design doc section.
-4. [readability][enforced] shipyard/notify/worker.py:30 `drain()` is 64 lines and claims, sends, and reschedules. Fix: split send and reschedule into their own functions.
-5. [readability] shipyard/notify/outbox.py:40 `get_due()` returns events ordered by id, but the doc promises per-order ordering by creation time. Fix: order by (order_id, created_at), and test it.
+2. [correctness] shipyard/notify/outbox.py:40 `get_due()` returns events ordered by id, but the doc promises per-order ordering by creation time. Fix: order by (order_id, created_at), and test it.
+3. [correctness][enforced] shipyard/notify/worker.py:88 `except Exception:` swallows everything, including the database error that would tell you the outbox is broken. Fix: catch the HTTP client's error only; log and re-raise the rest.
+4. [readability][enforced] shipyard/notify/worker.py:41-62 The backoff calculation has no comment saying why the base is 30 seconds or why the cap is 1 hour. Fix: two lines stating the policy and pointing at the design doc section.
+5. [readability][enforced] shipyard/notify/worker.py:30 `drain()` is 64 lines and claims, sends, and reschedules. Fix: split send and reschedule into their own functions.
 6. [nit][enforced] shipyard/notify/outbox.py:22 `data` says nothing. Fix: `payload`.
 ```
 
-Finding 1 is not in `IMPLEMENT.md`'s drift log, and finding 5 contradicts
+Finding 1 is not in `IMPLEMENT.md`'s drift log, and finding 2 contradicts
 the design doc. Both are exactly what the cross-check in Step 1 is for.
 
 **Step 6.** The user fixes all six. The re-run returns two nits. Done.

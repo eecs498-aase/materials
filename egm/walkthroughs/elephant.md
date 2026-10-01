@@ -7,9 +7,9 @@ Teaching the Elephant".
 ## What problem it solves
 
 Ask a coding agent for a feature and it starts typing code in the first
-reply. That feels fast. It also means every design decision (where the retry
-state lives, what happens on the tenth failure, who gets told) was made by
-the model, silently, mid-sentence, and is now buried in a diff nobody
+reply. That feels fast. It also means every design decision, such as where
+the retry state lives or what happens on the tenth failure, was made by the
+model in the middle of a sentence. Now it is buried in a diff nobody
 designed.
 
 Rensin's claim is that once AI writes most of the code, the design document
@@ -114,7 +114,7 @@ illustrate".
 
 | File | Loaded when | Why it is separate |
 |---|---|---|
-| `assets/elephant-ledger-template.md` | Step 0, once | The ledger's exact field names are read by two other skills and a script. A template keeps them exact. |
+| `assets/elephant-ledger-template.md` | Step 0, once | `/goldfish` and `/egm-implement` read this ledger for orientation, and `check_gate.py` only checks that it exists. The template keeps the header fields exact, so a resumed session finds `current_step` where it expects it. |
 | `assets/design-doc-template.md` | Step 5, once | The four-section skeleton, with a comment in each section saying what goes there. |
 | `references/design-doc-sections.md` | Step 5, before each section | The long guidance and examples for each section. |
 | `evals/trigger-evals.json` | Never, by the model | Trigger tests. |

@@ -9,8 +9,8 @@ Peanuts and Hay')".
 EGM starts with a design conversation, and Step 1 of that conversation is
 "point the AI at the relevant design docs or source tree." On a new project
 that's easy. On a codebase with forty thousand lines and no design docs, it
-isn't. Point a model at the whole tree and it runs out of context, gets
-confused, and starts inventing how things work.
+isn't. Point a model at the whole tree and it runs out of context and
+starts inventing how things work.
 
 Rensin's answer is a hierarchy of small summaries. Every directory gets a
 `README.md` saying what it is for and what each file does. The leaves get
@@ -91,7 +91,7 @@ the raw source.
 
 | File | Loaded when | Why it is separate |
 |---|---|---|
-| `scripts/peanuts_ledger.py` | Run at Step 0 and on every resume; never read | Finding in-scope directories, sorting deepest first, and applying the hard gate are exact jobs. A script does them the same way every time, and only its short report enters the request. |
+| `scripts/peanuts_ledger.py` | Run at Step 0, before every batch, and on resume; never read | Finding in-scope directories, sorting deepest first, and applying the hard gate are exact jobs. A script does them the same way every time, and only its short report enters the request. |
 | `assets/readme-templates.md` | When writing a README (Steps 1, 3, 4) | Three README shapes with the retirement line already in place. A template keeps every README the same shape across hundreds of directories. |
 | `evals/trigger-evals.json` | Never, by the model | Twelve trigger tests for you. |
 
@@ -122,8 +122,8 @@ skill loads. The model confirms the root and runs `plan`:
 ```
 $ python3 ~/.claude/skills/peanuts/scripts/peanuts_ledger.py plan .
 23 directories in scope (14 leaves), deepest level 4
-  4  leaf    shipyard/carriers/ups/rates
   4  leaf    shipyard/carriers/ups/labels
+  4  leaf    shipyard/carriers/ups/rates
   ...
   1  branch  shipyard
   0  root    .
@@ -145,11 +145,12 @@ unclear." The user fixes two leaves, including that line: it is carrier-only,
 and webhooks have no retry at all, which is the bug they came to fix. All six
 become `approved`.
 
-**Step 3.** `next` moves to depth 3. Eligible now: the branch
-`shipyard/carriers/ups` (both its children are approved) and four leaves at
-that depth. The branch README is written from its two children's READMEs plus
-its own files, and the children become `rolled-up`. The leaves get the leaf
-treatment. Then review again, and up one more level.
+**Step 3.** `next` moves to depth 3. Eligible now: every depth-3 branch
+whose children are approved, such as `shipyard/carriers/ups`, plus four
+leaves at that depth. Each branch README is written from its children's
+READMEs plus its own files (for `ups`, the `rates` and `labels` READMEs), and
+the children become `rolled-up`. The leaves get the leaf treatment. Then
+review again, and up one more level.
 
 **Step 4.** The root README maps the subsystems. The user approves it and
 `next` says `DONE`. When the team runs `/elephant` for webhook retries, Step

@@ -39,10 +39,11 @@ Claude Code, Codex, OpenClaw, Gemini CLI, Cursor, and many others read it.
 
 ## Where a skill enters the loop
 
-Think about Aider's repo map. Every request Aider assembles carries a compact
-index of your whole repo (file names and signatures), and full file contents
-go in only for the files you `/add`. The index is cheap and always there. The
-contents are expensive and there on purpose.
+Think about Aider's repo map. Every request Aider assembles carries a map of
+your repo (file names and signatures), but only the most relevant parts of
+it, cut to fit a token budget (`--map-tokens`, 1,000 by default). Full file
+contents go in only for the files you `/add`. The map is cheap and always
+there. The contents are expensive and there on purpose.
 
 Skills work the same way, with one difference that matters: **the model, not
 you, decides when the expensive part goes in.**
@@ -53,7 +54,7 @@ Three levels, loaded at three different times:
 |---|---|---|---|
 | 1. Catalog | `name` and `description` of every installed skill | Every request, from the first one | about 175 tokens per EGM skill |
 | 2. Body | the rest of `SKILL.md` | From the request after the model asks for it | 3,000 to 3,900 tokens per EGM skill |
-| 3. Resources | files in `references/`, `assets/`, `scripts/` | Only after the body tells the model to read or run one | a few hundred tokens each; a script costs only its output |
+| 3. Resources | files in `references/`, `assets/`, `scripts/` | Only after the body tells the model to read or run one | a few hundred to about 1,500 tokens each; a script costs only its output |
 
 Here is what happens when you type "let's design webhook retries before we
 write any code" in Claude Code with the EGM skills installed:
@@ -96,8 +97,8 @@ Some details to notice:
   either way.
 
 Aider, which has no skill support, is the useful contrast. If you
-`/read-only` a `SKILL.md`, the whole body rides in every request from then
-on, needed or not. That is level 2 without level 1.
+`/read-only` a `SKILL.md`, the whole body rides in every request until you
+`/drop` it, needed or not. That is level 2 without level 1.
 
 ## Frontmatter
 
@@ -124,18 +125,17 @@ The spec allows six fields:
 
 Claude Code accepts more (`argument-hint`, `disable-model-invocation`,
 `context: fork`, `hooks`, `paths`, and others). They are real and often
-useful, but they exist only in Claude Code, and uploading a skill that uses
-them to claude.ai or packaging it for the API fails with a hard error. The
-EGM skills stay inside the six so they install anywhere.
+useful, but they exist only in Claude Code. Anthropic's skill packaging
+validator rejects them, and other surfaces may too. The EGM skills stay
+inside the six so they install anywhere.
 
 A lesson from this suite's own history: the earlier versions had a line
 `tools: Read, Write, Edit, Bash, Glob, Grep`. That is a field for *subagent*
 files, not skills. Claude Code ignored it without a word, so nobody noticed,
-while claude.ai's skill upload and Anthropic's packaging script reject any
-field outside the spec. Unknown fields fail silently in one place and loudly
-in another. Validate against the spec. (The right
-skill field, `allowed-tools`, means something else entirely: it pre-approves
-tools rather than restricting them.)
+while Anthropic's packaging validator rejects any field outside the spec.
+Unknown fields fail silently in one place and loudly in another. Validate
+against the spec. (The right skill field, `allowed-tools`, means something
+else entirely: it pre-approves tools rather than restricting them.)
 
 ## The description is the trigger
 
@@ -174,7 +174,9 @@ requests. This sentence tells the model where the line is. `goldfish` and
 
 ## The body
 
-All five bodies follow one layout. Each part is there for a reason.
+Most bodies follow this layout. The exceptions: `elephant` has no
+invocation line, and `goldfish` and `mean-review` have no Hard rules
+section. Each part is there for a reason.
 
 1. **A title and a short paragraph on the problem.** The model reads *why*
    before *what*. An agent that knows the purpose makes better calls in
@@ -224,8 +226,8 @@ The body says *when* to read each extra file. "See references/ for details"
 is too vague; the model either reads everything or nothing. Compare these
 lines from the EGM skills:
 
-- `elephant`: "Before drafting each section, read its entry in
-  references/design-doc-sections.md."
+- `elephant`, on the four doc sections: "Before drafting each one, read its
+  entry in references/design-doc-sections.md".
 - `goldfish`: "For Cowork, OpenClaw, Hermes, or a runtime with no subagents
   at all, read references/runtimes.md." A Claude Code user never pays for that
   file.
