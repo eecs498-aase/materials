@@ -9,8 +9,9 @@ directory docs/egm/<slug>/, and reads GOLDFISH.md for two values:
                      key: value lines above the first `## ` heading): must
                      be `passed` or `skipped-solo`. Round entries carry a
                      copy for the record; if the latest copy disagrees with
-                     the header, the header wins and the output says so.
-                     With no header field, the latest round's copy is used.
+                     the header, that is CHECK-BY-HAND: a person decides which
+                     one is current. With no header field, the latest round's
+                     copy is used.
 
 The script never writes a ledger and never changes a gate. Only a human
 moves the gate; this only reports where it stands.
@@ -24,7 +25,8 @@ Exit codes:
   0  GO              readiness is ready and the gate is passed or skipped-solo
   1  BLOCKED         something is missing or still pending; the output says what
   2  usage error     no doc given and none (or several) found, or bad flags
-  3  CHECK-BY-HAND   a value is not one of the expected words; a person must read it
+  3  CHECK-BY-HAND   a value is not one of the expected words, or the header and
+                     the latest round disagree; a person must read it
 """
 
 import argparse
@@ -126,9 +128,11 @@ def judge_gate(info, report):
     if gate not in GATE_VALUES:
         report["unclear"].append("human_review_gate reads {!r}; expected pending, passed, or skipped-solo".format(gate))
         return None
+    # Two different answers in one ledger is a judgment call, not a lookup:
+    # a reviewer may have passed the doc in one place and forgotten the other.
     if info["header_gate"] and round_gate and round_gate != gate:
-        report["warnings"].append("the latest round's copy says {}, the header says {}; the header is the gate, "
-                                  "so update the round copy to match".format(round_gate, gate))
+        report["unclear"].append("the header says human_review_gate: {}, but the latest round's copy says {}; "
+                                 "a person decides which is current and fixes the other".format(gate, round_gate))
     # Only pending blocks; skipped-solo proceeds with a warning.
     if gate == "pending":
         report["blocked"].append("human_review_gate is pending: a reviewer records passed in GOLDFISH.md's header, "

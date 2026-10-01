@@ -79,8 +79,11 @@ back to a person.
 Notice also where the script looks for the gate: the `human_review_gate`
 field in the `GOLDFISH.md` header. Round entries and `ELEPHANT.md` carry
 copies for the record, but the header is where a person signs off, so the
-header wins. The script falls back to the latest round's copy only if the
-header has no gate line, and it never reads the copy in `ELEPHANT.md`.
+header is the gate. The script falls back to the latest round's copy only
+if the header has no gate line, and it never reads the copy in `ELEPHANT.md`.
+If the header and the latest round's copy both exist and disagree, the script
+does not pick one. Someone may have signed off in one place and forgotten the
+other, so it returns CHECK-BY-HAND and a person decides which is current.
 
 **Step 2, the ledger.** Created from a template, or read and resumed. The
 resume case is the article's crash recovery made concrete: the new session
