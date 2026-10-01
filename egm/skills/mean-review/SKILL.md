@@ -1,6 +1,6 @@
 ---
 name: mean-review
-description: Runs a brutally critical code review of a diff, PR, or set of files, actively hostile to slop, vague names, silently swallowed errors, and stretches of 10 or more lines with no comment, and returns a prioritized punch list. Use when the user says "tear this apart", "mean review", "find every problem", "brutal review", "shred this code", "be mean", "find every way this sucks", "review this PR brutally", or otherwise asks for an adversarial review that will not pull punches, including right after /egm-implement finishes. Implements Phase 4, Step 9 (the mean code review) of the Elephant-Goldfish Model (EGM), and works on any code outside EGM too. For a calibrated everyday review, use /code-review where it exists; for reviewing a design doc, use /goldfish.
+description: Runs a brutally critical code review of a diff, PR, or set of files, actively hostile to slop, vague names, silently swallowed errors, and stretches of 10 or more lines with no comment, and saves a prioritized punch list to MEAN-REVIEW.md so the next pass can check what was fixed. Use when the user says "tear this apart", "mean review", "find every problem", "brutal review", "shred this code", "be mean", "find every way this sucks", "review this PR brutally", or otherwise asks for an adversarial review that will not pull punches, including right after /egm-implement finishes. Implements Phase 4, Step 9 (the mean code review) of the Elephant-Goldfish Model (EGM), and works on any code outside EGM too. For a calibrated everyday review, use /code-review where it exists; for reviewing a design doc, use /goldfish.
 compatibility: Uses git (and gh for pull requests) to find the diff, and python3 (standard library only) for scripts/enforced_scans.py.
 ---
 
@@ -42,12 +42,12 @@ You are now reviewing under that frame. Do not switch to a softer voice mid-revi
 
 ```
 Mean review progress:
-- [ ] Step 1: scope identified and stated back to the user
+- [ ] Step 1: scope identified and stated back to the user, with the ledger path
 - [ ] Step 2: full files read, not just hunks
 - [ ] Step 3: enforced scans run; declarative spans dropped
 - [ ] Step 4: correctness, maintainability, style lenses applied
-- [ ] Step 5: prioritized punch list delivered
-- [ ] Step 6: offered a re-run on the fixed diff; looped until only nits remain
+- [ ] Step 5: prioritized punch list delivered and appended to MEAN-REVIEW.md as a new pass
+- [ ] Step 6: disposition of the pass recorded; re-run offered; looped until only nits remain
 ```
 
 ### Step 1: Identify scope
@@ -62,6 +62,8 @@ In order of preference:
 State the scope back before you start: "Reviewing 7 changed files, 312 added lines, 89 removed, on branch `feature/x`." If it's huge (say, more than 2000 added lines), warn the user that a mean review at that scale is a long list, and offer to chunk it by file.
 
 If the diff came out of `/egm-implement`, also read `docs/egm/<slug>/IMPLEMENT.md` and the design doc. Drift between the doc and the diff should already be logged there; anything that isn't is a finding.
+
+**Choose the ledger.** The punch list is saved, not only shown. For EGM work, use the design doc's slug: the ledger is `docs/egm/<slug>/MEAN-REVIEW.md`, beside `IMPLEMENT.md`. Outside EGM, derive a short kebab-case slug from the scope (the branch name, `pr-123`, or the directory) and use `docs/egm/<slug>/MEAN-REVIEW.md` the same way. Name the path when you state the scope back. If the file already exists, this is a later pass: read the last pass and its disposition before reviewing, because a finding the user rejected with a reason is not raised again without new evidence. If the user asks for no files (say, a review of someone else's PR in a repo you should not write to), deliver in chat only and say plainly that nothing was saved.
 
 ### Step 2: Read everything in scope
 
@@ -144,9 +146,11 @@ N. [nit][enforced] src/util.py:14 `tmp` says nothing. Fix: rename it for what it
 
 The `[enforced]` tag tells the user the finding came from the deterministic scan, not a judgment call. They can trust it as a hard hit, and they can choose to suppress a whole class of it if the project has a reason.
 
+**Save it.** Start the ledger from [assets/mean-review-ledger-template.md](assets/mean-review-ledger-template.md) if it does not exist yet. Append the pass: a `## Pass <N>: <YYYY-MM-DD>` heading, the scope line, the counts by tag, and the punch list exactly as you delivered it. Never rewrite an earlier pass; the ledger is how the next pass knows what changed.
+
 ### Step 6: Loop
 
-After the user fixes some subset, offer to re-run on the updated diff. Continue until the findings are trivial or down to nits. Stop when the critiques become uniformly trivial.
+After the user acts on the list, record the pass's disposition under `### Pass <N> disposition`: the item numbers they fixed, and each item they rejected with their reason. Then offer to re-run on the updated diff and append the result as the next pass. Continue until the findings are trivial or down to nits. Stop when the critiques become uniformly trivial, and say so in the last disposition.
 
 ## Tone calibration
 
@@ -161,6 +165,7 @@ If you catch yourself writing "you should probably consider maybe...", rewrite i
 - **Flagging declarative code under the 10-line rule.** Tables and field lists are exempt.
 - **Hiding nits.** Tag them `[nit]` and list them last; don't drop them.
 - **Insults instead of fixes.** Every finding ends with what to do.
+- **A review that lives only in chat.** The next pass and the next reader both need the list. Save every pass, and record what happened to it.
 
 ## Why this skill exists
 
@@ -170,8 +175,8 @@ AI is producing more code than humans can carefully review, so review is shiftin
 
 `/peanuts` (legacy code only) → `/elephant` → `/goldfish` → `/egm-implement` → **`/mean-review`**
 
-- **Reads:** the diff and the full files around it; for EGM work, also `IMPLEMENT.md` and the design doc.
-- **Writes:** nothing. The punch list goes to the user, who fixes and re-runs.
+- **Reads:** the diff and the full files around it; the last pass in `MEAN-REVIEW.md`, if there is one; for EGM work, also `IMPLEMENT.md` and the design doc.
+- **Writes:** `docs/egm/<slug>/MEAN-REVIEW.md`, one pass per run with the user's disposition of each. It never edits the code; the user fixes and re-runs.
 - **`/egm-implement`** produces the diffs this skill usually reviews; cross-check its `## Drift` entries against the code.
 - **`/elephant`**: code that diverges from its design doc is a finding in itself.
 - **`/goldfish`** reviews docs; mean-review reviews code. Different artifacts, same skeptical stance.

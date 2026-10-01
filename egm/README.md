@@ -38,11 +38,12 @@ walkthrough for that skill tells you.
 | [`elephant`](walkthroughs/elephant.md) | Phases 1 and 2 | Runs the no-code design conversation, then writes the four-section design doc | `docs/designs/<slug>.md`, `ELEPHANT.md` |
 | [`goldfish`](walkthroughs/goldfish.md) | Phase 3, Steps 5 to 7 | Sends the doc to three fresh reviewers in parallel and loops until only nits remain | `GOLDFISH.md`, reviewer reports |
 | [`egm-implement`](walkthroughs/egm-implement.md) | Phase 4, Step 8 | Builds only the files the doc lists, and stops when reality and the doc disagree | the code, `IMPLEMENT.md` |
-| [`mean-review`](walkthroughs/mean-review.md) | Phase 4, Step 9 | Reviews the diff as harshly as it can, with four scans a script enforces | a punch list |
+| [`mean-review`](walkthroughs/mean-review.md) | Phase 4, Step 9 | Reviews the diff as harshly as it can, with four scans a script enforces | `MEAN-REVIEW.md`, one punch list per pass |
 
-The ledgers (`ELEPHANT.md`, `GOLDFISH.md`, `IMPLEMENT.md`) live together in
-`docs/egm/<slug>/`, one folder per feature. The slug is the design doc's
-filename without `.md`, and the four skills after `peanuts` rely on that.
+The ledgers (`ELEPHANT.md`, `GOLDFISH.md`, `IMPLEMENT.md`, `MEAN-REVIEW.md`)
+live together in `docs/egm/<slug>/`, one folder per feature. The slug is the
+design doc's filename without `.md`, and the four skills after `peanuts`
+rely on that.
 
 ## How they fit together
 
@@ -75,7 +76,7 @@ filename without `.md`, and the four skills after `peanuts` rely on that.
                           (drift? stop, fix the doc first)
                                         |
                                         v
-                                  /mean-review ----> punch list, fix, run again
+                                  /mean-review ----> MEAN-REVIEW.md, fix, run again
 ```
 
 Each arrow is a handoff you start yourself. No skill runs the next one for

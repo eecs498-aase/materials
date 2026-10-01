@@ -13,6 +13,10 @@ Engineering, University of Michigan, Fall 2026.
   `L03-transcript-analytics`). Each has a README and a `reset` script: run
   `./reset` and it builds you a disposable working copy, configured and ready
   for aider. Run the demo yourself; that is why they are here.
+- `egm/` holds the Elephant-Goldfish Model as five skills you can install
+  (`peanuts`, `elephant`, `goldfish`, `egm-implement`, `mean-review`),
+  with a walkthrough of each one and a page on how a skill is put together.
+  Start with `egm/README.md`.
 
 The `slides.md` is the Slidev source the deck was built from. It is here
 so you can read, search, or reuse the content. It expects a theme that

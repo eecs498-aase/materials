@@ -60,7 +60,12 @@ back to.
 and say the scope back with numbers before starting ("7 changed files, 312
 added lines"). A huge diff gets a warning and an offer to chunk it. If the
 diff came from `/egm-implement`, the skill also reads `IMPLEMENT.md` and the
-design doc, because a change that isn't in either is a finding.
+design doc, because a change that isn't in either is a finding. Step 1 also
+names the ledger, `docs/egm/<slug>/MEAN-REVIEW.md`. For EGM work the slug is
+the design doc's; otherwise it comes from the scope, such as the branch name.
+If the file already exists, this is a later pass, and the model reads the
+last pass first so it doesn't raise a finding the user already rejected for a
+reason.
 
 **Step 2, read everything.** The full files, as well as the hunks. Most
 correctness bugs in a change live in the code around it.
@@ -89,10 +94,16 @@ This part is high freedom: lists of what to look for, no procedure.
 
 **Step 5, the punch list.** A strict format: tag, `file:line`, one sentence
 for the problem, one for the fix. No "you might consider". Nits are labeled
-and go last, but they are never dropped.
+and go last, but they are never dropped. The list is then appended to
+`MEAN-REVIEW.md` as a new pass, exactly as delivered. Earlier passes are
+never rewritten.
 
-**Step 6, loop.** Offer to re-run after fixes, and stop when the findings are
-uniformly trivial. That's the article's "rinse and repeat".
+**Step 6, loop.** Record what happened to the pass (which items were fixed,
+which were rejected and why), offer to re-run after fixes, and stop when the
+findings are uniformly trivial. That's the article's "rinse and repeat", with
+a written record of each rinse. An earlier version of this skill wrote
+nothing to disk, which contradicted its own preamble ("save the artifacts")
+and left a re-run with no memory of the last one.
 
 **Tone calibration.** Sharp, not abusive. "This is broken, and here's why" is
 right; "what were you thinking?" helps nobody fix anything. The skill
@@ -102,6 +113,7 @@ includes a rewrite rule for when the model starts hedging.
 
 | File | Loaded when | Why it is separate |
 |---|---|---|
+| `assets/mean-review-ledger-template.md` | Copied at Step 5 when `MEAN-REVIEW.md` doesn't exist yet | The ledger's header and pass layout. Kept out of SKILL.md because the model needs it once per feature, not on every pass. |
 | `scripts/enforced_scans.py` | Run at Step 3; never read | The four scans are mechanical. The old version of this skill asked the model to do them with grep, which can't find "10 lines without a comment", so each run improvised something different. A script makes `[enforced]` mean the same thing every time. |
 | `evals/trigger-evals.json` | Never, by the model | Trigger tests. |
 
@@ -164,15 +176,20 @@ failure the feature exists to prevent.
 Finding 1 is not in `IMPLEMENT.md`'s drift log, and finding 2 contradicts
 the design doc. Both are exactly what the cross-check in Step 1 is for.
 
-**Step 6.** The user fixes all six. The re-run returns two nits. Done.
+The model appends this list to `docs/egm/webhook-retries/MEAN-REVIEW.md` as
+Pass 1.
+
+**Step 6.** The user fixes all six, and the model records that under
+`### Pass 1 disposition`. The re-run, saved as Pass 2, returns two nits. Done.
 
 ## What the skill adds to the article
 
 The article supplies the prompt, the 10-line rule, "demand strict
 readability", and the loop. The skill adds the scope rules, the full-file
 reading rule, three more enforced scans with a script behind them, the
-declarative carve-out, the prioritized punch-list format, the tone rules, and
-the cross-check against the design doc and `IMPLEMENT.md`.
+declarative carve-out, the prioritized punch-list format, the tone rules, the
+cross-check against the design doc and `IMPLEMENT.md`, and a ledger that keeps
+every pass.
 
 ## Review questions and exercises
 
@@ -188,6 +205,9 @@ the cross-check against the design doc and `IMPLEMENT.md`.
 4. The punch list puts correctness before readability, yet the 10-line rule
    is called out as essential. Make the case that an uncommented 20-line
    block is a correctness risk as well as a style problem.
+5. A user rejects a finding with a reason, and Step 1 says not to raise it
+   again without new evidence. Describe a change to the code that would count
+   as new evidence, and one that would not.
 5. Ask a model for a code review twice on the same diff: once plainly, once
    with Rensin's framing prompt. Count the findings in each and classify
    them. What changed besides tone?
